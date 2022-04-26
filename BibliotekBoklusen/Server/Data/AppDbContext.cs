@@ -14,4 +14,5 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<CreatorModel> Creators { get; set; }
         public DbSet<SeminariumModel> Seminarium { get; set; }
     }
+
 }
