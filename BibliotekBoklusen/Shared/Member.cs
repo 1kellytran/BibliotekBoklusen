@@ -10,12 +10,12 @@ namespace BibliotekBoklusen.Shared
     {
 
         public int Id { get; set; }
-        public string FirstName { get; set; }=string.Empty;
-        public string LastName { get; set; }= string.Empty;
-        public string Email { get; set; } = string.Empty;
+        public string FirstName { get; set; }=String.Empty;
+        public string LastName { get; set; }= String.Empty;
+        public string Email { get; set; } = String.Empty;
         public DateTime Created { get; set; }
         public bool Blocked { get; set; }
-        public List<Product> Products { get; set; }
+        public List<ProductModel> Products { get; set; }
 
     }
 }
