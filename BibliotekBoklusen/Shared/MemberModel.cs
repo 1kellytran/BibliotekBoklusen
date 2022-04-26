@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BibliotekBoklusen.Shared
 {
-    public class Member
+    public class MemberModel
     {
 
         public int Id { get; set; }
