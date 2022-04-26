@@ -8,7 +8,7 @@ namespace BibliotekBoklusen.Shared
 {
     public class ProductCreatorModel
     {
-        int CreatorId { get; set; }
-        int ProductId { get; set; }
+        public int CreatorId { get; set; }
+        public int ProductId { get; set; }
     }
 }
