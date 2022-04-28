@@ -6,6 +6,7 @@ namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+  
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
