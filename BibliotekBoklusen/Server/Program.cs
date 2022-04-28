@@ -12,6 +12,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+var connectionString2 = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString2));
+
 var connectionStringAuth = builder.Configuration.GetConnectionString("AuthConnection");
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionStringAuth));
 
