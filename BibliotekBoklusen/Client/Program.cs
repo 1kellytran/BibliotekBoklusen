@@ -1,3 +1,4 @@
+global using BibliotekBoklusen.Shared;
 using BibliotekBoklusen.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
