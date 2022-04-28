@@ -39,28 +39,33 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async void EditProduct([FromQuery] int id, [FromBody] ProductModel productToEdit)
+        public async void UpdateProduct([FromQuery] int id, [FromBody] ProductModel productToUpdate)
         {
             ProductModel product = new();
 
             product = _context.Products.FirstOrDefault(x => x.Id == id);
 
-            product.Title = productToEdit.Title;
-            product.Type = productToEdit.Type;
-            product.Genre = productToEdit.Genre;
-            product.PublishYear = productToEdit.PublishYear;
-            product.Creators = productToEdit.Creators;
-            product.Quantity = productToEdit.Quantity;
-            product.Reserved = productToEdit.Reserved;
+            product.Title = productToUpdate.Title;
+            product.Type = productToUpdate.Type;
+            product.Genre = productToUpdate.Genre;
+            product.PublishYear = productToUpdate.PublishYear;
+            product.Creators = productToUpdate.Creators;
+            product.Quantity = productToUpdate.Quantity;
+            product.Reserved = productToUpdate.Reserved;
 
             await _context.SaveChangesAsync();
         }
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
-        public void DeleteProduct(int id)
+        public async void DeleteProduct(int id)
         {
-            
+            ProductModel product = new();
+
+            product = _context.Products.FirstOrDefault(p => p.Id == id);
+            _context.Products.Remove(product);
+
+            await _context.SaveChangesAsync();
         }
     }
 }
