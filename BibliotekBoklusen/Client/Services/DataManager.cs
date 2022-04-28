@@ -19,5 +19,25 @@ namespace BibliotekBoklusen.Client.Services
 
             return products;
         }
+
+        public async Task<ProductModel> GetProductById(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<ProductModel>($"api/product/{id}");
+        }
+
+        public async Task CreateProduct(ProductModel product)
+        {
+            await _httpClient.PostAsJsonAsync("api/product", product);
+        }
+
+        public async Task UpdateProduct(int id, ProductModel product)
+        {
+            await _httpClient.PutAsJsonAsync("api/product/UpdateProduct", product);
+        }
+
+        public async Task DeleteProduct(int id)
+        {
+            await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
+        }
     }
 }

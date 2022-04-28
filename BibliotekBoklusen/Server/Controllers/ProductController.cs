@@ -25,22 +25,24 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // GET api/<ProductController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ProductModel> GetProductById(int id)
         {
-            return "value";
+            return _context.Products.FirstOrDefault(p => p.Id == id);
         }
 
         // POST api/<ProductController>
         [HttpPost]
-        public async void CreateProduct([FromBody] ProductModel productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
         {
             _context.Products.Add(productToAdd);
             await _context.SaveChangesAsync();
+
+            return Ok("Product has been added");
         }
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async void UpdateProduct([FromQuery] int id, [FromBody] ProductModel productToUpdate)
+        public async Task<IActionResult> UpdateProduct([FromQuery] int id, [FromBody] ProductModel productToUpdate)
         {
             ProductModel product = new();
 
@@ -55,11 +57,13 @@ namespace BibliotekBoklusen.Server.Controllers
             product.Reserved = productToUpdate.Reserved;
 
             await _context.SaveChangesAsync();
+
+            return Ok("Product has been updated");
         }
 
         // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
-        public async void DeleteProduct(int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             ProductModel product = new();
 
@@ -67,6 +71,8 @@ namespace BibliotekBoklusen.Server.Controllers
             _context.Products.Remove(product);
 
             await _context.SaveChangesAsync();
+
+            return Ok("Product has been deleted");
         }
     }
 }
