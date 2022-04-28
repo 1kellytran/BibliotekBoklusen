@@ -10,7 +10,14 @@ namespace BibliotekBoklusen.Server.Data
         }
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<CreatorModel> Creators { get; set; }
-        public DbSet<SeminariumModel> Seminarium { get; set; }
+        public DbSet<SeminariumModel> Seminariums { get; set; }
+        public DbSet<LoanModel> Loans { get; set; }
+        public DbSet<UserModel> Users { get; set; }
+        public DbSet<ReservationModel> Reservations { get; set; }
+
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Many to many (Creators can have many products that in turns have many Creators)
