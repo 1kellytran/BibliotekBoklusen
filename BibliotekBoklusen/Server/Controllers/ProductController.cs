@@ -8,9 +8,9 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly AuthDbContext _context;
+        private readonly AppDbContext _context;
 
-        public ProductController(AuthDbContext context)
+        public ProductController(AppDbContext context)
         {
             _context = context;
         }
@@ -31,7 +31,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // POST api/<ProductController>
         [HttpPost]
-        public async void CreateProduct([FromBody]ProductModel productToAdd)
+        public async void CreateProduct([FromBody] ProductModel productToAdd)
         {
             _context.Products.Add(productToAdd);
             await _context.SaveChangesAsync();
@@ -39,7 +39,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async void EditProduct([FromQuery]int id, [FromBody]ProductModel productToEdit)
+        public async void EditProduct([FromQuery] int id, [FromBody] ProductModel productToEdit)
         {
             ProductModel product = new();
 
@@ -60,7 +60,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public void DeleteProduct(int id)
         {
-
+            
         }
     }
 }
