@@ -1,26 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BibliotekBoklusen.Shared
 {
-    public class LoanModel
+    public class Fine
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
         public int ProductId { get; set; }
-        public DateTime LoanDate { get; set; }
-        public DateTime ReturnDate { get; set; }
-       
-
-       
-
-
-
-
-
+        public int UserId { get; set; }
+        public DateTime FineDate { get; set; }
+        public Double FineAmount { get; set; }
     }
 }

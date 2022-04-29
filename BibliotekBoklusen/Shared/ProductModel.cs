@@ -16,10 +16,8 @@ namespace BibliotekBoklusen.Shared
         public int Id { get; set; }
         public string Title { get; set; } = String.Empty;
         public int PublishYear { get; set; }
-        public int Quantity { get; set; }
-        public string Type { get; set; } = String.Empty;
-        public string Genre { get; set; } = String.Empty;
-        public bool Reserved { get; set; }
+        public int CopiesOwned { get; set; }
+        public string CategoryId { get; set; } = String.Empty;
 
         public List<ProductCreatorModel> ProductCreators { get; set; } = new();
         public List<CreatorModel> Creators { get; set; }
