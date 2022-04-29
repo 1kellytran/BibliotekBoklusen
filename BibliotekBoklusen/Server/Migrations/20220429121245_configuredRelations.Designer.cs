@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429121245_configuredRelations")]
+    partial class configuredRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -79,17 +81,13 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("FineDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LoanId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("LoanId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Fines");
                 });
@@ -179,10 +177,6 @@ namespace BibliotekBoklusen.Server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -290,8 +284,6 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StatusId");
-
                     b.ToTable("Users");
                 });
 
@@ -319,25 +311,6 @@ namespace BibliotekBoklusen.Server.Migrations
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.Fine", b =>
-                {
-                    b.HasOne("BibliotekBoklusen.Shared.LoanModel", "Loan")
-                        .WithMany()
-                        .HasForeignKey("LoanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BibliotekBoklusen.Shared.UserModel", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Loan");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.LoanModel", b =>
@@ -376,17 +349,6 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.UserModel", b =>
-                {
-                    b.HasOne("BibliotekBoklusen.Shared.UserStatus", "Status")
-                        .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
