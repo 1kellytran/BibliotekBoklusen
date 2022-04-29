@@ -6,7 +6,7 @@ namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-  
+
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -42,19 +42,15 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // PUT api/<ProductController>/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromQuery] int id, [FromBody] ProductModel productToUpdate)
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductModel productToUpdate)
         {
-            ProductModel product = new();
-
-            product = _context.Products.FirstOrDefault(x => x.Id == id);
+            var product = _context.Products.FirstOrDefault(x => x.Id == id);
 
             product.Title = productToUpdate.Title;
             product.Type = productToUpdate.Type;
             product.Genre = productToUpdate.Genre;
             product.PublishYear = productToUpdate.PublishYear;
-            product.Creators = productToUpdate.Creators;
             product.Quantity = productToUpdate.Quantity;
-            product.Reserved = productToUpdate.Reserved;
 
             await _context.SaveChangesAsync();
 

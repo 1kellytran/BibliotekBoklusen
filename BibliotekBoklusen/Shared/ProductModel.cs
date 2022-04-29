@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace BibliotekBoklusen.Shared
 {
+    //public enum Type
+    //{
+    //    Bok = 1,
+    //    Ebok = 2,
+    //    Film = 3
+    //}
     public class ProductModel
     {
 
@@ -21,8 +27,8 @@ namespace BibliotekBoklusen.Shared
         public string Genre { get; set; } = String.Empty;
         public bool Reserved { get; set; }
 
-        public List<ProductCreatorModel> ProductCreators { get; set; } = new();
-        public List<CreatorModel> Creators { get; set; }
+        public List<ProductCreatorModel>? ProductCreators { get; set; } = new();
+        public List<CreatorModel>? Creators { get; set; }
 
     }
 }

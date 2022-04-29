@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429094607_MadePropsNullable")]
+    partial class MadePropsNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +47,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Creators", (string)null);
+                    b.ToTable("Creators");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.LoanModel", b =>
@@ -73,7 +75,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Loans", (string)null);
+                    b.ToTable("Loans");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCreatorModel", b =>
@@ -88,7 +90,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCreatorModel", (string)null);
+                    b.ToTable("ProductCreatorModel");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
@@ -127,7 +129,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("UserModelId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ReservationModel", b =>
@@ -149,7 +151,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.SeminariumModel", b =>
@@ -178,7 +180,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Seminariums", (string)null);
+                    b.ToTable("Seminariums");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.UserModel", b =>
@@ -209,7 +211,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
