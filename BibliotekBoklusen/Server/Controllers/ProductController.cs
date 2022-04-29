@@ -48,9 +48,9 @@ namespace BibliotekBoklusen.Server.Controllers
 
             product.Title = productToUpdate.Title;
             product.Type = productToUpdate.Type;
-            product.Genre = productToUpdate.Genre;
+            product.CategoryId = productToUpdate.CategoryId;
             product.PublishYear = productToUpdate.PublishYear;
-            product.Quantity = productToUpdate.Quantity;
+            product.CopiesOwned = productToUpdate.CopiesOwned;
 
             await _context.SaveChangesAsync();
 

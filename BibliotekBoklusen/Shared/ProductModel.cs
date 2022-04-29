@@ -24,6 +24,7 @@ namespace BibliotekBoklusen.Shared
         public int PublishYear { get; set; }
         public int CopiesOwned { get; set; }
         public string CategoryId { get; set; } = String.Empty;
+        public string Type { get; set; } = String.Empty;
 
         public List<ProductCreatorModel>? ProductCreators { get; set; } = new();
         public List<CreatorModel>? Creators { get; set; }
