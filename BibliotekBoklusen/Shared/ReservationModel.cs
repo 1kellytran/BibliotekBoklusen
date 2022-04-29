@@ -6,5 +6,6 @@
         public int UserId { get; set; }
         public int ProductId { get; set; }
         public DateTime ReservationDate { get; set; }
+        public int ReservationStatusId { get; set; }
     }
 }
