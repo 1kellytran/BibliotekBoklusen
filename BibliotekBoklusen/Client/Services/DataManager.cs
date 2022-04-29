@@ -32,7 +32,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task UpdateProduct(int id, ProductModel product)
         {
-            await _httpClient.PutAsJsonAsync("api/product/UpdateProduct", product);
+            await _httpClient.PutAsJsonAsync($"api/product/UpdateProduct/{id}", product);
         }
 
         public async Task DeleteProduct(int id)

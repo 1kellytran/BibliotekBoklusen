@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220429094607_MadePropsNullable")]
+    partial class MadePropsNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,23 +23,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories");
-                });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
                 {
@@ -62,54 +47,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Creators", (string)null);
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.Fine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<double>("FineAmount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("FineDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Fines");
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.FinePayment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("PaymentAmount")
-                        .HasColumnType("float");
-
-                    b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FinePayments");
+                    b.ToTable("Creators");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.LoanModel", b =>
@@ -129,12 +67,15 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("Returned")
+                        .HasColumnType("bit");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Loans", (string)null);
+                    b.ToTable("Loans");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCreatorModel", b =>
@@ -149,7 +90,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCreatorModel", (string)null);
+                    b.ToTable("ProductCreatorModel");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
@@ -160,21 +101,33 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CategoryId")
+                    b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CopiesOwned")
-                        .HasColumnType("int");
-
                     b.Property<int>("PublishYear")
                         .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Reserved")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("UserModelId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("Products");
                 });
@@ -193,32 +146,12 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReservationStatusId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reservations", (string)null);
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.ReservationStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ReservationStatuses");
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.SeminariumModel", b =>
@@ -247,7 +180,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Seminariums", (string)null);
+                    b.ToTable("Seminariums");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.UserModel", b =>
@@ -257,6 +190,9 @@ namespace BibliotekBoklusen.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Blocked")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
@@ -273,28 +209,9 @@ namespace BibliotekBoklusen.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
-                });
-
-            modelBuilder.Entity("BibliotekBoklusen.Shared.UserStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("ActiveStatus")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserStatus");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
@@ -326,6 +243,13 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.UserModel", null)
+                        .WithMany("Products")
+                        .HasForeignKey("UserModelId");
+                });
+
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
                 {
                     b.Navigation("ProductCreators");
@@ -336,6 +260,11 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("Creators");
 
                     b.Navigation("ProductCreators");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.UserModel", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
