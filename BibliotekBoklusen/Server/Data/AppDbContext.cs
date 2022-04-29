@@ -14,6 +14,14 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<LoanModel> Loans { get; set; }
         public DbSet<UserModel> Users { get; set; }
         public DbSet<ReservationModel> Reservations { get; set; }
+        public DbSet<UserStatus> UserStatus { get; set; }
+        public DbSet<ReservationStatus> ReservationStatuses { get; set; }
+        public DbSet<FinePayment> FinePayments { get; set; }
+        public DbSet<Fine> Fines { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        
+
+
 
 
 
