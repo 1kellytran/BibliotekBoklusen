@@ -10,13 +10,25 @@ namespace BibliotekBoklusen.Shared
     public class LoanModel
     {
         public int Id { get; set; }
+        
+        [ForeignKey(nameof(User))]
         public int UserId { get; set; }
+        public UserModel User { get; set; }
+
+        [ForeignKey(nameof(Product))]
         public int ProductId { get; set; }
+        public ProductModel Product { get; set; }
+
         public DateTime LoanDate { get; set; }
         public DateTime ReturnDate { get; set; }
-       
 
        
+
+         
+
+
+
+
 
 
 
