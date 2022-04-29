@@ -49,12 +49,12 @@ namespace BibliotekBoklusen.Server.Controllers
             product = _context.Products.FirstOrDefault(x => x.Id == id);
 
             product.Title = productToUpdate.Title;
-            product.Type = productToUpdate.Type;
-            product.Genre = productToUpdate.Genre;
-            product.PublishYear = productToUpdate.PublishYear;
-            product.Creators = productToUpdate.Creators;
-            product.Quantity = productToUpdate.Quantity;
-            product.Reserved = productToUpdate.Reserved;
+            //product.Type = productToUpdate.Type;
+            //product.Genre = productToUpdate.Genre;
+            //product.PublishYear = productToUpdate.PublishYear;
+            //product.Creators = productToUpdate.Creators;
+            //product.Quantity = productToUpdate.Quantity;
+            //product.Reserved = productToUpdate.Reserved;
 
             await _context.SaveChangesAsync();
 

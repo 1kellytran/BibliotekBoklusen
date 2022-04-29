@@ -17,9 +17,7 @@ namespace BibliotekBoklusen.Shared
         public int StatusId { get; set; }
 
 
-        //referens
-        public int Userid { get; set; }
-        public UserModel User { get; set; }
+        
 
     }
 }
