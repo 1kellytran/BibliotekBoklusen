@@ -24,6 +24,8 @@ namespace BibliotekBoklusen.Server.Controllers
             var result = _context.Users.ToList();
             return Ok(result);
         }
+
+
         // get a specific user
         // GET api/UserController>/id
         [HttpGet("{id}")]
@@ -95,7 +97,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // PUT : Change password
         [HttpPut("ChangePassword")]
-        public async Task<ActionResult> Put([FromBody] PasswordDto editPassword)
+        public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
         {
             var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Email == editPassword.Email);
 
@@ -114,10 +116,10 @@ namespace BibliotekBoklusen.Server.Controllers
 
         // DELETE api/<UserController>/5
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser(UserModel model)
+        public async Task<IActionResult> DeleteUser(string email)
         {
 
-            var user = _signInManager.UserManager.Users.Where(x => x.Email == model.Email).FirstOrDefault();
+            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == email);
             if (user != null)
             {
                 await _signInManager.UserManager.DeleteAsync(user);
