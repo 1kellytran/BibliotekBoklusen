@@ -9,6 +9,11 @@ namespace BibliotekBoklusen.Shared
 {
     public class RegisterDto
     {
+        [Required]
+        public string FirstName { get; set; } = String.Empty;
+        [Required]
+        public string LastName { get; set; } = String.Empty;
+
         [Required(ErrorMessage = "User Name is required")]
         public string? Username { get; set; }
 
