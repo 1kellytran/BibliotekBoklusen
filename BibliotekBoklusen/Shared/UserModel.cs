@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
@@ -15,11 +10,8 @@ namespace BibliotekBoklusen.Shared
         public string Email { get; set; } = String.Empty;
         public DateTime Created { get; set; }
 
-        [ForeignKey(nameof(Status)) ]
+        [ForeignKey(nameof(Status))]
         public int StatusId { get; set; }
-        public UserStatus Status { get; set; }
-
-       
-
+        public UserStatus? Status { get; set; }
     }
 }
