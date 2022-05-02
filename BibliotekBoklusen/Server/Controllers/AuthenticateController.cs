@@ -14,15 +14,17 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
+        private readonly AppDbContext _appDbContext;
 
-        public AuthenticateController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration)
+        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
+            _appDbContext = appDbContext;
         }
         [HttpPost]
         [Route("login")]
@@ -63,14 +65,28 @@ namespace BibliotekBoklusen.Server.Controllers
             if (userExists != null)
                 return BadRequest("User already exists!");
 
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+            UserModel userModel = new UserModel()
+            {
+
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+
+            };
+
+
+            _appDbContext.Users.Add(userModel);
+            _appDbContext.SaveChanges();
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
 
@@ -85,7 +101,7 @@ namespace BibliotekBoklusen.Server.Controllers
             if (userExists != null)
                 return BadRequest("User already exists!");
 
-            IdentityUser user = new()
+            ApplicationUser user = new()
             {
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
