@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,7 +22,14 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public ActionResult<List<UserModel>> GetAllUser()
         {
-            var result = _context.Users.ToList();
+            
+            var result = _context.Users
+                .Include(s => s.Status)
+                .ToList();
+               if(result == null)
+            {
+                return BadRequest();
+            }
             return Ok(result);
         }
 
@@ -31,8 +39,13 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUser(int id)
         {
-            var identityUser = _signInManager.UserManager.Users.Where(x => x.Id.Equals(id)).FirstOrDefault();
-            var dbUser = _context.Users.Where(x => x.Email == identityUser.Email).FirstOrDefault();
+            var identityUser = _signInManager.UserManager.Users
+                .Where(x => x.Id.Equals(id))
+                .FirstOrDefault();
+            var dbUser = _context.Users
+                .Include(s => s.Status)
+                .Where(x => x.Email == identityUser.Email)
+                .FirstOrDefault();
 
             if (dbUser != null)
             {
@@ -42,35 +55,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return BadRequest();
         }
 
-        // POST api/<UserController>
-        //[Route("register")]
-        //[HttpPost]
-        //public async Task<ActionResult> Register([FromBody] IdentityUserDto user)
-        //{
-
-        //    string firstName = user.FirstName;
-        //    string lastName = user.LastName;
-        //    string email = user.Email;
-        //    string password = user.Password;
-        //    // Create an empty identity user
-        //    IdentityUser identityUser = new IdentityUser();
-
-        //    IdentityResult identityResult = await _signInManager.UserManager.CreateAsync(identityUser, password);
-        //    if (identityResult.Succeeded == true)
-        //    {
-        //        return Ok(new { identityResult.Succeeded });
-        //    }
-        //    else
-        //    {
-        //        string errorToReturn = "Register failed with the following errors";
-        //        foreach (var error in identityResult.Errors)
-        //        {
-        //            errorToReturn += Environment.NewLine;
-        //            errorToReturn += $"Error code: {error.Code}- {error.Description}";
-        //        }
-        //        return StatusCode(StatusCodes.Status500InternalServerError, errorToReturn);
-        //    }
-        //}
 
         // PUT api/<UserController>/5
         [HttpPut]
