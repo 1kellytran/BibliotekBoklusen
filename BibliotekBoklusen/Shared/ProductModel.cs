@@ -23,7 +23,10 @@ namespace BibliotekBoklusen.Shared
         public string Title { get; set; } = String.Empty;
         public int PublishYear { get; set; }
         public int CopiesOwned { get; set; }
-        public string CategoryId { get; set; } = String.Empty;
+
+        [ForeignKey(nameof(Category))]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public string Type { get; set; } = String.Empty;
 
         public List<ProductCreatorModel>? ProductCreators { get; set; } = new();

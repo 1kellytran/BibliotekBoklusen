@@ -79,10 +79,10 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("FineDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LoanId")
+                    b.Property<int?>("LoanId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -102,16 +102,18 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("MemberId")
-                        .HasColumnType("int");
-
                     b.Property<double>("PaymentAmount")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FinePayments");
                 });
@@ -127,13 +129,13 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("LoanDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReturnDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -168,9 +170,8 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CategoryId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<int>("CopiesOwned")
                         .HasColumnType("int");
@@ -188,6 +189,8 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
                 });
 
@@ -199,19 +202,25 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReservationStatusId")
+                    b.Property<int?>("ReservationStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int?>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ReservationStatusId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reservations");
                 });
@@ -325,17 +334,22 @@ namespace BibliotekBoklusen.Server.Migrations
                 {
                     b.HasOne("BibliotekBoklusen.Shared.LoanModel", "Loan")
                         .WithMany()
-                        .HasForeignKey("LoanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("LoanId");
 
                     b.HasOne("BibliotekBoklusen.Shared.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Loan");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.FinePayment", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -344,15 +358,11 @@ namespace BibliotekBoklusen.Server.Migrations
                 {
                     b.HasOne("BibliotekBoklusen.Shared.ProductModel", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductId");
 
                     b.HasOne("BibliotekBoklusen.Shared.UserModel", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Product");
 
@@ -376,6 +386,38 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("Creator");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ReservationModel", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("BibliotekBoklusen.Shared.ReservationModel", "Reservation")
+                        .WithMany()
+                        .HasForeignKey("ReservationStatusId");
+
+                    b.HasOne("BibliotekBoklusen.Shared.UserModel", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("Reservation");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.UserModel", b =>

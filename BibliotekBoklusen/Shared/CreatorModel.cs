@@ -17,7 +17,7 @@ namespace BibliotekBoklusen.Shared
 
         public List<ProductCreatorModel> ProductCreators { get; set; } = new();
 
-        
+
         [ForeignKey(nameof(Product))]
         public int? ProductId { get; set; }
         public ProductModel? Product { get; set; }

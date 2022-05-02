@@ -19,7 +19,8 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<FinePayment> FinePayments { get; set; }
         public DbSet<Fine> Fines { get; set; }
         public DbSet<Category> Categories { get; set; }
-        
+       
+
 
 
 
@@ -47,7 +48,29 @@ namespace BibliotekBoklusen.Server.Data
                 .HasForeignKey(m => m.ProductId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
-   
+
+            // Many to many (Seminariums can have many users that in turns have many Seminariums)
+            //modelBuilder.Entity<UserSeminariumModel>()
+            //    .HasKey(us => new { us.UserId, us.SeminariumId });
+            //modelBuilder.Entity<UserSeminariumModel>()
+            //    .HasOne(cm => cm.User)
+            //    .WithMany(c => c.UserSeminarium)
+            //    .HasForeignKey(cm => cm.UserId);
+            //modelBuilder.Entity<UserSeminariumModel>()
+            //    .HasOne(cm => cm.Seminarium)
+            //    .WithMany(m => m.UserSeminarium)
+            //    .HasForeignKey(cm => cm.SeminariumId);
+
+            //// Restrict deletion of User on seminarium delete (set Creator to null instead)
+            //modelBuilder.Entity<UserModel>()
+            //    .HasOne(m => m.Seminarium)
+            //    .WithMany(c => c.Users)
+            //    .HasForeignKey(m => m.SeminariumId)
+            //    .IsRequired(false)
+            //    .OnDelete(DeleteBehavior.SetNull);
+
+
+
         }
     }
 }

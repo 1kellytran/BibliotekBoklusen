@@ -13,13 +13,12 @@ namespace BibliotekBoklusen.Shared
         public int Id { get; set; }
 
         [ForeignKey(nameof(Loan))]
-        public int LoanId { get; set; }
-        public LoanModel Loan { get; set; }
+        public int? LoanId { get; set; }
+        public LoanModel? Loan { get; set; }
 
         [ForeignKey(nameof(User))]
-        [JsonIgnore]
-        public int UserId { get; set; }
-        public UserModel User  {get; set;}
+        public int? UserId { get; set; }
+        public UserModel? User  {get; set;}
 
         public DateTime FineDate { get; set; }
         public double FineAmount { get; set; }

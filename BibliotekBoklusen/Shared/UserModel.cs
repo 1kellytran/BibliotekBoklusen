@@ -19,5 +19,7 @@ namespace BibliotekBoklusen.Shared
         public int StatusId { get; set; }
         public UserStatus Status { get; set; }
 
+       
+
     }
 }
