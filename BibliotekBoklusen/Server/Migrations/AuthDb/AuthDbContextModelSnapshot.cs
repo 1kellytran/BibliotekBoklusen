@@ -116,8 +116,6 @@ namespace BibliotekBoklusen.Server.Migrations.AuthDb
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
