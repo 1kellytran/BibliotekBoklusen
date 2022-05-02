@@ -61,9 +61,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            ProductModel product = new();
-
-            product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
             _context.Products.Remove(product);
 
             await _context.SaveChangesAsync();
