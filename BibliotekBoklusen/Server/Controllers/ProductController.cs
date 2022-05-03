@@ -20,7 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
-            var products = _context.Products.Include(p => p.Category).Include(p => p.Creators.Select(p => p.FirstName)).ToList();
+            var products = _context.Products.Include(p => p.Category).ToList();
 
             if(products == null)
             {
