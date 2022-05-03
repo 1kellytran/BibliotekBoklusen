@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using BibliotekBoklusen.Server.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,10 +10,10 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AppDbContext _context;
 
-        public UserController(SignInManager<IdentityUser> signInManager, AppDbContext context)
+        public UserController(SignInManager<ApplicationUser> signInManager, AppDbContext context)
         {
             _signInManager = signInManager;
             _context = context;
