@@ -37,12 +37,9 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> GetUser(int id)
         {
-            var identityUser = _signInManager.UserManager.Users
-                .Where(x => x.Id.Equals(id))
-                .FirstOrDefault();
-            var dbUser = _context.Users
 
-                .Where(x => x.Email == identityUser.Email)
+            var dbUser = _context.Users
+                .Where(x => x.Id == id)
                 .FirstOrDefault();
 
             if (dbUser != null)
@@ -54,24 +51,29 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         // PUT api/<UserController>/5
-        [HttpPut]
-        public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model)
+        [HttpPut("{id}")]
+
+        public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model, int id)
         {
-            var identityUser = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == model.Email);
-            if (identityUser != null)
+            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+            if (userDb != null)
             {
-                var userDb = _context.Users.Where(x => x.Email == identityUser.Email).FirstOrDefault();
                 userDb.FirstName = model.FirstName;
                 userDb.LastName = model.LastName;
-                userDb.Email = model.Email;
 
                 _context.Update(userDb);
                 await _context.SaveChangesAsync();
-                identityUser.Email = model.Email;
-                _signInManager.UserManager.UpdateAsync(identityUser);
-                return Ok();
+
+                var AuthUser = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+                if (AuthUser != null)
+                    AuthUser.FirstName = model.FirstName;
+                AuthUser.LastName = model.LastName;
+                _signInManager.UserManager.UpdateAsync(AuthUser);
+                return Ok("Change successful");
             }
+
             return BadRequest();
+
         }
 
         // PUT : Change password
@@ -92,19 +94,24 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         // DELETE api/<UserController>/5
-        [HttpDelete]
-        public async Task<IActionResult> DeleteUser(string email)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute]int id)
         {
-
-            var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == email);
-            if (user != null)
+            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+            if(userDb != null)
             {
-                await _signInManager.UserManager.DeleteAsync(user);
-                _context.Remove(user);
-                await _context.SaveChangesAsync();
-                return Ok(user);
+                var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+                if (user != null)
+                {
+                    await _signInManager.UserManager.DeleteAsync(user);
+                    _context.Remove(user);
+                    await _context.SaveChangesAsync();
+                    return Ok("User Deleted");
+                }
+
             }
-            return BadRequest();
+
+            return BadRequest("User could not be deleted");
         }
 
         [HttpPost]
