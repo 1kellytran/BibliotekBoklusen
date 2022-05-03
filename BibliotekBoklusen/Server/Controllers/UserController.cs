@@ -21,8 +21,10 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public ActionResult<List<UserModel>> GetAllUser()
         {
+
             var result = _context.Users.ToList();
             if (result == null)
+
             {
                 return BadRequest();
             }

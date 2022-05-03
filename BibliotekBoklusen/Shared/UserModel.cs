@@ -9,9 +9,7 @@ namespace BibliotekBoklusen.Shared
         public string LastName { get; set; } = String.Empty;
         public string Email { get; set; } = String.Empty;
         public DateTime Created { get; set; } = DateTime.Now;
-        public bool ActiveStatus { get; set; }
-
-
+        public bool IsActive { get; set; }
 
     }
 }
