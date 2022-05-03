@@ -16,21 +16,18 @@ namespace BibliotekBoklusen.Server.Controllers
             _context = context;
         }
 
-        // GET: api/<ProductController>
         [HttpGet]
         public async Task<List<ProductModel>> GetAllProducts()
         {
             return _context.Products.ToList();
         }
 
-        // GET api/<ProductController>/5
         [HttpGet("{id}")]
         public async Task<ProductModel> GetProductById(int id)
         {
             return _context.Products.FirstOrDefault(p => p.Id == id);
         }
 
-        // POST api/<ProductController>
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
         {
@@ -40,7 +37,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been added");
         }
 
-        // PUT api/<ProductController>/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductModel productToUpdate)
         {
@@ -57,7 +53,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been updated");
         }
 
-        // DELETE api/<ProductController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
