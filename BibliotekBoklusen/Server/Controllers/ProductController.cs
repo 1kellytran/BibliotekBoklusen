@@ -20,6 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
+            //var creator = _context.Products.Include(d => d.Creators.Where(p=>p.));
             var products = _context.Products.Include(p => p.Category).ToList();
 
             if(products == null)
@@ -44,6 +45,16 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
         {
+            var creator= _context.Creators.ToList();
+            
+            foreach (var item in creator)
+            {
+                if (item.FirstName == productToAdd.Creator.FirstName && item.LastName == productToAdd.Creator.LastName)
+                {
+                    productToAdd.Creator = item; 
+                }
+            }
+
             _context.ProductCreator.Add(productToAdd);
             await _context.SaveChangesAsync();
 
