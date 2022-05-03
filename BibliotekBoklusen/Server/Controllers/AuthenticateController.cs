@@ -61,7 +61,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            var userExists = await _signInManager.UserManager.FindByNameAsync(model.Username);
+            var userExists = await _signInManager.UserManager.FindByEmailAsync(model.Email);
             if (userExists != null)
                 return BadRequest("User already exists!");
 
@@ -87,8 +87,6 @@ namespace BibliotekBoklusen.Server.Controllers
 
             };
 
-
-
             _appDbContext.Users.Add(userModel);
             _appDbContext.SaveChangesAsync();
 
@@ -102,12 +100,14 @@ namespace BibliotekBoklusen.Server.Controllers
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto model)
         {
-            var userExists = await _signInManager.UserManager.FindByNameAsync(model.Username);
+            var userExists = await _signInManager.UserManager.FindByEmailAsync(model.Email);
             if (userExists != null)
                 return BadRequest("User already exists!");
 
             ApplicationUser user = new()
             {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
@@ -132,6 +132,41 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("User created successfully!");
         }
 
+        [HttpPost]
+        [Route("register-librarian")]
+        public async Task<IActionResult> RegisterLibrarian([FromBody] RegisterDto model)
+        {
+            var userExists = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+            if (userExists != null)
+                return BadRequest("User already exists!");
+
+            ApplicationUser user = new()
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.Username
+            };
+            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return BadRequest("User creation failed! Please check user details and try again.");
+
+            if (!await _roleManager.RoleExistsAsync(UserRoles.Librarian))
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Librarian));
+            if (!await _roleManager.RoleExistsAsync(UserRoles.User))
+                await _roleManager.CreateAsync(new IdentityRole(UserRoles.User));
+
+            if (await _roleManager.RoleExistsAsync(UserRoles.Librarian))
+            {
+                await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Librarian);
+            }
+            if (await _roleManager.RoleExistsAsync(UserRoles.User))
+            {
+                await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.User);
+            }
+            return Ok("User created successfully!");
+        }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
