@@ -24,7 +24,8 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             
             var result = _context.Users
-                .Include(s => s.Status)
+               
+
                 .ToList();
                if(result == null)
             {
@@ -43,7 +44,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 .Where(x => x.Id.Equals(id))
                 .FirstOrDefault();
             var dbUser = _context.Users
-                .Include(s => s.Status)
+
                 .Where(x => x.Email == identityUser.Email)
                 .FirstOrDefault();
 
@@ -113,6 +114,32 @@ namespace BibliotekBoklusen.Server.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpPost]
+       
+        public async Task<IActionResult> ProductLoan(ProductModel productToAdd)
+        {
+            var email = "bnma@hotmail.com";
+            var user = _signInManager.UserManager.Users.FirstOrDefault(p => p.Email == email);
+            if (user != null)
+            {
+                var dbUser = _context.Users.FirstOrDefault(u => u.Email == email);
+                ReservationModel reservationModel = new()
+                {
+                    Product = productToAdd,
+                    User = dbUser,
+                };
+                var result =_context.Reservations.Add(reservationModel);
+                if (result != null)
+                {
+                    return Ok("Product has been added!!");
+                }
+                
+              
+
+            }
+            return BadRequest("User was not found :(");
         }
 
 
