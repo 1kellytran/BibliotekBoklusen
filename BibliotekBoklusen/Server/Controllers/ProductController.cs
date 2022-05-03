@@ -17,15 +17,27 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ProductModel>> GetAllProducts()
+        public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
-            return _context.Products.ToList();
+            var products = _context.Products.ToList();
+
+            if(products == null)
+            {
+                return BadRequest("There is no products here");
+            }
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
-        public async Task<ProductModel> GetProductById(int id)
+        public async Task<ActionResult<ProductModel>> GetProductById(int id)
         {
-            return _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+
+            if(product == null)
+            {
+                return BadRequest("There is no product with that ID");
+            }
+            return Ok(product);
         }
 
         [HttpPost]
