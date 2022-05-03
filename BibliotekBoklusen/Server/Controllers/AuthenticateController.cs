@@ -14,26 +14,26 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _appDbContext;
 
-        public AuthenticateController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
+        public AuthenticateController(SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
         {
-            _userManager = userManager;
+            _signInManager = signInManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _appDbContext = appDbContext;
         }
-        [HttpPost]
+        [HttpGet]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
-            var user = await _userManager.FindByNameAsync(model.Username);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
+            var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+            if (user != null && await _signInManager.UserManager.CheckPasswordAsync(user, model.Password))
             {
-                var userRoles = await _userManager.GetRolesAsync(user);
+                var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
@@ -61,7 +61,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
+            var userExists = await _signInManager.UserManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return BadRequest("User already exists!");
 
@@ -74,19 +74,20 @@ namespace BibliotekBoklusen.Server.Controllers
                 UserName = model.Username
             };
 
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             UserModel userModel = new UserModel()
             {
 
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+                IsActive = true
 
             };
 
 
             _appDbContext.Users.Add(userModel);
-            _appDbContext.SaveChanges();
+            _appDbContext.SaveChangesAsync();
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
 
@@ -97,7 +98,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto model)
         {
-            var userExists = await _userManager.FindByNameAsync(model.Username);
+            var userExists = await _signInManager.UserManager.FindByNameAsync(model.Username);
             if (userExists != null)
                 return BadRequest("User already exists!");
 
@@ -107,7 +108,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = model.Username
             };
-            var result = await _userManager.CreateAsync(user, model.Password);
+            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
 
@@ -118,11 +119,11 @@ namespace BibliotekBoklusen.Server.Controllers
 
             if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
             {
-                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+                await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Admin);
             }
             if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
             {
-                await _userManager.AddToRoleAsync(user, UserRoles.User);
+                await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.User);
             }
             return Ok("User created successfully!");
         }

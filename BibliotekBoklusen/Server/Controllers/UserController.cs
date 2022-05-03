@@ -24,7 +24,6 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             
             var result = _context.Users
-                .Include(s => s.Status)
                 .ToList();
                if(result == null)
             {
@@ -43,7 +42,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 .Where(x => x.Id.Equals(id))
                 .FirstOrDefault();
             var dbUser = _context.Users
-                .Include(s => s.Status)
                 .Where(x => x.Email == identityUser.Email)
                 .FirstOrDefault();
 
