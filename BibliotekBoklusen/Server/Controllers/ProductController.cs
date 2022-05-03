@@ -24,7 +24,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
             if(products == null)
             {
-                return BadRequest("There is no products here");
+                return BadRequest("No products found");
             }
             return Ok(products);
         }
