@@ -26,7 +26,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public Category? Category { get; set; }
         public string Type { get; set; } = String.Empty;
 
         public List<ProductCreatorModel>? ProductCreators { get; set; } = new();

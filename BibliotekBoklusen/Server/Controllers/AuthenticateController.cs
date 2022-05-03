@@ -26,7 +26,7 @@ namespace BibliotekBoklusen.Server.Controllers
             _configuration = configuration;
             _appDbContext = appDbContext;
         }
-        [HttpPost]
+        [HttpGet]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
@@ -81,11 +81,12 @@ namespace BibliotekBoklusen.Server.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+                ActiveStatus = true
 
             };
 
 
-            _appDbContext.Users.Add(userModel);
+            var result2 =_appDbContext.Users.Add(userModel);
             _appDbContext.SaveChanges();
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
