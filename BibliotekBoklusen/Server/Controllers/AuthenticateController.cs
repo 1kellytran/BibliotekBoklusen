@@ -81,13 +81,17 @@ namespace BibliotekBoklusen.Server.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+
                 IsActive = true
+
 
             };
 
 
+
             _appDbContext.Users.Add(userModel);
             _appDbContext.SaveChangesAsync();
+
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
 
