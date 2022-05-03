@@ -41,6 +41,8 @@ namespace BibliotekBoklusen.Server.Data
                 .WithMany(m => m.ProductCreators)
                 .HasForeignKey(cm => cm.ProductId);
 
+
+
             // Restrict deletion of Creator on product delete (set Creator to null instead)
             modelBuilder.Entity<CreatorModel>()
                 .HasOne(m => m.Product)
@@ -48,6 +50,16 @@ namespace BibliotekBoklusen.Server.Data
                 .HasForeignKey(m => m.ProductId)
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
+
+                modelBuilder.Entity<Category>()
+                .HasData(new Category() { Id = 1, CategoryName = "Deckare" },
+                new Category() { Id = 2, CategoryName = "Feelgood" },
+                new Category() { Id = 3, CategoryName = "Biografi" },
+                new Category() { Id = 4, CategoryName = "Spänning" },
+                new Category() { Id = 5, CategoryName = "Romaner" },
+                new Category() { Id = 6, CategoryName = "Historia" },
+                new Category() { Id = 7, CategoryName = "Fantasy & SciFi" },
+                new Category() { Id = 8, CategoryName = "Fakta" });
 
             // Many to many (Seminariums can have many users that in turns have many Seminariums)
             //modelBuilder.Entity<UserSeminariumModel>()
