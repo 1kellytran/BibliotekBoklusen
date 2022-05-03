@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220502121121_UserStatusGone")]
-    partial class UserStatusGone
+    [Migration("20220503115853_Initialcreate")]
+    partial class Initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -161,7 +161,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCreatorModel");
+                    b.ToTable("ProductCreator");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
@@ -281,9 +281,6 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("ActiveStatus")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -294,6 +291,9 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()

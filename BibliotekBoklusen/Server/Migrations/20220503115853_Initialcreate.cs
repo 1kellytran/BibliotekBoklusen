@@ -190,7 +190,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductCreatorModel",
+                name: "ProductCreator",
                 columns: table => new
                 {
                     CreatorId = table.Column<int>(type: "int", nullable: false),
@@ -198,15 +198,15 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCreatorModel", x => new { x.CreatorId, x.ProductId });
+                    table.PrimaryKey("PK_ProductCreator", x => new { x.CreatorId, x.ProductId });
                     table.ForeignKey(
-                        name: "FK_ProductCreatorModel_Creators_CreatorId",
+                        name: "FK_ProductCreator_Creators_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "Creators",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductCreatorModel_Products_ProductId",
+                        name: "FK_ProductCreator_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -270,8 +270,8 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCreatorModel_ProductId",
-                table: "ProductCreatorModel",
+                name: "IX_ProductCreator_ProductId",
+                table: "ProductCreator",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
@@ -304,7 +304,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 name: "Fines");
 
             migrationBuilder.DropTable(
-                name: "ProductCreatorModel");
+                name: "ProductCreator");
 
             migrationBuilder.DropTable(
                 name: "Reservations");

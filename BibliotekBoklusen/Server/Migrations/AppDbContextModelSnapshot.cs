@@ -159,7 +159,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductCreatorModel");
+                    b.ToTable("ProductCreator");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
@@ -278,9 +278,6 @@ namespace BibliotekBoklusen.Server.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<bool>("ActiveStatus")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
