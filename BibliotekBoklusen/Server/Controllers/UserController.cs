@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,18 +21,13 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public ActionResult<List<UserModel>> GetAllUser()
         {
-            
-            var result = _context.Users
-               
-
-                .ToList();
-               if(result == null)
+            var result = _context.Users.ToList();
+            if (result == null)
             {
                 return BadRequest();
             }
             return Ok(result);
         }
-
 
         // get a specific user
         // GET api/UserController>/id
@@ -56,7 +50,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return BadRequest();
         }
 
-
         // PUT api/<UserController>/5
         [HttpPut]
         public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model)
@@ -69,7 +62,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 userDb.LastName = model.LastName;
                 userDb.Email = model.Email;
 
-
                 _context.Update(userDb);
                 await _context.SaveChangesAsync();
                 identityUser.Email = model.Email;
@@ -77,7 +69,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 return Ok();
             }
             return BadRequest();
-
         }
 
         // PUT : Change password
@@ -85,7 +76,6 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
         {
             var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Email == editPassword.Email);
-
 
             if (user != null)
             {
@@ -97,7 +87,6 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return BadRequest("User not found");
         }
-
 
         // DELETE api/<UserController>/5
         [HttpDelete]
@@ -112,12 +101,11 @@ namespace BibliotekBoklusen.Server.Controllers
                 await _context.SaveChangesAsync();
                 return Ok(user);
             }
-
             return BadRequest();
         }
 
         [HttpPost]
-       
+
         public async Task<IActionResult> ProductLoan(ProductModel productToAdd)
         {
             var email = "bnma@hotmail.com";
@@ -130,18 +118,13 @@ namespace BibliotekBoklusen.Server.Controllers
                     Product = productToAdd,
                     User = dbUser,
                 };
-                var result =_context.Reservations.Add(reservationModel);
+                var result = _context.Reservations.Add(reservationModel);
                 if (result != null)
                 {
                     return Ok("Product has been added!!");
                 }
-                
-              
-
             }
             return BadRequest("User was not found :(");
         }
-
-
     }
 }
