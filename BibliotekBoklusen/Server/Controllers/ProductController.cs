@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,7 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
-            var products = _context.Products.ToList();
+            var products = _context.Products.Include(p => p.Category).Include(p => p.Creators.Select(p => p.FirstName)).ToList();
 
             if(products == null)
             {
@@ -41,9 +42,9 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
         {
-            _context.Products.Add(productToAdd);
+            _context.ProductCreator.Add(productToAdd);
             await _context.SaveChangesAsync();
 
             return Ok("Product has been added");
