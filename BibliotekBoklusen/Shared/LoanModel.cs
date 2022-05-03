@@ -19,7 +19,7 @@ namespace BibliotekBoklusen.Shared
         public int? ProductId { get; set; }
         public ProductModel? Product { get; set; }
 
-        public DateTime LoanDate { get; set; }
+        public DateTime LoanDate { get; set; } = DateTime.Now;
         public DateTime ReturnDate { get; set; }
 
        
