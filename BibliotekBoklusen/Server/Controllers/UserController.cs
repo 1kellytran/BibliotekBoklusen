@@ -93,26 +93,47 @@ namespace BibliotekBoklusen.Server.Controllers
             return BadRequest("User not found");
         }
 
+        //// DELETE api/<UserController>/5
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteUser([FromRoute]int id)
+        //{
+        //    var userDb =  _context.Users.Where(x => x.Id == id).FirstOrDefault();
+        //    if(userDb != null)
+        //    {
+        //        var user =  _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+        //        if (user != null)
+        //        {
+        //            await _signInManager.UserManager.DeleteAsync(user);
+        //            _context.Remove(user);
+        //            await _context.SaveChangesAsync();
+        //            return Ok("User Deleted");
+        //        }
+
+        //    }
+
+        //    return BadRequest("User could not be deleted");
+        //}
+
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute]int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var userDb =  _context.Users.Where(x => x.Id == id).FirstOrDefault();
-            if(userDb != null)
+            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+            _context.Remove(userDb);
+            await _context.SaveChangesAsync();
+            if (userDb != null)
             {
-                var user =  _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+                var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
                 if (user != null)
                 {
                     await _signInManager.UserManager.DeleteAsync(user);
-                    _context.Remove(user);
-                    await _context.SaveChangesAsync();
+                   
                     return Ok("User Deleted");
                 }
-
             }
-
             return BadRequest("User could not be deleted");
         }
+
 
         [HttpPost]
 
