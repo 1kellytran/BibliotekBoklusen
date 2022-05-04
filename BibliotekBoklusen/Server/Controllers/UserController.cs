@@ -97,10 +97,10 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute]int id)
         {
-            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
+            var userDb =  _context.Users.Where(x => x.Id == id).FirstOrDefault();
             if(userDb != null)
             {
-                var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+                var user =  _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
                 if (user != null)
                 {
                     await _signInManager.UserManager.DeleteAsync(user);

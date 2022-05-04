@@ -88,7 +88,7 @@ namespace BibliotekBoklusen.Server.Controllers
             };
 
             _appDbContext.Users.Add(userModel);
-            _appDbContext.SaveChangesAsync();
+            await _appDbContext.SaveChangesAsync();
 
             if (!result.Succeeded)
                 return BadRequest("User creation failed! Please check user details and try again.");
