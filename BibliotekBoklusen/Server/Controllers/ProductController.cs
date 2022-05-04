@@ -18,16 +18,34 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
+        public async Task<ActionResult<List<ProductCreatorModel>>> GetAllProducts()
         {
-            //var creator = _context.Products.Include(d => d.Creators.Where(p=>p.));
-            var products = _context.Products.Include(p => p.Category).ToList();
+            var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ThenInclude(c => c.Category).ToList();
 
-            if (products == null)
+            List<ProductCreatorModel> productCreatorList = new();
+            
+            foreach (var item in productCreatorDb)
+            {
+                ProductCreatorModel productCreator = new();
+
+                var product = _context.Products.FirstOrDefault(p => p.Id == item.ProductId);
+                var creator = _context.Creators.FirstOrDefault(c => c.Id == item.CreatorId);
+
+                creator.ProductCreators = null;
+                product.ProductCreators = null;
+
+                productCreator.Creator = creator;
+                productCreator.Product = product;
+                productCreator.ProductId = item.ProductId;
+                productCreator.CreatorId = item.CreatorId;
+                productCreatorList.Add(productCreator);
+            }
+
+            if (productCreatorList == null)
             {
                 return BadRequest("No products found");
             }
-            return Ok(products);
+            return Ok(productCreatorList);
         }
 
         [HttpGet("{id}")]
