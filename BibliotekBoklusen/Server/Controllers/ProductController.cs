@@ -49,15 +49,25 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductModel>> GetProductById(int id)
+        public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
         {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.Include(p =>p.Category).FirstOrDefault(p => p.Id == id);
+            var productCreator= _context.ProductCreator.Where(pc => pc.ProductId == id).FirstOrDefault();
+            var creator = _context.Creators.Where(c => c.Id == productCreator.CreatorId).FirstOrDefault();
 
-            if (product == null)
+            ProductCreatorModel model = new();
+            model.Creator = creator;
+            model.Product = product;
+            model.CreatorId = creator.Id;
+            model.ProductId = product.Id;
+            model.Creator.ProductCreators = null;
+            model.Product.ProductCreators = null;
+
+            if (model == null)
             {
                 return BadRequest("There is no product with that ID");
             }
-            return Ok(product);
+            return Ok(model);
         }
 
         [HttpPost]
