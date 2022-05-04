@@ -51,7 +51,7 @@ namespace BibliotekBoklusen.Server.Data
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.SetNull);
 
-                modelBuilder.Entity<Category>()
+            modelBuilder.Entity<Category>()
                 .HasData(new Category() { Id = 1, CategoryName = "Deckare" },
                 new Category() { Id = 2, CategoryName = "Feelgood" },
                 new Category() { Id = 3, CategoryName = "Biografi" },

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,11 +20,12 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
-            var products = _context.Products.ToList();
+            //var creator = _context.Products.Include(d => d.Creators.Where(p=>p.));
+            var products = _context.Products.Include(p => p.Category).ToList();
 
-            if(products == null)
+            if (products == null)
             {
-                return BadRequest("There is no products here");
+                return BadRequest("No products found");
             }
             return Ok(products);
         }
@@ -33,7 +35,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
 
-            if(product == null)
+            if (product == null)
             {
                 return BadRequest("There is no product with that ID");
             }
@@ -41,9 +43,19 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
         {
-            _context.Products.Add(productToAdd);
+            var creator = _context.Creators.ToList();
+
+            foreach (var item in creator)
+            {
+                if (item.FirstName == productToAdd.Creator.FirstName && item.LastName == productToAdd.Creator.LastName)
+                {
+                    productToAdd.Creator = item;
+                }
+            }
+
+            _context.ProductCreator.Add(productToAdd);
             await _context.SaveChangesAsync();
 
             return Ok("Product has been added");
@@ -69,10 +81,16 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
-            _context.Products.Remove(product);
 
-            await _context.SaveChangesAsync();
-
+            if (product == null)
+            {
+                return BadRequest("There is no product with that ID");
+            }
+            else
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
             return Ok("Product has been deleted");
         }
     }
