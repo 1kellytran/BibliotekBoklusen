@@ -23,7 +23,7 @@ namespace BibliotekBoklusen.Server.Controllers
             //var creator = _context.Products.Include(d => d.Creators.Where(p=>p.));
             var products = _context.Products.Include(p => p.Category).ToList();
 
-            if(products == null)
+            if (products == null)
             {
                 return BadRequest("No products found");
             }
@@ -35,7 +35,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
 
-            if(product == null)
+            if (product == null)
             {
                 return BadRequest("There is no product with that ID");
             }
@@ -45,13 +45,13 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
         {
-            var creator= _context.Creators.ToList();
-            
+            var creator = _context.Creators.ToList();
+
             foreach (var item in creator)
             {
                 if (item.FirstName == productToAdd.Creator.FirstName && item.LastName == productToAdd.Creator.LastName)
                 {
-                    productToAdd.Creator = item; 
+                    productToAdd.Creator = item;
                 }
             }
 
@@ -81,10 +81,16 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var product = _context.Products.FirstOrDefault(p => p.Id == id);
-            _context.Products.Remove(product);
 
-            await _context.SaveChangesAsync();
-
+            if (product == null)
+            {
+                return BadRequest("There is no product with that ID");
+            }
+            else
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
             return Ok("Product has been deleted");
         }
     }
