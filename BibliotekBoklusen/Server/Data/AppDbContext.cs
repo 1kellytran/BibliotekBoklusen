@@ -8,6 +8,7 @@ namespace BibliotekBoklusen.Server.Data
         {
 
         }
+
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<CreatorModel> Creators { get; set; }
         public DbSet<ProductCreatorModel> ProductCreator { get; set; }

@@ -16,7 +16,6 @@ namespace BibliotekBoklusen.Shared
         public int Id { get; set; }
         public string Title { get; set; } = String.Empty;
         public int PublishYear { get; set; }
-        public int CopiesOwned { get; set; }
 
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
