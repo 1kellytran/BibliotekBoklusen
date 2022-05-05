@@ -14,29 +14,23 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
         <AuthorizeView>
             <NotAuthorized>
                 <NavLink class="nav-link" href="login">
                     <span class="oi oi-account-login" aria-hidden="true"></span> Logga in
                 </NavLink>
                 <NavLink class="nav-link" href="register">
-                    <span class="oi oi-person aria-hidden="true"></span> Registera
+                    <span class="oi oi-people" aria-hidden="true"></span> Registera
                 </NavLink>
             </NotAuthorized>
             <Authorized>
+                <NavLink class="nav-link" href="/">
+                    <span class="oi oi-person" aria-hidden="true"></span> Min sida
+                </NavLink>
                 <NavLink class="nav-link" href="logout">
                     <span class="oi oi-account-logout" aria-hidden="true"></span> Logga ut
                 </NavLink>
+
             </Authorized>
         </AuthorizeView>
     </nav>
