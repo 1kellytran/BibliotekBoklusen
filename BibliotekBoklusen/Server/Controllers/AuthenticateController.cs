@@ -26,7 +26,7 @@ namespace BibliotekBoklusen.Server.Controllers
             _configuration = configuration;
             _appDbContext = appDbContext;
         }
-        [HttpGet]
+        [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
@@ -81,9 +81,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
-
                 IsActive = true
-
 
             };
 

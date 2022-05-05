@@ -6,10 +6,12 @@ namespace BibliotekBoklusen.Client.Services
     public class UserManager : IUserManager
     {
         private readonly HttpClient _http;
+        private readonly ILocalStorageService _localStorageService;
 
-        public UserManager(HttpClient http)
+        public UserManager(HttpClient http, ILocalStorageService localStorageService)
         {
             _http = http;
+            _localStorageService = localStorageService;
         }
         public async Task ChangePassword(PasswordDto editPassword)
         {
@@ -46,7 +48,15 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task Login(LoginDto model)
         {
-            await _http.PostAsJsonAsync($"api/Authenticate/login", model);
+            var result = await _http.PostAsJsonAsync($"api/authenticate/login", model);
+            if(result.IsSuccessStatusCode)
+            {
+                var token = result.Content.ReadAsStringAsync();
+              if(token != null)
+                {
+                    await _localStorageService.SetItemAsync("authToken", token);
+                }
+            }
         }
 
         public async Task Register(RegisterDto model)
