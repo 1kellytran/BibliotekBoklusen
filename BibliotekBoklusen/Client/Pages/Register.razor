@@ -2,8 +2,6 @@
 @inject NavigationManager NavigationManager
 @inject IUserManager UserManager
 
-<h3>Register</h3>
-
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Registrera dig</h5>
@@ -54,7 +52,7 @@
     public async Task HandleRegistration()
     {
         await UserManager.Register(registerUser);
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo("/login");
 
     }
 }
