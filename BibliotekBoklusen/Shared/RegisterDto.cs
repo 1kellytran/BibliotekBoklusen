@@ -9,27 +9,30 @@ namespace BibliotekBoklusen.Shared
 {
     public class RegisterDto
     {
-        [Required]
+        [Required( ErrorMessage = "Obligatoriskt fält")]
         public string FirstName { get; set; } = String.Empty;
-        [Required]
+
+        [Required(ErrorMessage = "Obligatoriskt fält")]
         public string LastName { get; set; } = String.Empty;
 
-        [Required]
-        [Display(Name = "Username")]
+        [Required(ErrorMessage = "Obligatoriskt fält")]
+        [Display(Name = "Användarnamn")]
         public string? Username { get; set; }
-        [Required]
-        [EmailAddress]
+
+        [Required(ErrorMessage = "Obligatoriskt fält")]
+        [EmailAddress(ErrorMessage = "Ingen giltig emailadress")]
         [Display(Name = "Email")]
         public string? Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "Obligatoriskt fält")]
+        [StringLength(32, ErrorMessage = "Lösenordet måste innehålla minst 6 karaktärer och max 32.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Lösenord")]
         public string? Password { get; set; }
+
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Bekräfta lösenord")]
+        [Compare("Password", ErrorMessage = "Lösenorden stämmer inte överrens")]
         public string ConfirmPassword { get; set; }
     }
 }
