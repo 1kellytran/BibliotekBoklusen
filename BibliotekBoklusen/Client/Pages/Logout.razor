@@ -1,0 +1,30 @@
+﻿@page "/logout"
+@inject NavigationManager NavigationManager
+@inject ILocalStorageService LocalStorage
+@inject IUserManager UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@attribute [Authorize]
+
+    <div class="card">
+        <h1 class="card-header">Logga ut</h1>
+        <div class="card-body">
+                <div class="form-group">
+                    <label>Är du säker på att du vill logga ut?</label>
+                    <button  @onclick=HandleLogout class="form-control">Ja</button>
+                    <button  @onclick=StayLoggedIn class="form-control">Nej</button>
+                </div>
+        </div>
+    </div>
+@code {
+    private async void HandleLogout()
+    {
+        var result = LocalStorage.RemoveItemAsync("authToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/");
+    } 
+
+    private async void StayLoggedIn()
+    {
+            NavigationManager.NavigateTo("/");
+    }
+}
