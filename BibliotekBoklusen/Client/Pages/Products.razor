@@ -1,0 +1,26 @@
+﻿@inject IDataManager DataManager
+
+@page "/products"
+
+<NotAuthorized>
+    <h3>Products</h3>
+    @if (products != null)
+    {
+        @foreach (var p in products)
+        {
+            <h4><a href="/productById/@p.ProductId">@p.Product.Title</a></h4>
+            <h5>@p.Product.Type, @p.Product.PublishYear, @p.Product.Creators</h5>
+        }
+    }
+</NotAuthorized>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public List<ProductCreatorModel>? products { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await DataManager.GetAllProducts();
+    }
+}
