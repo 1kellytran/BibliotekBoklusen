@@ -11,18 +11,18 @@ namespace BibliotekBoklusen.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task <List<ProductModel>> GetAllProducts()
+        public async Task <List<ProductCreatorModel>> GetAllProducts()
         {
-            List<ProductModel> products = new();
+            List<ProductCreatorModel> products = new();
 
-            products = await _httpClient.GetFromJsonAsync<List<ProductModel>>("api/product/GetAllProducts");
+            products = await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>("api/product/GetAllProducts");
 
             return products;
         }
 
-        public async Task<ProductModel> GetProductById(int id)
+        public async Task<ProductCreatorModel> GetProductById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<ProductModel>($"api/product/{id}");
+            return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/GetProductById/{id}");
         }
 
         public async Task CreateProduct(ProductModel product, CreatorModel creator)

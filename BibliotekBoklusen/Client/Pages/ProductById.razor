@@ -1,0 +1,30 @@
+﻿@page "/productbyid/{Id:int}"
+@inject IDataManager DataManager
+@attribute [Authorize]
+
+@if (product != null)
+{
+    <h3>@product.Product.Title</h3>
+}
+
+@*@if(product != null)
+    {
+    <h3>@product.Product.Title</h3>
+    <button class="btn btn-danger" @onclick="DeleteProduct">Delete</button>
+    }*@
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public ProductCreatorModel product { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        product = await DataManager.GetProductById(Id);
+    }
+
+    private void DeleteProduct()
+    {
+        DataManager.DeleteProduct(Id);
+    }
+}
