@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BibliotekBoklusen.Shared
 {
     public class RegisterDto
     {
-        [Required( ErrorMessage = "Obligatoriskt fält")]
+        [Required(ErrorMessage = "Obligatoriskt fält")]
         public string FirstName { get; set; } = String.Empty;
 
         [Required(ErrorMessage = "Obligatoriskt fält")]
