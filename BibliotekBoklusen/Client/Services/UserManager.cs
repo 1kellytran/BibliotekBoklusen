@@ -48,7 +48,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task Login(LoginDto model)
         {
-            var result = await _http.PostAsJsonAsync($"api/user/login", model);
+            var result = await _http.PostAsJsonAsync($"api/authenticate/login", model);
             if(result.IsSuccessStatusCode)
             {
                 var token = result.Content.ReadAsStringAsync();
@@ -61,12 +61,12 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task Register(RegisterDto model)
         {
-            await _http.PostAsJsonAsync("api/user/register", model);
+            await _http.PostAsJsonAsync("api/authenticate/register", model);
         }
 
         public async Task RegisterAdmin(RegisterDto model)
         {
-            await _http.PostAsJsonAsync("api/user/register-admin", model);
+            await _http.PostAsJsonAsync("api/Authenticate/register-admin", model);
         }
 
         public async Task UpdateUserinformation(UpdatedUserDto model)
