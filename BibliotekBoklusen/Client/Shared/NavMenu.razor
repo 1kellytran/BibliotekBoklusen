@@ -30,7 +30,13 @@
                 <NavLink class="nav-link" href="logout">
                     <span class="oi oi-account-logout" aria-hidden="true"></span> Logga ut
                 </NavLink>
-
+            </Authorized>
+        </AuthorizeView>
+        <AuthorizeView Roles="Librarian">
+            <Authorized>
+                <NavLink class="nav-link" href="/">
+                    <span class="oi oi-person" aria-hidden="true"></span> Admin
+                </NavLink>
             </Authorized>
         </AuthorizeView>
     </nav>
