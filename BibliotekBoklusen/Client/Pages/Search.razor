@@ -1,9 +1,16 @@
 ﻿@page "/Search"
-@inject IProductService ProductService
+@inject IDataManager DataManager
+@inject NavigationManager NavigationManager
 
 <h3>Search</h3>
 
-<BlazoredTypeahead SearchMethod="@SearchProduct" @bind-Value="selectedProduct">
+<BlazoredTypeahead SearchMethod="@SearchProduct"
+                   TValue ="ProductCreatorModel"
+				   TItem ="ProductCreatorModel"
+                   Value="selectedProduct"
+                   ValueChanged ="HandleSearch"
+                   ValueExpression="@(()=> selectedProduct)"
+                   placeholder="Sök i vår katalog(titel,författare,ämne etc)">
 	<SelectedTemplate>
 		@context.Product.Title
 	</SelectedTemplate>
@@ -18,9 +25,17 @@
 @code {
 	private ProductCreatorModel selectedProduct;
 
+	private void HandleSearch(ProductCreatorModel product)
+	{
+		if(product == null) return;
+		selectedProduct = product;
+		NavigationManager.NavigateTo($"/product/{selectedProduct.ProductId}");
+
+	}
+
 	private async Task<IEnumerable<ProductCreatorModel>>SearchProduct(string searchText)
 	{
-		var response = await ProductService.SearchProducts(searchText);
+		var response = await DataManager.SearchProducts(searchText);
 		return response;
 	}
 
