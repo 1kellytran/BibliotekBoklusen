@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
@@ -18,7 +12,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public UserModel? User  {get; set;}
+        public UserModel? User { get; set; }
 
         public DateTime FineDate { get; set; }
         public double FineAmount { get; set; }

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BibliotekBoklusen.Shared
+﻿namespace BibliotekBoklusen.Shared
 {
     public class UserModel
     {
@@ -10,6 +8,5 @@ namespace BibliotekBoklusen.Shared
         public string Email { get; set; } = String.Empty;
         public DateTime Created { get; set; } = DateTime.Now;
         public bool IsActive { get; set; }
-
     }
 }

@@ -3,15 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
-    //public enum Type
-    //{
-    //    Bok = 1,
-    //    Ebok = 2,
-    //    Film = 3
-    //}
     public class ProductModel
     {
-        //ProductId är primaryKey
         [Key]
         public int Id { get; set; }
         public string Title { get; set; } = String.Empty;
@@ -24,6 +17,5 @@ namespace BibliotekBoklusen.Shared
 
         public List<ProductCreatorModel>? ProductCreators { get; set; } = new();
         public List<CreatorModel>? Creators { get; set; }
-
     }
 }

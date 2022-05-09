@@ -5,7 +5,6 @@ namespace BibliotekBoklusen.Client.Services
     public class DataManager : IDataManager
     {
         private readonly HttpClient _httpClient;
-
         public DataManager(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -42,6 +41,32 @@ namespace BibliotekBoklusen.Client.Services
         public async Task DeleteProduct(int id)
         {
             await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
+        }
+
+        // ***** SEMINAR *****
+        public async Task <List<SeminariumModel>> GetAllSeminars()
+        {
+            return await _httpClient.GetFromJsonAsync<List<SeminariumModel>>("api/seminar/GetAllSeminars");
+        }
+
+        public async Task<SeminariumModel> GetSeminarById(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<SeminariumModel>("api/seminar/GetSeminarById");
+        }
+
+        public async Task CreateSeminar(SeminariumModel seminar)
+        {
+            await _httpClient.PostAsJsonAsync<SeminariumModel>("api/seminar", seminar);
+        }
+
+        public async Task UpdateSeminar(int id, SeminariumModel seminar)
+        {
+            await _httpClient.PutAsJsonAsync<SeminariumModel>($"api/seminar/UpdateSeminar/{id}", seminar);
+        }
+
+        public async Task DeleteSeminar(int id)
+        {
+            await _httpClient.DeleteAsync($"api/seminar/DeleteSeminar/{id}");
         }
     }
 }

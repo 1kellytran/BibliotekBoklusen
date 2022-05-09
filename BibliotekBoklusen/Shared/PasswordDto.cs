@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BibliotekBoklusen.Shared
 {
@@ -17,6 +12,5 @@ namespace BibliotekBoklusen.Shared
         [Required(ErrorMessage = "New Password needs to be confrimed")]
         [Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match")]
         public string NewPasswordConfirmed { get; set; }
-
     }
 }

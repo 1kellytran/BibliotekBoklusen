@@ -8,7 +8,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public UserModel? User { get; set; } 
+        public UserModel? User { get; set; }
 
         [ForeignKey(nameof(Product))]
         public int? ProductId { get; set; }
@@ -18,6 +18,6 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(Reservation))]
         public int? ReservationStatusId { get; set; }
-        public ReservationModel? Reservation { get; set; }   
+        public ReservationModel? Reservation { get; set; }
     }
 }

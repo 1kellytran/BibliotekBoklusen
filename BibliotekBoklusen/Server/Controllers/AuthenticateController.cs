@@ -1,3 +1,4 @@
+
 ﻿using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -127,6 +128,18 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.User);
             }
+            UserModel userModel = new UserModel()
+            {
+
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsActive = true
+
+            };
+
+            _appDbContext.Users.Add(userModel);
+            await _appDbContext.SaveChangesAsync();
             return Ok("User created successfully!");
         }
 
@@ -163,6 +176,15 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.User);
             }
+            UserModel userModel = new UserModel()
+            {
+
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsActive = true
+
+            };
             return Ok("User created successfully!");
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
@@ -181,3 +203,4 @@ namespace BibliotekBoklusen.Server.Controllers
         }
     }
 }
+
