@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BibliotekBoklusen.Server.ProductService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,10 +12,12 @@ namespace BibliotekBoklusen.Server.Controllers
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly IProductService _productService;
 
-        public ProductController(AppDbContext context)
+        public ProductController(AppDbContext context, IProductService productService)
         {
             _context = context;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -122,9 +125,9 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("Search/{searchText}")]
-        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string search)
+        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
         {
-            return Ok();
+            return Ok(await _productService.SearchProducts(searchText));
         }
     }
 }

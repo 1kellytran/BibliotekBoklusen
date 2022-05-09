@@ -2,6 +2,6 @@
 {
     public interface IProductService
     {
-        Task<List<ProductCreatorModel>> SearchProduct(string searchText);
+        Task<List<ProductCreatorModel>> SearchProducts(string searchText);
     }
 }

@@ -10,7 +10,7 @@ namespace BibliotekBoklusen.Server.ProductService
         {
             _context = context;
         }
-        public async Task<List<ProductCreatorModel>> SearchProduct(string searchText)
+        public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
         {
             return await _context.ProductCreator
                  .Where(p => p.Creator.FirstName.Contains(searchText) || p.Creator.LastName.Contains(searchText) || p.Product.Category.CategoryName.Contains(searchText) || p.Product.Title.Contains(searchText)).ToListAsync();

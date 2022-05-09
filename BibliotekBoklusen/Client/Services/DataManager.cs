@@ -68,5 +68,10 @@ namespace BibliotekBoklusen.Client.Services
         {
             await _httpClient.DeleteAsync($"api/seminar/DeleteSeminar/{id}");
         }
+
+        public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
+        {
+            return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/search/{searchText}");
+        }
     }
 }

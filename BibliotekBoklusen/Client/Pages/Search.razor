@@ -1,0 +1,27 @@
+﻿@page "/Search"
+@inject IProductService ProductService
+
+<h3>Search</h3>
+
+<BlazoredTypeahead SearchMethod="@SearchProduct" @bind-Value="selectedProduct">
+	<SelectedTemplate>
+		@context.Product.Title
+	</SelectedTemplate>
+	<ResultTemplate>
+		@context.Product.Title
+	</ResultTemplate>
+	<NotFoundTemplate>
+		Sorry, finns inga produkter av den typen
+	</NotFoundTemplate>
+</BlazoredTypeahead>
+
+@code {
+	private ProductCreatorModel selectedProduct;
+
+	private async Task<IEnumerable<ProductCreatorModel>>SearchProduct(string searchText)
+	{
+		var response = await ProductService.SearchProducts(searchText);
+		return response;
+	}
+
+}
