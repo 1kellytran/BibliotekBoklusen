@@ -120,5 +120,11 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return Ok("Product has been deleted");
         }
+
+        [HttpGet("Search/{searchText}")]
+        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string search)
+        {
+            return Ok();
+        }
     }
 }
