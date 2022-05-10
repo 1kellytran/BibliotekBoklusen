@@ -1,7 +1,7 @@
 ﻿@page "/addproduct"
 @inject NavigationManager NavigationManager
 @inject IDataManager DataManager
-
+@*
 
 <h3>AddProduct</h3>
 
@@ -63,67 +63,67 @@
 
     <br />
 
-    <button type="submit" class="btn btn-primary" @*@onclick="(()=>SendProduct())"*@>Add Product</button>
+    <button type="submit" class="btn btn-primary" @onclick="(()=>SendProduct())">Add Product</button>
 
 </EditForm>
 
-
+*@
 @code {
-    public CreatorModel Creator { get; set; } = new();
-    public ProductModel Product { get; set; } = new();
-    public CategoryModel Category { get; set; } = new();
-    public List<CategoryModel> Categories { get; set; } = new();
-    public List<CategoryModel> CategoriesToAdd { get; set; } = new();
-    public bool isChecked;
-    public string type;
+    //public CreatorModel Creator { get; set; } = new();
+    //public ProductModel Product { get; set; } = new();
+    //public CategoryModel Category { get; set; } = new();
+    //public List<CategoryModel> Categories { get; set; } = new();
+    //public List<CategoryModel> CategoriesToAdd { get; set; } = new();
+    //public bool isChecked;
+    //public string type;
 
-    protected override async Task OnInitializedAsync()
-    {
-
-        Categories= await DataManager.GetAllCategories();
-    }
-
-    private void HandleChecked(CategoryModel category)
-    {
-
-        if (category.isChecked==false)
-        {
-            category.isChecked = true;
-            CategoriesToAdd.Add(category);
-        }
-        else if(category.isChecked==true)
-        {
-            category.isChecked = false;
-            CategoriesToAdd.Remove(category);
-        }
-    }
-
-    //private ProductCreatorModel SendProduct()
+    //protected override async Task OnInitializedAsync()
     //{
-    //    ProductCreatorModel productCreatorModel = new();
-    //    productCreatorModel.Creator = Creator;
-    //    productCreatorModel.Product.Type = type;
-    //    productCreatorModel 
+
+    //    Categories= await DataManager.GetAllCategories();
+    //}
+
+    //private void HandleChecked(CategoryModel category)
+    //{
+
+    //    if (category.isChecked==false)
+    //    {
+    //        category.isChecked = true;
+    //        CategoriesToAdd.Add(category);
+    //    }
+    //    else if(category.isChecked==true)
+    //    {
+    //        category.isChecked = false;
+    //        CategoriesToAdd.Remove(category);
+    //    }
+    //}
+
+    ////private ProductCreatorModel SendProduct()
+    ////{
+    ////    ProductCreatorModel productCreatorModel = new();
+    ////    productCreatorModel.Creator = Creator;
+    ////    productCreatorModel.Product.Type = type;
+    ////    productCreatorModel 
 
 
 
 
+
+
+    ////}
+
+
+
+
+    //public static void RegisterProduct()
+    //{
+
+    //    //ProductCreatorModel productCreator = new();
+    //    //productCreator.Product=
+    //    //productCreator.Creator
 
 
     //}
-
-
-
-
-    public static void RegisterProduct()
-    {
-
-        //ProductCreatorModel productCreator = new();
-        //productCreator.Product=
-        //productCreator.Creator
-
-
-    }
 
 
 
