@@ -5,7 +5,11 @@ namespace BibliotekBoklusen.Shared
     public class CreatorModel
     {
         public int Id { get; set; }
+
+        [Required(ErrorMessage = "Firstname is required")]
         public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Lastname is required")]
         public string LastName { get; set; }
 
         public List<ProductCreatorModel>? ProductCreators { get; set; } = new();
