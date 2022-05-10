@@ -4,11 +4,11 @@
 
 <h3>Seminarium</h3>
 
-@if(AllSeminars.Count == 0)
+@if (AllSeminars.Count == 0)
 {
     <h4>Inga seminarium för tillfället</h4>
 }
-else if(AllSeminars == null)
+else if (AllSeminars == null)
 {
     <h4>Loading...</h4>
 }
@@ -33,6 +33,18 @@ else
                 <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
                 <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
             </tr>
+            @if (Edit == true)
+            {
+                <label>Titel</label><br />
+                <input type="text" @bind-value="s.Title" /><br />
+                <label>Förnamn</label><br />
+                <input type="text" @bind-value="s.FirstName" /><br />
+                <label>Efternamn</label><br />
+                <input type="text" @bind-value="s.LastName" /><br />
+                <label>Dag, datum & tid</label><br />
+                <input type="text" @bind-value="s.DayAndTime" /><br />
+                <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
+            }
         }
     </table>
 }
@@ -55,7 +67,7 @@ else
                 <InputText Id="lastname" class="form-control" @bind-Value="CreateSeminar.LastName" />
             </div>
             <div class="form-group">
-                <label for="dayandtime">Tid, dag & datum</label>
+                <label for="dayandtime">Dag, datum & tid</label>
                 <InputText Id="dayandtime" class="form-control" @bind-Value="CreateSeminar.DayAndTime" />
             </div>
             <div>
@@ -69,16 +81,23 @@ else
 @code {
     public List<SeminariumModel>? AllSeminars { get; set; } = new();
     public SeminariumModel CreateSeminar { get; set; } = new();
-    public SeminariumModel? UpdateSeminar { get; set; }
+    public SeminariumModel UpdateSeminar { get; set; } = new();
+    public bool Edit;
 
     protected override async Task OnInitializedAsync()
     {
         AllSeminars = await DataManager.GetAllSeminars();
     }
 
-    public async Task EditSeminar(int id, SeminariumModel UpdateSeminar)
+    public async Task EditSeminar(int id, SeminariumModel seminarToUpdate)
+    {
+        Edit = true;
+    }
+
+    public async Task SaveEditSeminar(int id, SeminariumModel UpdateSeminar)
     {
         await DataManager.UpdateSeminar(id, UpdateSeminar);
+        Edit = false;
     }
 
     public async Task DeleteSeminar(int id)
@@ -90,5 +109,5 @@ else
     {
         await DataManager.CreateSeminar(CreateSeminar);
         NavigationManager.NavigateTo("/Seminar");
-    } 
+    }
 }
