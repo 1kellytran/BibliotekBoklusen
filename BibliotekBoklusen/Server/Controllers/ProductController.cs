@@ -23,7 +23,7 @@ namespace BibliotekBoklusen.Server.Controllers
             var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ThenInclude(c => c.Category).ToList();
 
             List<ProductCreatorModel> productCreatorList = new();
-            
+
             foreach (var item in productCreatorDb)
             {
                 ProductCreatorModel productCreator = new();
@@ -47,6 +47,19 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return Ok(productCreatorList);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<List<CategoryModel>>> GetAllCategories()
+        {
+            var categories =  _context.Categories.ToList();
+            if (categories==null)
+            {
+                return BadRequest("No categories");
+            }
+            return Ok(categories);
+
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
