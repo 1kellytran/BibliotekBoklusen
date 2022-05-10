@@ -8,6 +8,7 @@ using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BibliotekBoklusen.Server.ProductService;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; // nytt
@@ -15,6 +16,7 @@ ConfigurationManager configuration = builder.Configuration; // nytt
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var connectionString2 = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString2));

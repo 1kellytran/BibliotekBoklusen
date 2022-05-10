@@ -63,7 +63,6 @@ namespace BibliotekBoklusen.Server.Controllers
 
         }
 
-
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
         {
@@ -137,7 +136,7 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been deleted");
         }
 
-        [HttpGet("Search/{searchText}")]
+        [HttpGet]
         public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
         {
             return Ok(await _productService.SearchProducts(searchText));
