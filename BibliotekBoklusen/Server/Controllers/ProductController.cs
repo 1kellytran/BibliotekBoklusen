@@ -12,12 +12,12 @@ namespace BibliotekBoklusen.Server.Controllers
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly IProductService _productService;
+      
 
-        public ProductController(AppDbContext context, IProductService productService)
+        public ProductController(AppDbContext context)
         {
             _context = context;
-            _productService = productService;
+           
         }
 
         [HttpGet]
@@ -124,10 +124,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been deleted");
         }
 
-        [HttpGet("Search/{searchText}")]
-        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
-        {
-            return Ok(await _productService.SearchProducts(searchText));
-        }
+      
     }
 }

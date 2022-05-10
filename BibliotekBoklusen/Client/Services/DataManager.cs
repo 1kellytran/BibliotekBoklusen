@@ -71,7 +71,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
         {
-            return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/search/{searchText}");
+            return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Search/search/{searchText}");
         }
     }
 }
