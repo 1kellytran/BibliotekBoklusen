@@ -1,5 +1,5 @@
 
-﻿using BibliotekBoklusen.Server.Models;
+using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -32,13 +32,20 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> Login([FromBody] LoginDto model)
         {
             var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
-            if (user != null && await _signInManager.UserManager.CheckPasswordAsync(user, model.Password))
+            if (user != null)
             {
+                var result = await _signInManager.UserManager.CheckPasswordAsync(user, model.Password);
+
+                if (!result)
+                {
+                    return Unauthorized("Felaktigt lösenord, försök igen");
+                }
+
                 var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Name, user.FirstName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
 
@@ -55,44 +62,51 @@ namespace BibliotekBoklusen.Server.Controllers
                     expiration = token.ValidTo
                 });
             }
-            return Unauthorized();
+            return NotFound("Användare ej funnen");
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto model)
         {
-            var userExists = await _signInManager.UserManager.FindByEmailAsync(model.Email);
-            if (userExists != null)
-                return BadRequest("User already exists!");
+            var userExistsInAuthDb = await _signInManager.UserManager.FindByNameAsync(model.Email);
+            var userExistsInDbContext = _appDbContext.Users.FirstOrDefault(x => x.Email == model.Email);
 
-            ApplicationUser user = new()
+            if (userExistsInAuthDb != null || userExistsInDbContext != null)
+                return BadRequest("Användare med den här email finns redan!");
+
+            if (model != null)
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
-            };
+                ApplicationUser user = new()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = model.Email
+                };
 
-            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
-            UserModel userModel = new UserModel()
-            {
+                UserModel userModel = new UserModel()
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email,
+                    IsActive = true
+                };
 
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                IsActive = true
+                var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
 
-            };
+                if (!result.Succeeded)
+                    return BadRequest("Något gick snett, försök igen.");
 
-            _appDbContext.Users.Add(userModel);
-            await _appDbContext.SaveChangesAsync();
+                _appDbContext.Users.Add(userModel);
+                var dbContextResult = await _appDbContext.SaveChangesAsync();
 
-            if (!result.Succeeded)
-                return BadRequest("User creation failed! Please check user details and try again.");
+                if (dbContextResult != 0)
+                    return Ok("Användare skapad");
+            }
+            return BadRequest();
 
-            return Ok("User created successfully!");
         }
 
         [HttpPost]
@@ -109,7 +123,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                //UserName = model.Username
             };
             var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -157,7 +171,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Username
+                //UserName = model.Username
             };
             var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)

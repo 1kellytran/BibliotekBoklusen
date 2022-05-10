@@ -7,8 +7,8 @@
         Task UpdateUserinformation(UpdatedUserDto model);
         Task ChangePassword(PasswordDto editPassword);
         Task DeleteUser(string email);
-        Task Login(LoginDto model);
-        Task Register(RegisterDto model);
+        Task<string> Login(LoginDto model);
+        Task<string> Register(RegisterDto model);
         Task RegisterAdmin(RegisterDto model);
 
     }

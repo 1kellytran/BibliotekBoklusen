@@ -9,11 +9,6 @@
             <DataAnnotationsValidator />
 
             <div class="form-group">
-                <label for="username">Användarnamn</label>
-                <InputText Id="username" class="form-control" @bind-Value="registerUser.Username" />
-                <ValidationMessage For="@(() => registerUser.Username)" />
-            </div>
-            <div class="form-group">
                 <label for="firstname">Förnamn</label>
                 <InputText Id="firstname" class="form-control" @bind-Value="registerUser.FirstName" />
                 <ValidationMessage For="@(() => registerUser.FirstName)" />
@@ -45,13 +40,18 @@
     </div>
 </div>
 
+<h5 class="validation-message">@message</h5>
+
 @code {
     private RegisterDto registerUser = new RegisterDto();
+    string message;
 
     public async Task HandleRegistration()
     {
-        await UserManager.Register(registerUser);
-        NavigationManager.NavigateTo("/login");
-
+        message = await UserManager.Register(registerUser);
+        if (String.IsNullOrEmpty(message))
+        {
+            NavigationManager.NavigateTo("/login");
+        }
     }
 }
