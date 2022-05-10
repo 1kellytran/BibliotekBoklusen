@@ -1,0 +1,94 @@
+﻿@page "/seminar"
+@inject IDataManager DataManager
+@inject NavigationManager NavigationManager
+
+<h3>Seminarium</h3>
+
+@if(AllSeminars.Count == 0)
+{
+    <h4>Inga seminarium för tillfället</h4>
+}
+else if(AllSeminars == null)
+{
+    <h4>Loading...</h4>
+}
+else
+{
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Title</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Datum</th>
+            </tr>
+        </thead>
+        @foreach (var s in AllSeminars)
+        {
+            <tr>
+                <td>@s.Title</td>
+                <td>@s.FirstName</td>
+                <td>@s.LastName</td>
+                <td>@s.DayAndTime</td>
+                <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
+                <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
+            </tr>
+        }
+    </table>
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Registrera ny seminarium</h5>
+        <EditForm Model="CreateSeminar" OnSubmit="HandleSeminar">
+
+            <div class="form-group">
+                <label for="title">Titel</label>
+                <InputText Id="title" class="form-control" @bind-Value="CreateSeminar.Title" />
+            </div>
+            <div class="form-group">
+                <label for="firstname">Föreläsarens förnamn</label>
+                <InputText Id="firstname" class="form-control" @bind-Value="CreateSeminar.FirstName" />
+            </div>
+            <div class="form-group">
+                <label for="lastname">Föreläsarens efternamn</label>
+                <InputText Id="lastname" class="form-control" @bind-Value="CreateSeminar.LastName" />
+            </div>
+            <div class="form-group">
+                <label for="dayandtime">Tid, dag & datum</label>
+                <InputText Id="dayandtime" class="form-control" @bind-Value="CreateSeminar.DayAndTime" />
+            </div>
+            <div>
+                <br />
+                <button type="submit" class="btn btn-primary">Registrera seminarium</button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    public List<SeminariumModel>? AllSeminars { get; set; } = new();
+    public SeminariumModel CreateSeminar { get; set; } = new();
+    public SeminariumModel? UpdateSeminar { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllSeminars = await DataManager.GetAllSeminars();
+    }
+
+    public async Task EditSeminar(int id, SeminariumModel UpdateSeminar)
+    {
+        await DataManager.UpdateSeminar(id, UpdateSeminar);
+    }
+
+    public async Task DeleteSeminar(int id)
+    {
+        await DataManager.DeleteSeminar(id);
+    }
+
+    public async Task HandleSeminar()
+    {
+        await DataManager.CreateSeminar(CreateSeminar);
+        NavigationManager.NavigateTo("/Seminar");
+    } 
+}

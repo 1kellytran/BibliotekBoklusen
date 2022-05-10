@@ -33,7 +33,7 @@ namespace BibliotekBoklusen.Client.Services
             await _httpClient.PostAsJsonAsync("api/product", productCreator);
         }
 
-        public async Task UpdateProduct(int id, ProductModel product)
+        public async Task UpdateProduct(int id, ProductCreatorModel product)
         {
             await _httpClient.PutAsJsonAsync($"api/product/UpdateProduct/{id}", product);
         }
@@ -46,7 +46,12 @@ namespace BibliotekBoklusen.Client.Services
         // ***** SEMINAR *****
         public async Task <List<SeminariumModel>> GetAllSeminars()
         {
-            return await _httpClient.GetFromJsonAsync<List<SeminariumModel>>("api/seminar/GetAllSeminars");
+            var result = await _httpClient.GetFromJsonAsync<List<SeminariumModel>>("api/seminar/GetAllSeminars");
+            if(result != null || result.Count == 0)
+            {
+                return result;
+            }
+            return null;
         }
 
         public async Task<SeminariumModel> GetSeminarById(int id)
@@ -56,7 +61,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task CreateSeminar(SeminariumModel seminar)
         {
-            await _httpClient.PostAsJsonAsync<SeminariumModel>("api/seminar", seminar);
+            await _httpClient.PostAsJsonAsync<SeminariumModel>("api/seminar/CreateSeminar", seminar);
         }
 
         public async Task UpdateSeminar(int id, SeminariumModel seminar)
