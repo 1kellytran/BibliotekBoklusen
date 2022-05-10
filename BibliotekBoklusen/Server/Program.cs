@@ -1,6 +1,7 @@
 global using BibliotekBoklusen.Shared;
 global using BibliotekBoklusen.Server.Data;
 global using BibliotekBoklusen.Server.Services;
+global using BibliotekBoklusen.Server.ProductService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;

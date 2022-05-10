@@ -42,6 +42,22 @@ namespace BibliotekBoklusen.Client.Services
         {
             await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
         }
+        public async Task<List<CategoryModel>> GetAllCategories()
+        {
+            List<CategoryModel> categories = new();
+
+            categories = await _httpClient.GetFromJsonAsync<List<CategoryModel>>("api/product/GetAllCategories");
+
+            return categories;
+        }
+        public IList<string> Types => new List<string>
+        {
+            new string("Film"),
+            new string("Bok"),
+            new string("E-bok"),
+            new string("Ljudbok")
+
+        };
 
         // ***** SEMINAR *****
         public async Task <List<SeminariumModel>> GetAllSeminars()
@@ -78,6 +94,7 @@ namespace BibliotekBoklusen.Client.Services
         public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
         {
             return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/SearchProducts/{searchText}");
+
         }
     }
 }
