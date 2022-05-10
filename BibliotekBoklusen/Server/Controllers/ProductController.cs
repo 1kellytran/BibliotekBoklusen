@@ -12,12 +12,12 @@ namespace BibliotekBoklusen.Server.Controllers
     public class ProductController : ControllerBase
     {
         private readonly AppDbContext _context;
-      
+        private readonly IProductService _productService;
 
-        public ProductController(AppDbContext context)
+        public ProductController(AppDbContext context, IProductService productService)
         {
             _context = context;
-           
+            _productService = productService;
         }
 
         [HttpGet]
