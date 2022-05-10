@@ -3,35 +3,44 @@
 @inject IUserManager UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-    <div class="card">
-        <h1 class="card-header">Logga in</h1>
-        <div class="card-body">
-            <EditForm Model="user" OnValidSubmit="HandleLogin">
-                <DataAnnotationsValidator />
-                <div class="form-group">
-                    <label>Email</label>
-                    <InputText @bind-Value="user.Email" class="form-control" />
-                    <ValidationMessage For="@(() => user.Email)" />
-                </div>
-                <div class="form-group">
-                    <label>Lösenord</label>
-                    <InputText @bind-Value="user.Password" type="password" class="form-control" />
-                    <ValidationMessage For="@(() => user.Password)" />
-                </div>
-                <button type="submit" class="btn btn-primary">Logga in</button>
-                <NavLink href="register" class="btn btn-link">Registrera</NavLink>
-            </EditForm>
-        </div>
+<div class="card">
+    <h1 class="card-header">Logga in</h1>
+    <div class="card-body">
+        <EditForm Model="user" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Email</label>
+                <InputText @bind-Value="user.Email" class="form-control" />
+                <ValidationMessage For="@(() => user.Email)" />
+            </div>
+            <div class="form-group">
+                <label>Lösenord</label>
+                <InputText @bind-Value="user.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => user.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary">Logga in</button>
+            <NavLink href="register" class="btn btn-link">Registrera</NavLink>
+        </EditForm>
     </div>
+</div>
+
+<h5 class="validation-message">@message</h5>
 
 
 @code {
     private LoginDto user = new LoginDto();
-    private async void HandleLogin()
+    string message;
+
+    private async Task HandleLogin()
     {
-        await UserManager.Login(user);
-        await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("/");
+        message = await UserManager.Login(user);
+
+        if (String.IsNullOrEmpty(message))
+        {
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo("/");
+        }
+
 
     }
 }

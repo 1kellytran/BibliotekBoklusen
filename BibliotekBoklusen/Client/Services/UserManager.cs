@@ -46,22 +46,31 @@ namespace BibliotekBoklusen.Client.Services
             return null;
         }
 
-        public async Task Login(LoginDto model)
+        public async Task<string> Login(LoginDto model)
         {
             var result = await _http.PostAsJsonAsync($"api/authenticate/login", model);
+           
             if(result.IsSuccessStatusCode)
             {
                 var token = result.Content.ReadAsStringAsync();
               if(token != null)
                 {
                     await _localStorageService.SetItemAsync("authToken", token);
+                    return null;
                 }
             }
+            return await result.Content.ReadAsStringAsync();
         }
 
-        public async Task Register(RegisterDto model)
+        public async Task<string> Register(RegisterDto model)
         {
-            await _http.PostAsJsonAsync("api/authenticate/register", model);
+            var result = await _http.PostAsJsonAsync("api/authenticate/register", model);
+
+            if(result.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            return await result.Content.ReadAsStringAsync();
         }
 
         public async Task RegisterAdmin(RegisterDto model)

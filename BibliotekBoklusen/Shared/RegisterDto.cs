@@ -11,10 +11,6 @@ namespace BibliotekBoklusen.Shared
         public string LastName { get; set; } = String.Empty;
 
         [Required(ErrorMessage = "Obligatoriskt fält")]
-        [Display(Name = "Användarnamn")]
-        public string? Username { get; set; }
-
-        [Required(ErrorMessage = "Obligatoriskt fält")]
         [EmailAddress(ErrorMessage = "Ingen giltig emailadress")]
         [Display(Name = "Email")]
         public string? Email { get; set; }
