@@ -5,21 +5,23 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class Initialcreate : Migration
+    public partial class intialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PublishYear = table.Column<int>(type: "int", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,45 +71,22 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Categories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublishYear = table.Column<int>(type: "int", nullable: false),
-                    CopiesOwned = table.Column<int>(type: "int", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isChecked = table.Column<bool>(type: "bit", nullable: false),
+                    ProductModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FinePayments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAmount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FinePayments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FinePayments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
+                        name: "FK_Categories_Products_ProductModelId",
+                        column: x => x.ProductModelId,
+                        principalTable: "Products",
                         principalColumn: "Id");
                 });
 
@@ -133,10 +112,30 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Loans",
+                name: "FinePayments",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: true),
+                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentAmount = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FinePayments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FinePayments_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Loans",
+                columns: table => new
+                {
+                    CopyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     ProductId = table.Column<int>(type: "int", nullable: true),
@@ -145,7 +144,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Loans", x => x.Id);
+                    table.PrimaryKey("PK_Loans", x => x.CopyId);
                     table.ForeignKey(
                         name: "FK_Loans_Products_ProductId",
                         column: x => x.ProductId,
@@ -231,13 +230,33 @@ namespace BibliotekBoklusen.Server.Migrations
                         name: "FK_Fines_Loans_LoanId",
                         column: x => x.LoanId,
                         principalTable: "Loans",
-                        principalColumn: "Id");
+                        principalColumn: "CopyId");
                     table.ForeignKey(
                         name: "FK_Fines_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "CategoryName", "ProductModelId", "isChecked" },
+                values: new object[,]
+                {
+                    { 1, "Deckare", null, false },
+                    { 2, "Feelgood", null, false },
+                    { 3, "Biografi", null, false },
+                    { 4, "Spänning", null, false },
+                    { 5, "Romaner", null, false },
+                    { 6, "Historia", null, false },
+                    { 7, "Fantasy & SciFi", null, false },
+                    { 8, "Fakta", null, false }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categories_ProductModelId",
+                table: "Categories",
+                column: "ProductModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Creators_ProductId",
@@ -275,11 +294,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
-                table: "Products",
-                column: "CategoryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reservations_ProductId",
                 table: "Reservations",
                 column: "ProductId");
@@ -297,6 +311,9 @@ namespace BibliotekBoklusen.Server.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Categories");
+
             migrationBuilder.DropTable(
                 name: "FinePayments");
 
@@ -326,9 +343,6 @@ namespace BibliotekBoklusen.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Products");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
         }
     }
 }

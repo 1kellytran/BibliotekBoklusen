@@ -23,7 +23,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<ProductCreatorModel>>> GetAllProducts()
         {
-            var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ThenInclude(c => c.Category).ToList();
+            var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ToList();
 
             List<ProductCreatorModel> productCreatorList = new();
 
@@ -67,7 +67,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
         {
-            var product = _context.Products.Include(p =>p.Category).FirstOrDefault(p => p.Id == id);
+            var product = _context.Products.FirstOrDefault(p => p.Id == id);
             var productCreator= _context.ProductCreator.Where(pc => pc.ProductId == id).FirstOrDefault();
             var creator = _context.Creators.Where(c => c.Id == productCreator.CreatorId).FirstOrDefault();
 
@@ -112,7 +112,6 @@ namespace BibliotekBoklusen.Server.Controllers
 
             product.Title = productToUpdate.Product.Title;
             product.Type = productToUpdate.Product.Type;
-            product.CategoryId = productToUpdate.Product.CategoryId;
             product.PublishYear = productToUpdate.Product.PublishYear;
 
             await _context.SaveChangesAsync();
