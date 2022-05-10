@@ -16,9 +16,7 @@
         Task UpdateSeminar(int id, SeminariumModel seminar);
         Task DeleteSeminar(int id);
 
-        // ***** Search *****
-        Task<List<ProductCreatorModel>> SearchProducts( string searchText);
-
-
+        // ***** SEARCH *****
+        Task<List<ProductCreatorModel>> SearchProducts(string searchText);
     }
 }
