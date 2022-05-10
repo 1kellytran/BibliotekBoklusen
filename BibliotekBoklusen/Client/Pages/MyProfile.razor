@@ -1,8 +1,10 @@
 ﻿@page "/myprofile"
-@attribute [Authorize]
 
-<h3>MyProfile</h3>
+ <h3>Välkommen till din profil,
+<AuthorizeView>
+   @context.User.Identity.Name
+</AuthorizeView></h3>
 
 @code {
-    public UserModel user { get; set; } 
+    
 }

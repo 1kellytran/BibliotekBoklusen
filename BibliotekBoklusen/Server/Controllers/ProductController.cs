@@ -90,14 +90,14 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductModel productToUpdate)
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductCreatorModel productToUpdate)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == id);
 
-            product.Title = productToUpdate.Title;
-            product.Type = productToUpdate.Type;
-            product.CategoryId = productToUpdate.CategoryId;
-            product.PublishYear = productToUpdate.PublishYear;
+            product.Title = productToUpdate.Product.Title;
+            product.Type = productToUpdate.Product.Type;
+            product.CategoryId = productToUpdate.Product.CategoryId;
+            product.PublishYear = productToUpdate.Product.PublishYear;
 
             await _context.SaveChangesAsync();
 

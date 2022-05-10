@@ -20,7 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var seminar = _context.Seminariums.ToList();
 
-            if (seminar == null)
+            if (seminar == null || seminar.Count <= 0)
             {
                 return NotFound("There are no seminars");
             }
@@ -63,7 +63,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 await _context.SaveChangesAsync();
                 return Ok("Seminar has been updated");
             }
-            return BadRequest("There is no seminar with that ID");            
+            return NotFound("There is no seminar with that ID");            
         }
 
         [HttpDelete("{id}")]
@@ -79,7 +79,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
                 return Ok("Seminar has been deleted");
             }
-            return BadRequest("There is no seminar with that ID");
+            return NotFound("There is no seminar with that ID");
         }
     }
 }
