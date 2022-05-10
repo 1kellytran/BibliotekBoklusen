@@ -8,6 +8,8 @@
         Task CreateProduct(ProductModel product, CreatorModel creator);
         Task UpdateProduct(int id, ProductCreatorModel product);
         Task DeleteProduct(int id);
+        Task<List<CategoryModel>> GetAllCategories();
+        IList<string> Types => new List<string>();
 
         // ***** SEMINAR *****
         Task<List<SeminariumModel>> GetAllSeminars();
