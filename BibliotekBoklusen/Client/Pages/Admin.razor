@@ -1,52 +1,62 @@
 ﻿@page "/admin"
-@attribute [Authorize(Roles = "Librarian")]
+@attribute [Authorize(Roles = "Librarian, Admin")]
 
-<AuthorizeView Roles="Librarian">
-    <Authorized>
-        <h3>Admin</h3>
+<h3>Admin</h3>
 
-        <hr class="my-4">
+<hr class="my-4">
 
-        <div class="text-center mb-3 pb-2 mt-3">
-            <h4>Hantera</h4>
+<div class="text-center mb-3 pb-2 mt-3">
+    <h4>Hantera</h4>
+</div>
+<div class="form-group">
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="AddLibrarian">Registrera användare</a>
         </div>
-        <div class="form-group">
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="SearchMember">Sök på medlem</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="ViewProducts">Alla produkter</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="ViewSeminarium">Seminarium</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="AddProducts">Lägg till seminarium</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="AddProducts">Lägg till produkter</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-outline">
-                    <a @onclick="HandleReturns">Hantera inlämningar</a>
-                </div>
-            </div>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="SearchMember">Sök på medlem</a>
         </div>
-    </Authorized>
-</AuthorizeView>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="ViewProducts">Alla produkter</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="ViewSeminarium">Seminarium</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="AddProducts">Lägg till seminarium</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="AddProducts">Lägg till produkter</a>
+        </div>
+    </div>
+    <div class="col">
+        <div class="form-outline">
+            <a @onclick="HandleReturns">Hantera inlämningar</a>
+        </div>
+    </div>
+</div>
+
+@if(addLibrarian)
+{
+    <Register></Register>
+}
 
 @code {
-
+    bool addLibrarian;
+    void AddLibrarian()
+    {
+        _ = !addLibrarian ? addLibrarian = true : addLibrarian = false;
+    }
     void SearchMember()
     {
 

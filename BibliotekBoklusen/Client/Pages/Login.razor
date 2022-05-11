@@ -9,13 +9,13 @@
         <EditForm Model="user" OnValidSubmit="HandleLogin">
             <DataAnnotationsValidator />
             <div class="form-group">
-                <label>Email</label>
-                <InputText @bind-Value="user.Email" class="form-control" />
+                <label for="email">Email</label>
+                <InputText id="email" @bind-Value="user.Email" class="form-control" />
                 <ValidationMessage For="@(() => user.Email)" />
             </div>
             <div class="form-group">
-                <label>Lösenord</label>
-                <InputText @bind-Value="user.Password" type="password" class="form-control" />
+                <label for="password">Lösenord</label>
+                <InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
                 <ValidationMessage For="@(() => user.Password)" />
             </div>
             <button type="submit" class="btn btn-primary">Logga in</button>
@@ -31,7 +31,7 @@
     private LoginDto user = new LoginDto();
     string message;
 
-    private async Task HandleLogin()
+    async Task HandleLogin()
     {
         message = await UserManager.Login(user);
 

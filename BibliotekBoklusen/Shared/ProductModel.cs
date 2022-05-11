@@ -8,10 +8,10 @@ namespace BibliotekBoklusen.Shared
         [Key]
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Title is required")]
+        [Required(ErrorMessage = "Obligatorisk fält")]
         public string Title { get; set; } = String.Empty;
 
-        [Required(ErrorMessage = "PublishYear is required")]
+        [Required(ErrorMessage = "Obligatorisk fält")]
         public int PublishYear { get; set; }
 
         //[ForeignKey(nameof(Category))]
@@ -19,8 +19,9 @@ namespace BibliotekBoklusen.Shared
         //public CategoryModel? Category { get; set; }
         public string Type { get; set; } = String.Empty;
 
-        public List<CategoryModel> Category { get; set; } = new();
-        public List<ProductCreatorModel>? ProductCreators { get; set; } = new();
-        public List<CreatorModel>? Creators { get; set; }
+        public List<CategoryModel>? Category { get; set; } = new();
+        public List<CreatorModel>? Creators { get; set; } = new();
+        public List<ProductCreatorModel>? CreatorModels { get; set; } = new();
+
     }
 }

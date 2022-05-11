@@ -25,6 +25,7 @@ namespace BibliotekBoklusen.Shared
         [Display(Name = "Bekräfta lösenord")]
         [Compare("Password", ErrorMessage = "Lösenorden stämmer inte överrens")]
         public string ConfirmPassword { get; set; }
+        public bool IsLibrarian { get; set; }
     }
 }
 

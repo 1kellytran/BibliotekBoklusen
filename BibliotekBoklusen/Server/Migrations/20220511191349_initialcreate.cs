@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class intialCreate : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,17 +98,16 @@ namespace BibliotekBoklusen.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    ProductModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Creators", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Creators_Products_ProductId",
-                        column: x => x.ProductId,
+                        name: "FK_Creators_Products_ProductModelId",
+                        column: x => x.ProductModelId,
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -189,6 +188,30 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductCategories",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductCategories", x => new { x.ProductId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductCategories_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductCreator",
                 columns: table => new
                 {
@@ -197,7 +220,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductCreator", x => new { x.CreatorId, x.ProductId });
+                    table.PrimaryKey("PK_ProductCreator", x => new { x.ProductId, x.CreatorId });
                     table.ForeignKey(
                         name: "FK_ProductCreator_Creators_CreatorId",
                         column: x => x.CreatorId,
@@ -259,9 +282,9 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "ProductModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Creators_ProductId",
+                name: "IX_Creators_ProductModelId",
                 table: "Creators",
-                column: "ProductId");
+                column: "ProductModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FinePayments_UserId",
@@ -289,9 +312,14 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductCreator_ProductId",
+                name: "IX_ProductCategories_CategoryId",
+                table: "ProductCategories",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductCreator_CreatorId",
                 table: "ProductCreator",
-                column: "ProductId");
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reservations_ProductId",
@@ -312,13 +340,13 @@ namespace BibliotekBoklusen.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "FinePayments");
 
             migrationBuilder.DropTable(
                 name: "Fines");
+
+            migrationBuilder.DropTable(
+                name: "ProductCategories");
 
             migrationBuilder.DropTable(
                 name: "ProductCreator");
@@ -334,6 +362,9 @@ namespace BibliotekBoklusen.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Loans");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Creators");

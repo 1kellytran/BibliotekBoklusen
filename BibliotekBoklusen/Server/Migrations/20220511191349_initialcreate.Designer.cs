@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220510132502_intialCreate")]
-    partial class intialCreate
+    [Migration("20220511191349_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,12 +115,12 @@ namespace BibliotekBoklusen.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int?>("ProductModelId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductModelId");
 
                     b.ToTable("Creators");
                 });
@@ -207,17 +207,34 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.ToTable("Loans");
                 });
 
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCategory", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("ProductId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("ProductCategories");
+                });
+
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCreatorModel", b =>
                 {
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.HasKey("CreatorId", "ProductId");
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("ProductId");
+                    b.HasKey("ProductId", "CreatorId");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("ProductCreator");
                 });
@@ -363,12 +380,9 @@ namespace BibliotekBoklusen.Server.Migrations
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
                 {
-                    b.HasOne("BibliotekBoklusen.Shared.ProductModel", "Product")
+                    b.HasOne("BibliotekBoklusen.Shared.ProductModel", null)
                         .WithMany("Creators")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Product");
+                        .HasForeignKey("ProductModelId");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Fine", b =>
@@ -410,16 +424,35 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCategory", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.CategoryModel", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BibliotekBoklusen.Shared.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCreatorModel", b =>
                 {
                     b.HasOne("BibliotekBoklusen.Shared.CreatorModel", "Creator")
-                        .WithMany("ProductCreators")
+                        .WithMany("Products")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("BibliotekBoklusen.Shared.ProductModel", "Product")
-                        .WithMany("ProductCreators")
+                        .WithMany("CreatorModels")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -452,16 +485,16 @@ namespace BibliotekBoklusen.Server.Migrations
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.CreatorModel", b =>
                 {
-                    b.Navigation("ProductCreators");
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.ProductModel", b =>
                 {
                     b.Navigation("Category");
 
-                    b.Navigation("Creators");
+                    b.Navigation("CreatorModels");
 
-                    b.Navigation("ProductCreators");
+                    b.Navigation("Creators");
                 });
 #pragma warning restore 612, 618
         }

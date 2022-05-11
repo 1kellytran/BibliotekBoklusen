@@ -19,6 +19,7 @@ builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IDataManager, DataManager>();
+builder.Services.AddScoped<ITestManager, TestManager>();
 
 
 await builder.Build().RunAsync();
