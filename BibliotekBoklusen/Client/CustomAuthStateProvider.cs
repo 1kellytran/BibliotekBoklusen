@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace BibliotekBoklusen.Client
 {
@@ -21,7 +22,7 @@ namespace BibliotekBoklusen.Client
             var identity = new ClaimsIdentity();
             _httpClient.DefaultRequestHeaders.Authorization = null;
 
-            //checks if user is authorized
+            //Checks if user is authorized
             if (!string.IsNullOrEmpty(authToken))
             {
                 try
@@ -46,7 +47,7 @@ namespace BibliotekBoklusen.Client
 
         }
 
-        //From PatrickGods E-commerce video
+        //From Patrick Gods Authorized video - Steve Sandersson
         private byte[] ParseBase64WithoutPadding(string base64)
         {
             switch (base64.Length % 4)
@@ -61,8 +62,7 @@ namespace BibliotekBoklusen.Client
         {
             var payload = jwt.Split('.')[1];
             var jsonBytes = ParseBase64WithoutPadding(payload);
-            var keyValuePairs = System.Text.Json.JsonSerializer
-                .Deserialize<Dictionary<string, object>>(jsonBytes);
+            var keyValuePairs = JsonSerializer.Deserialize<Dictionary<string, object>>(jsonBytes);
 
             var claims = keyValuePairs.Select(kvp => new Claim(kvp.Key, kvp.Value.ToString()));
 

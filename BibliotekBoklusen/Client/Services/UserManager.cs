@@ -15,7 +15,7 @@ namespace BibliotekBoklusen.Client.Services
         }
         public async Task ChangePassword(PasswordDto editPassword)
         {
-            await _http.PutAsJsonAsync($"api/users/ChangePassword",editPassword);
+            await _http.PutAsJsonAsync($"api/users/ChangePassword", editPassword);
         }
 
         public async Task DeleteUser(string email)
@@ -49,11 +49,11 @@ namespace BibliotekBoklusen.Client.Services
         public async Task<string> Login(LoginDto model)
         {
             var result = await _http.PostAsJsonAsync($"api/authenticate/login", model);
-           
-            if(result.IsSuccessStatusCode)
+
+            if (result.IsSuccessStatusCode)
             {
-                var token = result.Content.ReadAsStringAsync();
-              if(token != null)
+                var token = await result.Content.ReadAsStringAsync();
+                if (token != null)
                 {
                     await _localStorageService.SetItemAsync("authToken", token);
                     return null;
@@ -66,7 +66,7 @@ namespace BibliotekBoklusen.Client.Services
         {
             var result = await _http.PostAsJsonAsync("api/authenticate/register", model);
 
-            if(result.IsSuccessStatusCode)
+            if (result.IsSuccessStatusCode)
             {
                 return null;
             }
@@ -83,6 +83,6 @@ namespace BibliotekBoklusen.Client.Services
             await _http.PutAsJsonAsync("api/user", model);
         }
 
-        
+
     }
 }

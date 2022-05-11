@@ -34,8 +34,8 @@ namespace BibliotekBoklusen.Server.Controllers
                 var product = _context.Products.FirstOrDefault(p => p.Id == item.ProductId);
                 var creator = _context.Creators.FirstOrDefault(c => c.Id == item.CreatorId);
 
-                creator.ProductCreators = null;
-                product.ProductCreators = null;
+                //creator.ProductCreators = null;
+                //product.ProductCreators = null;
 
                 productCreator.Creator = creator;
                 productCreator.Product = product;
@@ -75,8 +75,8 @@ namespace BibliotekBoklusen.Server.Controllers
             model.Product = product;
             model.CreatorId = creator.Id;
             model.ProductId = product.Id;
-            model.Creator.ProductCreators = null;
-            model.Product.ProductCreators = null;
+            //model.Creator.ProductCreators = null;
+            //model.Product.ProductCreators = null;
 
             if (model == null)
             {
