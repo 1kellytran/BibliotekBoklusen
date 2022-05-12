@@ -12,7 +12,7 @@ namespace BibliotekBoklusen.Shared
     {
         [Key, Column(Order = 1)]
         public int ProductId { get; set; }
-        public Product Product { get; set; }
+        public ProductModel Product { get; set; }
        
         [Key, Column(Order = 2)]
         public int CategoryId { get; set; }

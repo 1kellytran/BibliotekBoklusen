@@ -21,7 +21,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetAllProducts()
+        public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
         {
             var productCreatorList = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
@@ -37,7 +37,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProductById(int id)
+        public async Task<ActionResult<ProductModel>> GetProductById(int id)
         {
             var product = _context.Products.Include(p => p.Creators).Include(c => c.Category).FirstOrDefault(p => p.Id ==id);
 
@@ -51,7 +51,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         [HttpPost]
         
-        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
         {
             var result = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
 

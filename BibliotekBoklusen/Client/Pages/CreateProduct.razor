@@ -66,7 +66,7 @@
 
 @code {
     public Creator Creator { get; set; } = new();
-    public Product Product { get; set; } = new();
+    public ProductModel Product { get; set; } = new();
 
     public List<Category> Categories { get; set; } = new();
     public string type;
@@ -81,14 +81,12 @@
     {
         if (Creator != null)
         {
-            //Testar att lägga till flera författare.
-            //var newCreator = new CreatorModel { FirstName = "Nils", LastName = "KarlssonPyssling" };
-            //Product.Creators.Add(newCreator);
             Product.Type = type;
             Product.Creators.Add(Creator);
             Product.Category.AddRange(Categories.Where(x => x.isChecked));
         }
         var productName = await TestManager.CreateProduct(Product);
+      
         if(productName != null)
         {
             message = $"{productName} har lagts till";

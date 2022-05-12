@@ -6,6 +6,6 @@
         public string CategoryName { get; set; }
         public bool isChecked { get; set; }
 
-        public List<Product> Products { get; set; }
+        public List<ProductModel>? Products { get; set; } 
     }
 }

@@ -9,7 +9,7 @@ namespace BibliotekBoklusen.Server.Data
 
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
         public DbSet<Creator> Creators { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<SeminariumModel> Seminariums { get; set; }
