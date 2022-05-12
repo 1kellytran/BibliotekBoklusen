@@ -15,7 +15,6 @@ namespace BibliotekBoklusen.Server.Controllers
             _context = context;
         }
 
-        //Get all categories
         [HttpGet]
         public async Task<ActionResult<List<CategoryModel>>> Get()
         {
@@ -29,20 +28,55 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(categoryList);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody] ProductModel productToAdd)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute]int id)
         {
+            var category = await _context.Categories.FindAsync(id);
+            if (category == null)
+                return NotFound();
+            return Ok(category);
+        }
 
-            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] CategoryModel categoryToAdd)
+        {
+            var productExists = _context.Categories
+                .FirstOrDefault(p => p.CategoryName.ToLower() == categoryToAdd.CategoryName.ToLower());
+
             if (productExists == null)
             {
-
-                _context.Products.Add(productToAdd);
+                _context.Categories.Add(categoryToAdd);
                 await _context.SaveChangesAsync();
-                return Ok("Product has been added");
+                return Ok(categoryToAdd.CategoryName);
             }
-            return BadRequest("Product already exists");
+            return BadRequest(categoryToAdd.CategoryName);
+        }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, CategoryModel newCategoryValues)
+        {
+            var categoryToChange = await _context.Categories.FindAsync(id);
+            if (categoryToChange == null)
+                return NotFound();
+
+            categoryToChange.CategoryName = newCategoryValues.CategoryName;
+            categoryToChange.isChecked = newCategoryValues.isChecked;
+
+            _context.Update(categoryToChange);
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var categoryToDelete = await _context.Categories.FindAsync(id);
+            if (categoryToDelete == null)
+                return NotFound();
+
+            _context.Categories.Remove(categoryToDelete);
+            await _context.SaveChangesAsync();
+            return Ok();
         }
     }
 }
