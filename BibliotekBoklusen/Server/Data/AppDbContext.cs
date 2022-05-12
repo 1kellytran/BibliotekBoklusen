@@ -11,7 +11,7 @@ namespace BibliotekBoklusen.Server.Data
 
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<Creator> Creators { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<SeminariumModel> Seminariums { get; set; }
         public DbSet<LoanModel> Loans { get; set; }
         public DbSet<UserModel> Users { get; set; }
@@ -24,15 +24,15 @@ namespace BibliotekBoklusen.Server.Data
         {
             
            
-            modelBuilder.Entity<Category>()
-                .HasData(new Category() { Id = 1, CategoryName = "Deckare" },
-                new Category() { Id = 2, CategoryName = "Feelgood" },
-                new Category() { Id = 3, CategoryName = "Biografi" },
-                new Category() { Id = 4, CategoryName = "Spänning" },
-                new Category() { Id = 5, CategoryName = "Romaner" },
-                new Category() { Id = 6, CategoryName = "Historia" },
-                new Category() { Id = 7, CategoryName = "Fantasy & SciFi" },
-                new Category() { Id = 8, CategoryName = "Fakta" });
+            modelBuilder.Entity<CategoryModel>()
+                .HasData(new CategoryModel() { Id = 1, CategoryName = "Deckare" },
+                new CategoryModel() { Id = 2, CategoryName = "Feelgood" },
+                new CategoryModel() { Id = 3, CategoryName = "Biografi" },
+                new CategoryModel() { Id = 4, CategoryName = "Spänning" },
+                new CategoryModel() { Id = 5, CategoryName = "Romaner" },
+                new CategoryModel() { Id = 6, CategoryName = "Historia" },
+                new CategoryModel() { Id = 7, CategoryName = "Fantasy & SciFi" },
+                new CategoryModel() { Id = 8, CategoryName = "Fakta" });
 
         }
     }

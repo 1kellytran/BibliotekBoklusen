@@ -38,11 +38,11 @@ namespace BibliotekBoklusen.Client.Services
         {
             await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
         }
-        public async Task<List<Category>> GetAllCategories()
+        public async Task<List<CategoryModel>> GetAllCategories()
         {
-            List<Category> categories = new();
+            List<CategoryModel> categories = new();
 
-            categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category");
+            categories = await _httpClient.GetFromJsonAsync<List<CategoryModel>>("api/category");
 
             return categories;
         }

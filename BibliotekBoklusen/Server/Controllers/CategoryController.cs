@@ -17,7 +17,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         //Get all categories
         [HttpGet]
-        public async Task<ActionResult<List<Category>>> Get()
+        public async Task<ActionResult<List<CategoryModel>>> Get()
         {
             var categoryList = _context.Categories.ToList();
 

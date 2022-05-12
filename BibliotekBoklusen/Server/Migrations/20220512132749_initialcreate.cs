@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class intialcreate : Migration
+    public partial class initialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,7 +99,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryProductModel",
+                name: "CategoryModelProductModel",
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false),
@@ -107,15 +107,15 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryProductModel", x => new { x.CategoryId, x.ProductsId });
+                    table.PrimaryKey("PK_CategoryModelProductModel", x => new { x.CategoryId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_CategoryProductModel_Categories_CategoryId",
+                        name: "FK_CategoryModelProductModel_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryProductModel_Products_ProductsId",
+                        name: "FK_CategoryModelProductModel_Products_ProductsId",
                         column: x => x.ProductsId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -265,8 +265,8 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryProductModel_ProductsId",
-                table: "CategoryProductModel",
+                name: "IX_CategoryModelProductModel_ProductsId",
+                table: "CategoryModelProductModel",
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
@@ -318,7 +318,7 @@ namespace BibliotekBoklusen.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryProductModel");
+                name: "CategoryModelProductModel");
 
             migrationBuilder.DropTable(
                 name: "CreatorProductModel");

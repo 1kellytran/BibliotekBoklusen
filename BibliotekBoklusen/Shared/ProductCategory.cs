@@ -16,7 +16,7 @@ namespace BibliotekBoklusen.Shared
        
         [Key, Column(Order = 2)]
         public int CategoryId { get; set; }
-        public Category Category { get; set; }
+        public CategoryModel Category { get; set; }
       
     }
 }

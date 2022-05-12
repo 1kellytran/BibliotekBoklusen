@@ -15,7 +15,7 @@ namespace BibliotekBoklusen.Shared
         public int PublishYear { get; set; }
         public string Type { get; set; } = String.Empty;
 
-        public List<Category>? Category { get; set; } = new();
+        public List<CategoryModel>? Category { get; set; } = new();
         public List<Creator>? Creators { get; set; } = new();
        
 

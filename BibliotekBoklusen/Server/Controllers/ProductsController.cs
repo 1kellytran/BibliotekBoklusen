@@ -56,8 +56,23 @@ namespace BibliotekBoklusen.Server.Controllers
             var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
             if (productExists == null)
             {
+                var category = new CategoryModel { CategoryName = "Superhjältar", isChecked = false };
+                var categories = new List<CategoryModel>();
+                categories.Add(category);
+                var creator = new Creator { FirstName = "astrid", LastName = "lindgren" };
+                var creators = new List<Creator>();
+                creators.Add(creator);
 
-                _context.Products.Add(productToAdd);
+                var product = new ProductModel()
+                {
+                    Title = productToAdd.Title,
+                    PublishYear = 1986,
+                    Type = productToAdd.Type,
+                    Category = categories,
+                    Creators = creators
+                };
+
+                _context.Products.Add(product);
                 await _context.SaveChangesAsync();
                 return Ok("Product has been added");
             }
