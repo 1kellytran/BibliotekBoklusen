@@ -46,7 +46,7 @@ namespace BibliotekBoklusen.Client.Services
         {
             List<Category> categories = new();
 
-            categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/product/GetAllCategories");
+            categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/category");
 
             return categories;
         }
