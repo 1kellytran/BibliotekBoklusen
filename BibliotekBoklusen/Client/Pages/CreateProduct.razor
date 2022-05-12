@@ -74,8 +74,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        Categories = await DataManager.GetAllCategories();
+        var cat = new Category()
+        {
+            CategoryName = "Deckare"
+        };
+        Categories.Add(cat);
     }
 
     public async Task RegisterProduct()

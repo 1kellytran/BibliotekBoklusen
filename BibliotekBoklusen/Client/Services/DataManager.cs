@@ -14,14 +14,14 @@ namespace BibliotekBoklusen.Client.Services
         {
             List<ProductCreatorModel> products = new();
 
-            products = await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>("api/product/GetAllProducts");
+            products = await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>("api/product");
 
             return products;
         }
 
         public async Task<ProductCreatorModel> GetProductById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/GetProductById/{id}");
+            return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/{id}");
         }
 
         public async Task CreateProduct(Product product, Creator creator)
