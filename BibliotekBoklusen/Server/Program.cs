@@ -1,7 +1,8 @@
 global using BibliotekBoklusen.Shared;
 global using BibliotekBoklusen.Server.Data;
 global using BibliotekBoklusen.Server.Services;
-global using BibliotekBoklusen.Server.ProductService;
+
+global using BibliotekBoklusen.Server.Services.ProductService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using BibliotekBoklusen.Server.ProductService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; // nytt
@@ -17,7 +18,7 @@ ConfigurationManager configuration = builder.Configuration; // nytt
 
 builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddRazorPages();
-builder.Services.AddScoped<IProductService, ProductService>();
+
 
 var connectionString2 = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString2));
@@ -55,6 +56,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 });
+
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

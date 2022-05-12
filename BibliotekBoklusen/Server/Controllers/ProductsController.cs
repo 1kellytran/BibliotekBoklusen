@@ -1,4 +1,4 @@
-﻿using BibliotekBoklusen.Server.ProductService;
+﻿using BibliotekBoklusen.Server.Services.ProductService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -115,5 +115,20 @@ namespace BibliotekBoklusen.Server.Controllers
         //{
         //    return Ok(await _productService.SearchProducts(searchText));
         //}
+
+
+        [HttpGet("search/{searchText}")]
+        public async Task<ActionResult<ServiceResponse<List<ProductModel>>>> SearchProducts(string searchText)
+        {
+            var result = await _productService.SearchProducts(searchText);
+            return Ok(result);
+        }
+
+        [HttpGet("searchsuggestions/{searchText}")]
+        public async Task<ActionResult<ServiceResponse<List<ProductModel>>>> GetProductSearchSuggestions(string searchText)
+        {
+            var result = await _productService.GetProductSearchSuggestions(searchText);
+            return Ok(result);
+        }
     }
 }
