@@ -1,0 +1,94 @@
+﻿@page "/createproducts"
+@inject IDataManager DataManager
+@inject ITestManager TestManager
+
+<h3>AddProducts</h3>
+
+<EditForm Model="Product" OnValidSubmit="CreateProduct">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="Title">Titel:</label>
+        <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
+        <ValidationMessage For="@(() => Product.Title)" />
+    </div>
+
+    <div class="form-group">
+        <label for="firstname">Skapare:</label>
+        <InputText Id="firstname" class="form-control" @bind-Value="Creator.FirstName" />
+        <ValidationMessage For="@(() => Creator.FirstName)" />
+    </div>
+
+    <div class="form-group">
+        <label for="lastname">Efternamn:</label>
+        <InputText Id="lastname" class="form-control" @bind-Value="Creator.LastName" />
+        <ValidationMessage For="@(() => Creator.LastName)" />
+    </div>
+
+    <div class="form-group">
+        <label>Välj genre:</label>
+        @if (Categories != null || Categories.Count <= 0)
+        {
+            @foreach (var i in Categories)
+            {
+                <div class="form-group">
+                    <input type="checkbox" id="@i.CategoryName" @bind="i.isChecked">
+                    <label for="@i.CategoryName"> @i.CategoryName</label>
+                </div>
+            }
+        }
+    </div>
+    <br />
+    <div class="form-group">
+        <label for="publishYear ">Publicerad:</label>
+        <InputNumber Id="publishYear" class="form-control" @bind-Value="Product.PublishYear" />
+        <ValidationMessage For="@(() => Product.PublishYear)" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Välj typ:</label>
+        <InputRadioGroup id="type" @bind-Value="type" class="form-control">
+            @foreach (var productType in DataManager.Types)
+            {
+                <div class="form-group">
+                    <InputRadio id=@productType Value="productType" />
+                    <label for="productType">@productType</label>
+                </div>
+            }
+        </InputRadioGroup>
+    </div>
+    <br />
+</EditForm>
+<br />
+<div class="col">
+    <div class="form-outline">
+        <a @onclick="AddAnotherProduct">+</a>
+    </div>
+</div>
+
+@code {
+    public Product Product { get; set; }
+    public Creator Creator { get; set; }
+
+    public List<Category> Categories { get; set; }
+    public string type;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await DataManager.GetAllCategories();    
+    }
+
+    public async Task CreateProduct()
+    {
+        Product.Type = type;
+        Product.Creators.Add(Creator);
+        Product.Category.AddRange(Categories.Where(c => c.isChecked == true));
+
+        await TestManager.CreateProduct(Product);
+    }
+
+    public async Task AddAnotherProduct()
+    {
+        
+    }
+}
