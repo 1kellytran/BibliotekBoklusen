@@ -5,7 +5,7 @@
         // ***** PRODUCT *****
         Task<List<ProductCreatorModel>> GetAllProducts();
         Task<ProductCreatorModel> GetProductById(int id);
-        Task CreateProduct(ProductModel product, Creator creator);
+        Task CreateProduct(ProductModel product);
         Task UpdateProduct(int id, ProductCreatorModel product);
         Task DeleteProduct(int id);
         Task<List<Category>> GetAllCategories();

@@ -85,12 +85,6 @@
             Product.Creators.Add(Creator);
             Product.Category.AddRange(Categories.Where(x => x.isChecked));
         }
-        var productName = await TestManager.CreateProduct(Product);
-      
-        if(productName != null)
-        {
-            message = $"{productName} har lagts till";
-        }
-        Product = new();
+        await DataManager.CreateProduct(Product);
     }
 }

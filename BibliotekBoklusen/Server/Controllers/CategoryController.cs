@@ -29,5 +29,20 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(categoryList);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] ProductModel productToAdd)
+        {
+
+            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
+            if (productExists == null)
+            {
+
+                _context.Products.Add(productToAdd);
+                await _context.SaveChangesAsync();
+                return Ok("Product has been added");
+            }
+            return BadRequest("Product already exists");
+
+        }
     }
 }

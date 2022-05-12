@@ -39,7 +39,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ProductModel>> GetProductById(int id)
         {
-            var product = _context.Products.Include(p => p.Creators).Include(c => c.Category).FirstOrDefault(p => p.Id ==id);
+            var product = _context.Products.Include(p => p.Creators).Include(c => c.Category).FirstOrDefault(p => p.Id == id);
 
 
             if (product == null)
@@ -50,19 +50,18 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        
         public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
         {
-            var result = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
 
-            if (result == null)
+            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
+            if (productExists == null)
             {
+
                 _context.Products.Add(productToAdd);
                 await _context.SaveChangesAsync();
                 return Ok("Product has been added");
             }
             return BadRequest("Product already exists");
-            
         }
 
         [HttpPut("{id}")]

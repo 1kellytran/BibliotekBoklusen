@@ -23,7 +23,7 @@ namespace BibliotekBoklusen.Server.Controllers
             var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
             if (productExists == null)
             {
-       
+         
                 _context.Products.Add(productToAdd);
                 await _context.SaveChangesAsync();
                 return Ok("Product has been added");

@@ -24,13 +24,9 @@ namespace BibliotekBoklusen.Client.Services
             return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/{id}");
         }
 
-        public async Task CreateProduct(ProductModel product, Creator creator)
+        public async Task CreateProduct(ProductModel productToAdd)
         {
-            ProductCreatorModel productCreator = new();
-            productCreator.Product = product;
-            productCreator.Creator = creator;
-
-            await _httpClient.PostAsJsonAsync("api/product", productCreator);
+            await _httpClient.PostAsJsonAsync("api/products", productToAdd);
         }
 
         public async Task UpdateProduct(int id, ProductCreatorModel product)
