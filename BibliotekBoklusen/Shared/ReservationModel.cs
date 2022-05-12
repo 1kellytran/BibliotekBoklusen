@@ -12,7 +12,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(Product))]
         public int? ProductId { get; set; }
-        public Product? Product { get; set; }
+        public ProductModel? Product { get; set; }
 
         public DateTime ReservationDate { get; set; }
 

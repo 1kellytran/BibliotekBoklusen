@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class intialcreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -99,7 +99,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryProduct",
+                name: "CategoryProductModel",
                 columns: table => new
                 {
                     CategoryId = table.Column<int>(type: "int", nullable: false),
@@ -107,15 +107,15 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CategoryProduct", x => new { x.CategoryId, x.ProductsId });
+                    table.PrimaryKey("PK_CategoryProductModel", x => new { x.CategoryId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_CategoryProduct_Categories_CategoryId",
+                        name: "FK_CategoryProductModel_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CategoryProduct_Products_ProductsId",
+                        name: "FK_CategoryProductModel_Products_ProductsId",
                         column: x => x.ProductsId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -123,7 +123,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CreatorProduct",
+                name: "CreatorProductModel",
                 columns: table => new
                 {
                     CreatorsId = table.Column<int>(type: "int", nullable: false),
@@ -131,15 +131,15 @@ namespace BibliotekBoklusen.Server.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CreatorProduct", x => new { x.CreatorsId, x.ProductsId });
+                    table.PrimaryKey("PK_CreatorProductModel", x => new { x.CreatorsId, x.ProductsId });
                     table.ForeignKey(
-                        name: "FK_CreatorProduct_Creators_CreatorsId",
+                        name: "FK_CreatorProductModel_Creators_CreatorsId",
                         column: x => x.CreatorsId,
                         principalTable: "Creators",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CreatorProduct_Products_ProductsId",
+                        name: "FK_CreatorProductModel_Products_ProductsId",
                         column: x => x.ProductsId,
                         principalTable: "Products",
                         principalColumn: "Id",
@@ -265,13 +265,13 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryProduct_ProductsId",
-                table: "CategoryProduct",
+                name: "IX_CategoryProductModel_ProductsId",
+                table: "CategoryProductModel",
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CreatorProduct_ProductsId",
-                table: "CreatorProduct",
+                name: "IX_CreatorProductModel_ProductsId",
+                table: "CreatorProductModel",
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
@@ -318,10 +318,10 @@ namespace BibliotekBoklusen.Server.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryProduct");
+                name: "CategoryProductModel");
 
             migrationBuilder.DropTable(
-                name: "CreatorProduct");
+                name: "CreatorProductModel");
 
             migrationBuilder.DropTable(
                 name: "FinePayments");

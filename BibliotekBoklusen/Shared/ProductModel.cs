@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
-    public class Product
+    public class ProductModel
     {
         [Key]
         public int Id { get; set; }

@@ -17,7 +17,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
         {
 
             var result = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
