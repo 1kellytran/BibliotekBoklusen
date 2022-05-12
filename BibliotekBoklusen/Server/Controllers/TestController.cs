@@ -16,60 +16,70 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
-        //{
-        //    if (productToAdd == null)
-        //        return BadRequest();
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
+        {
 
-        //    //Checks if product already exists in db
-        //    var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower());
+            var result = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
 
-        //    if (productExists == null)
-        //    {
-        //        productExists = new Product
-        //        {
-        //            Title = productToAdd.Title,
-        //            PublishYear = productToAdd.PublishYear,
-        //            Type = productToAdd.Type
-        //        };
-        //    }
+            if (result == null)
+            {
+                _context.Products.Add(productToAdd);
+                await _context.SaveChangesAsync();
+                return Ok("Product has been added");
+            }
+            return BadRequest("Product already exists");
+            //if (productToAdd == null)
+            //    return BadRequest();
 
-        //    var productCreators = new List<ProductCreatorModel>();
+            ////Checks if product already exists in db
+            //var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower());
 
-        //    foreach (var creator in productToAdd.Creators)
-        //    {
-        //        //Checks if creator already exists in db
-        //        var creatorExists = _context.Creators.FirstOrDefault
-        //            (c => c.FirstName.ToLower() == creator.FirstName.ToLower()
-        //            && c.LastName.ToLower() == creator.LastName.ToLower());
-        //        var productCreator = new ProductCreatorModel();
+            //if (productExists == null)
+            //{
+            //    productExists = new Product
+            //    {
+            //        Title = productToAdd.Title,
+            //        PublishYear = productToAdd.PublishYear,
+            //        Type = productToAdd.Type
+            //    };
+            //}
 
-        //        productCreator.Product = productExists;
-        //        _ = creatorExists == null ? productCreator.Creator = creator : productCreator.Creator = creatorExists;
-        //        productCreators.Add(productCreator);
-        //    }
+            //var productCreators = new List<ProductCreatorModel>();
 
-        //    var productCategories = new List<ProductCategory>();
-        //    foreach (var category in productToAdd.Category)
-        //    {
-        //        //Checks if category already exists in db
-        //        var categoryExists = _context.Categories.FirstOrDefault
-        //            (c => c.CategoryName.ToLower() == category.CategoryName.ToLower());
+            //foreach (var creator in productToAdd.Creators)
+            //{
+            //    //Checks if creator already exists in db
+            //    var creatorExists = _context.Creators.FirstOrDefault
+            //        (c => c.FirstName.ToLower() == creator.FirstName.ToLower()
+            //        && c.LastName.ToLower() == creator.LastName.ToLower());
+            //    var productCreator = new ProductCreatorModel();
 
-        //        var productCategory = new ProductCategory();
-        //        productCategory.Product = productExists;
-        //        _ = categoryExists == null ? productCategory.Category = category : productCategory.Category = categoryExists;
-        //        productCategories.Add(productCategory);
-        //    }
+            //    productCreator.Product = productExists;
+            //    _ = creatorExists == null ? productCreator.Creator = creator : productCreator.Creator = creatorExists;
+            //    productCreators.Add(productCreator);
+            //}
 
-        //    await _context.ProductCreator.AddRangeAsync(productCreators);
-        //    await _context.ProductCategories.AddRangeAsync(productCategories);
-        //    var result = await _context.SaveChangesAsync();
-        //    var name = productExists.Title;
-        //    return Ok(name);
+            //var productCategories = new List<ProductCategory>();
+            //foreach (var category in productToAdd.Category)
+            //{
+            //    //Checks if category already exists in db
+            //    var categoryExists = _context.Categories.FirstOrDefault
+            //        (c => c.CategoryName.ToLower() == category.CategoryName.ToLower());
 
-        //}
+            //    var productCategory = new ProductCategory();
+            //    productCategory.Product = productExists;
+            //    _ = categoryExists == null ? productCategory.Category = category : productCategory.Category = categoryExists;
+            //    productCategories.Add(productCategory);
+            //}
+
+            //await _context.ProductCreator.AddRangeAsync(productCreators);
+            //await _context.ProductCategories.AddRangeAsync(productCategories);
+            //var result = await _context.SaveChangesAsync();
+            //var name = productExists.Title;
+            //return Ok(name);
+
+        }
 
     }
 }
