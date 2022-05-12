@@ -5,10 +5,10 @@
         // ***** PRODUCT *****
         Task<List<ProductCreatorModel>> GetAllProducts();
         Task<ProductCreatorModel> GetProductById(int id);
-        Task CreateProduct(ProductModel product, CreatorModel creator);
+        Task CreateProduct(Product product, Creator creator);
         Task UpdateProduct(int id, ProductCreatorModel product);
         Task DeleteProduct(int id);
-        Task<List<CategoryModel>> GetAllCategories();
+        Task<List<Category>> GetAllCategories();
         IList<string> Types => new List<string>();
 
         // ***** SEMINAR *****

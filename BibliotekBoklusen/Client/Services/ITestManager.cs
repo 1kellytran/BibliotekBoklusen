@@ -2,6 +2,6 @@
 {
     public interface ITestManager
     {
-        Task<string> CreateProduct(ProductModel productToAdd);
+        Task<string> CreateProduct(Product productToAdd);
     }
 }

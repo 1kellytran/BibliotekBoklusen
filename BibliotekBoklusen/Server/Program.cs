@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; // nytt
 // Add services to the container.
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IProductService, ProductService>();
 

@@ -3,8 +3,8 @@
     public class ProductCreatorModel
     {
         public int CreatorId { get; set; }
-        public CreatorModel Creator { get; set; }
+        public Creator Creator { get; set; }
         public int ProductId { get; set; }
-        public ProductModel Product { get; set; }
+        public Product Product { get; set; }
     }
 }

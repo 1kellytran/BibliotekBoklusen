@@ -14,10 +14,10 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             _productService = productService;
         }
-        [HttpGet("Search/{searchText}")]
-        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
-        {
-            return Ok(await _productService.SearchProducts(searchText));
-        }
+        //[HttpGet("Search/{searchText}")]
+        //public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
+        //{
+        //    return Ok(await _productService.SearchProducts(searchText));
+        //}
     }
 }
