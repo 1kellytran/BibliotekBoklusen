@@ -24,7 +24,7 @@ namespace BibliotekBoklusen.Client.Services
             return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/GetProductById/{id}");
         }
 
-        public async Task CreateProduct(ProductModel product, CreatorModel creator)
+        public async Task CreateProduct(Product product, Creator creator)
         {
             ProductCreatorModel productCreator = new();
             productCreator.Product = product;
@@ -42,11 +42,11 @@ namespace BibliotekBoklusen.Client.Services
         {
             await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
         }
-        public async Task<List<CategoryModel>> GetAllCategories()
+        public async Task<List<Category>> GetAllCategories()
         {
-            List<CategoryModel> categories = new();
+            List<Category> categories = new();
 
-            categories = await _httpClient.GetFromJsonAsync<List<CategoryModel>>("api/product/GetAllCategories");
+            categories = await _httpClient.GetFromJsonAsync<List<Category>>("api/product/GetAllCategories");
 
             return categories;
         }

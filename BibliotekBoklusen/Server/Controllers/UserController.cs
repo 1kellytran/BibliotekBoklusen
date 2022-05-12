@@ -142,7 +142,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> ProductLoan(ProductModel productToAdd)
+        public async Task<IActionResult> ProductLoan(Product productToAdd)
         {
             var email = "bnma@hotmail.com";
             var user = _signInManager.UserManager.Users.FirstOrDefault(p => p.Email == email);

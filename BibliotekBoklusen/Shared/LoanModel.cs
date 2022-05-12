@@ -14,7 +14,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(Product))]
         public int? ProductId { get; set; }
-        public ProductModel? Product { get; set; }
+        public Product? Product { get; set; }
         public DateTime LoanDate { get; set; } = DateTime.Now;
         public DateTime ReturnDate { get; set; }
     }

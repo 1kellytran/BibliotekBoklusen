@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
-    public class CreatorModel
+    public class Creator
     {
         public int Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace BibliotekBoklusen.Shared
 
         [Required(ErrorMessage = "Lastname is required")]
         public string LastName { get; set; }
-        public List<ProductCreatorModel>? Products { get; set; } = new();
+        public List<Product>? Products { get; set; } = new();
 
     }
 }

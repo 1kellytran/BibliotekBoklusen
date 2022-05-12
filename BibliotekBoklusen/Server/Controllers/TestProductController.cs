@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -7,27 +8,44 @@ namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class TestProductController : ControllerBase
     {
-        // GET: api/<TestProductController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly AppDbContext _context;
+
+        public TestProductController(AppDbContext context)
         {
-            return new string[] { "value1", "value2" };
+            _context = context;
         }
 
-        // GET api/<TestProductController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        // GET: api/<TestProductController>
+       
 
         // POST api/<TestProductController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        public async Task<List<Category>> Get()
         {
+            //var product = new Product { Title = "haryypotter", PublishYear = 1976, Type = "Bok" };
+            //var category = new Category { CategoryName = "Deckare" };
+            //var creator = new Creator { FirstName = "Astrid", LastName = "Lindgren" };
+
+            //product.Creators.Add(creator);
+            //product.Category.Add(category);
+
+            //await _context.Products.AddAsync(product);
+
+            //await _context.SaveChangesAsync();  
+
+            //var result = _context.Products.Include(p => p.Creators)
+            //    .Include(c =>c.Category).ToList();
+
+
+            //return result;
+
+            var result = _context.Categories.Include(c => c.Products).ToList();
+            return result;
+
+
         }
 
         // PUT api/<TestProductController>/5

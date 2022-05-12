@@ -20,39 +20,39 @@ namespace BibliotekBoklusen.Server.Controllers
             _productService = productService;
         }
 
+        //[HttpGet]
+        //public async Task<ActionResult<List<ProductCreatorModel>>> GetAllProducts()
+        //{
+        //    var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ToList();
+
+        //    List<ProductCreatorModel> productCreatorList = new();
+
+        //    foreach (var item in productCreatorDb)
+        //    {
+        //        ProductCreatorModel productCreator = new();
+
+        //        var product = _context.Products.FirstOrDefault(p => p.Id == item.ProductId);
+        //        var creator = _context.Creators.FirstOrDefault(c => c.Id == item.CreatorId);
+
+        //        //creator.ProductCreators = null;
+        //        //product.ProductCreators = null;
+
+        //        productCreator.Creator = creator;
+        //        productCreator.Product = product;
+        //        productCreator.ProductId = item.ProductId;
+        //        productCreator.CreatorId = item.CreatorId;
+        //        productCreatorList.Add(productCreator);
+        //    }
+
+        //    if (productCreatorList == null)
+        //    {
+        //        return BadRequest("No products found");
+        //    }
+        //    return Ok(productCreatorList);
+        //}
+
         [HttpGet]
-        public async Task<ActionResult<List<ProductCreatorModel>>> GetAllProducts()
-        {
-            var productCreatorDb = _context.ProductCreator.Include(p => p.Product).ToList();
-
-            List<ProductCreatorModel> productCreatorList = new();
-
-            foreach (var item in productCreatorDb)
-            {
-                ProductCreatorModel productCreator = new();
-
-                var product = _context.Products.FirstOrDefault(p => p.Id == item.ProductId);
-                var creator = _context.Creators.FirstOrDefault(c => c.Id == item.CreatorId);
-
-                //creator.ProductCreators = null;
-                //product.ProductCreators = null;
-
-                productCreator.Creator = creator;
-                productCreator.Product = product;
-                productCreator.ProductId = item.ProductId;
-                productCreator.CreatorId = item.CreatorId;
-                productCreatorList.Add(productCreator);
-            }
-
-            if (productCreatorList == null)
-            {
-                return BadRequest("No products found");
-            }
-            return Ok(productCreatorList);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<List<CategoryModel>>> GetAllCategories()
+        public async Task<ActionResult<List<Category>>> GetAllCategories()
         {
             var categories =  _context.Categories.ToList();
             if (categories==null)
@@ -63,46 +63,46 @@ namespace BibliotekBoklusen.Server.Controllers
 
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
-        {
-            var product = _context.Products.FirstOrDefault(p => p.Id == id);
-            var productCreator= _context.ProductCreator.Where(pc => pc.ProductId == id).FirstOrDefault();
-            var creator = _context.Creators.Where(c => c.Id == productCreator.CreatorId).FirstOrDefault();
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<ProductCreatorModel>> GetProductById(int id)
+        //{
+        //    var product = _context.Products.FirstOrDefault(p => p.Id == id);
+        //    var productCreator= _context.ProductCreator.Where(pc => pc.ProductId == id).FirstOrDefault();
+        //    var creator = _context.Creators.Where(c => c.Id == productCreator.CreatorId).FirstOrDefault();
 
-            ProductCreatorModel model = new();
-            model.Creator = creator;
-            model.Product = product;
-            model.CreatorId = creator.Id;
-            model.ProductId = product.Id;
-            //model.Creator.ProductCreators = null;
-            //model.Product.ProductCreators = null;
+        //    ProductCreatorModel model = new();
+        //    model.Creator = creator;
+        //    model.Product = product;
+        //    model.CreatorId = creator.Id;
+        //    model.ProductId = product.Id;
+        //    //model.Creator.ProductCreators = null;
+        //    //model.Product.ProductCreators = null;
 
-            if (model == null)
-            {
-                return BadRequest("There is no product with that ID");
-            }
-            return Ok(model);
-        }
+        //    if (model == null)
+        //    {
+        //        return BadRequest("There is no product with that ID");
+        //    }
+        //    return Ok(model);
+        //}
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
-        {
-            var creator = _context.Creators.ToList();
+        //public async Task<IActionResult> CreateProduct([FromBody] ProductCreatorModel productToAdd)
+        //{
+        //    var creator = _context.Creators.ToList();
 
-            foreach (var item in creator)
-            {
-                if (item.FirstName == productToAdd.Creator.FirstName && item.LastName == productToAdd.Creator.LastName)
-                {
-                    productToAdd.Creator = item;
-                }
-            }
+        //    foreach (var item in creator)
+        //    {
+        //        if (item.FirstName == productToAdd.Creator.FirstName && item.LastName == productToAdd.Creator.LastName)
+        //        {
+        //            productToAdd.Creator = item;
+        //        }
+        //    }
 
-            _context.ProductCreator.Add(productToAdd);
-            await _context.SaveChangesAsync();
+        //    _context.ProductCreator.Add(productToAdd);
+        //    await _context.SaveChangesAsync();
 
-            return Ok("Product has been added");
-        }
+        //    return Ok("Product has been added");
+        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductCreatorModel productToUpdate)
@@ -135,10 +135,10 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been deleted");
         }
 
-        [HttpGet]
-        public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
-        {
-            return Ok(await _productService.SearchProducts(searchText));
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
+        //{
+        //    return Ok(await _productService.SearchProducts(searchText));
+        //}
     }
 }

@@ -10,7 +10,7 @@ namespace BibliotekBoklusen.Client.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<string> CreateProduct(ProductModel productToAdd)
+        public async Task<string> CreateProduct(Product productToAdd)
         {
             var result = await _httpClient.PostAsJsonAsync("api/test/createproduct", productToAdd);
             if(result.IsSuccessStatusCode)
