@@ -5,11 +5,14 @@ namespace BibliotekBoklusen.Client.Services
     public class DataManager : IDataManager
     {
         private readonly HttpClient _httpClient;
+
+        
+
         public DataManager(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-
+        public event Action ProductsChanged;
         public async Task <List<ProductCreatorModel>> GetAllProducts()
         {
             List<ProductCreatorModel> products = new();
@@ -55,6 +58,8 @@ namespace BibliotekBoklusen.Client.Services
 
         };
 
+        
+
         // ***** SEMINAR *****
         public async Task <List<SeminariumModel>> GetAllSeminars()
         {
@@ -87,10 +92,36 @@ namespace BibliotekBoklusen.Client.Services
         }
 
         // ***** SEARCH *****
-        public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
-        {
-            return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/SearchProducts/{searchText}");
+        //public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
+        //{
+        //    return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/SearchProducts/{searchText}");
 
+        //}
+        public List<ProductModel> Products { get; set; } = new List<ProductModel>();
+        public string Message { get; set; } = "Loading Products..";
+        public async Task SearchProducts(string searchText)
+        {
+            var result = await _httpClient
+                 .GetFromJsonAsync<ServiceResponse<List<ProductModel>>>($"api/product/search/{searchText}");
+            if (result != null && result.Data != null)
+            {
+                Products = result.Data;
+
+            }
+            if (Products.Count == 0) Message = "No products found.";
+            ProductsChanged?.Invoke();
         }
+
+
+        public async Task<List<string>> GetProductSearchSuggestions(string searchText)
+        {
+            var result = await _httpClient
+               .GetFromJsonAsync<ServiceResponse<List<string>>>($"api/product/searchsuggestions/{searchText}");
+            return result.Data;
+        }
+
+
     }
+    
 }
+
