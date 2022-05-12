@@ -1,0 +1,41 @@
+﻿@inject IDataManager DataManager
+@inject ICategoryManager CategoryManager
+@inject NavigationManager NavigationManager
+<div class="card-body">
+    <h3>Ta bort kategorier</h3>
+    @if (Categories != null)
+    {
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Kategorier</th>
+                </tr>
+            </thead>
+            @foreach (var category in Categories)
+            {
+                <tr>
+                 <td @onclick="() => NavigateToCategory(category.Id)">@category.CategoryName</td>
+                 <a class="btn btn-danger" @onclick="() => HandleDeleteCategory(category.Id)">x</a>   
+                </tr>
+            }
+        </table>
+    }
+</div>
+@code {
+    List<CategoryModel> Categories { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await DataManager.GetAllCategories();
+    }
+
+    async Task HandleDeleteCategory(int id)
+    {
+        await CategoryManager.DeleteCategoryAsync(id);
+        Categories = await DataManager.GetAllCategories();
+    }
+    async Task NavigateToCategory(int id)
+    {
+        NavigationManager.NavigateTo($"/category/{id}");
+    }
+}
