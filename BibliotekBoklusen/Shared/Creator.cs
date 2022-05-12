@@ -12,7 +12,7 @@ namespace BibliotekBoklusen.Shared
 
         [Required(ErrorMessage = "Lastname is required")]
         public string LastName { get; set; }
-        public List<ProductModel>? Products { get; set; } = new();
+        public List<ProductModel>? Products { get; set; }
 
     }
 }

@@ -57,7 +57,7 @@
         </InputRadioGroup>
     </div>
     <br />
-    <button type="submit" class="btn btn-primary" @onclick="(()=>RegisterProduct())">Add Product</button>
+    <button type="submit" class="btn btn-primary">Add Product</button>
 </EditForm>
 <br />
 <h4 class="validation-message">@message</h4>
@@ -67,7 +67,7 @@
     public Creator Creator { get; set; } = new();
     public ProductModel Product { get; set; } = new();
 
-    public List<Category> Categories { get; set; } = new();
+    public List<CategoryModel> Categories { get; set; } = new();
     public string type;
     string message;
 

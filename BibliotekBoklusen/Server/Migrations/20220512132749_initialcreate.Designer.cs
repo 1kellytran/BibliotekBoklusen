@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220512115049_intialcreate")]
-    partial class intialcreate
+    [Migration("20220512132749_initialcreate")]
+    partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("BibliotekBoklusen.Shared.Category", b =>
+            modelBuilder.Entity("BibliotekBoklusen.Shared.CategoryModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -329,7 +329,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CategoryProductModel", b =>
+            modelBuilder.Entity("CategoryModelProductModel", b =>
                 {
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -341,7 +341,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasIndex("ProductsId");
 
-                    b.ToTable("CategoryProductModel");
+                    b.ToTable("CategoryModelProductModel");
                 });
 
             modelBuilder.Entity("CreatorProductModel", b =>
@@ -419,9 +419,9 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CategoryProductModel", b =>
+            modelBuilder.Entity("CategoryModelProductModel", b =>
                 {
-                    b.HasOne("BibliotekBoklusen.Shared.Category", null)
+                    b.HasOne("BibliotekBoklusen.Shared.CategoryModel", null)
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)

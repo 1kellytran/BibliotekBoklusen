@@ -8,7 +8,7 @@
         Task CreateProduct(ProductModel product);
         Task UpdateProduct(int id, ProductCreatorModel product);
         Task DeleteProduct(int id);
-        Task<List<Category>> GetAllCategories();
+        Task<List<CategoryModel>> GetAllCategories();
         IList<string> Types => new List<string>();
 
         // ***** SEMINAR *****
