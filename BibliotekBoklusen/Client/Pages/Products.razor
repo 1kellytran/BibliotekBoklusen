@@ -1,4 +1,5 @@
 ﻿@page "/allproducts"
+@page "/search/{searchText}"
 @inject IDataManager DataManager
 
 <NotAuthorized>
@@ -35,6 +36,9 @@
     public List<ProductCreatorModel>? products { get; set; }
     public ProductCreatorModel? productToUpdate { get; set; }
 
+    [Parameter]
+    public string? SearchText { get; set; } = null;
+
     protected override async Task OnInitializedAsync()
     {
         products = await DataManager.GetAllProducts();
@@ -48,5 +52,17 @@
     public async Task DeleteProduct(int id)
     {
         await DataManager.DeleteProduct(id);
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+       if (SearchText != null)
+        {
+            await DataManager.SearchProducts(SearchText);
+        }
+        else
+        {
+            await DataManager.GetAllProducts();
+        }
     }
 }

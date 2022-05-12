@@ -19,6 +19,14 @@
         Task DeleteSeminar(int id);
 
         // ***** SEARCH *****
-        Task<List<ProductCreatorModel>> SearchProducts(string searchText);
+        //Task<List<ProductCreatorModel>> SearchProducts(string searchText);
+        event Action ProductsChanged;
+        List<ProductModel> Products { get; set; }
+        string Message { get; set; }
+
+        Task SearchProducts(string searchText);
+        Task<List<string>> GetProductSearchSuggestions(string searchText);
+
+
     }
 }
