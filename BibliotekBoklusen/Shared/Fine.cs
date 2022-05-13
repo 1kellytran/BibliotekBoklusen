@@ -8,11 +8,11 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(Loan))]
         public int? LoanId { get; set; }
-        public LoanModel? Loan { get; set; }
+        public Loan? Loan { get; set; }
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public UserModel? User { get; set; }
+        public User? User { get; set; }
 
         public DateTime FineDate { get; set; }
         public double FineAmount { get; set; }

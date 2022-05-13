@@ -7,22 +7,22 @@ namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly AppDbContext _context;
-        public CategoryController(AppDbContext context)
+        public CategoriesController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<CategoryModel>>> Get()
+        public async Task<ActionResult<List<Category>>> Get()
         {
             var categoryList = _context.Categories.ToList();
 
             if (categoryList == null)
             {
-                return BadRequest("No products found");
+                return NotFound("Category was not found");
             }
 
             return Ok(categoryList);
@@ -33,12 +33,12 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
-                return NotFound();
+                return NotFound("Category was not found");
             return Ok(category);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] CategoryModel categoryToAdd)
+        public async Task<IActionResult> Post([FromBody] Category categoryToAdd)
         {
             var productExists = _context.Categories
                 .FirstOrDefault(p => p.CategoryName.ToLower() == categoryToAdd.CategoryName.ToLower());
@@ -47,24 +47,24 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 _context.Categories.Add(categoryToAdd);
                 await _context.SaveChangesAsync();
-                return Ok(categoryToAdd.CategoryName);
+                return Ok("Category has been created");
             }
-            return BadRequest(categoryToAdd.CategoryName);
+            return BadRequest("Something went wrong");
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, CategoryModel newCategoryValues)
+        public async Task<IActionResult> Put(int id, Category newCategoryValues)
         {
             var categoryToChange = await _context.Categories.FindAsync(id);
             if (categoryToChange == null)
-                return NotFound();
+                return NotFound("Category was not found");
 
             categoryToChange.CategoryName = newCategoryValues.CategoryName;
             categoryToChange.isChecked = newCategoryValues.isChecked;
 
             _context.Update(categoryToChange);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("Category has been updated");
         }
 
         [HttpDelete("{id}")]
@@ -72,11 +72,11 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var categoryToDelete = await _context.Categories.FindAsync(id);
             if (categoryToDelete == null)
-                return NotFound();
+                return NotFound("Category was not found");
 
             _context.Categories.Remove(categoryToDelete);
             await _context.SaveChangesAsync();
-            return Ok();
+            return Ok("Category has been deleted");
         }
     }
 }

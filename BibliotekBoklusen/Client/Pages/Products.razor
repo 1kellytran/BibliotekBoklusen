@@ -18,12 +18,12 @@
             @foreach (var p in products)
             {
                 <tr>
-                    <a href="/ProductById/@p.Product.Id" class="table-bordered">@p.Product.Title</a>
-                    <td>@p.Product.Type</td>
-                    <td>@p.Product.PublishYear</td>
-                    <td>@p.Creator.FirstName @p.Creator.LastName</td>
-                    <td><a class="btn btn-warning" @onclick="() => EditProduct(p.ProductId, p)">i</a></td>
-                    <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.ProductId)">x</a></td>
+                    <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
+                    <td>@p.Type</td>
+                    <td>@p.PublishYear</td>
+                    @*<td>@p.Creator.FirstName @p.Creator.LastName</td>*@
+                    <td><a class="btn btn-warning" @onclick="() => EditProduct(p.Id, p)">i</a></td>
+                    <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
             }
         </table>
@@ -33,8 +33,8 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<ProductCreatorModel>? products { get; set; }
-    public ProductCreatorModel? productToUpdate { get; set; }
+    public List<Product>? products { get; set; }
+    public Product? productToUpdate { get; set; }
 
     [Parameter]
     public string? SearchText { get; set; } = null;
@@ -44,7 +44,7 @@
         products = await DataManager.GetAllProducts();
     }
 
-    public async Task EditProduct(int id, ProductCreatorModel productToUpdate)
+    public async Task EditProduct(int id, Product productToUpdate)
     {
         await DataManager.UpdateProduct(id, productToUpdate);
     }

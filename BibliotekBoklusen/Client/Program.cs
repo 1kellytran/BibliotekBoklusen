@@ -24,5 +24,6 @@ builder.Services.AddScoped<IDataManager, DataManager>();
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
+builder.Services.AddScoped<ICreatorManager, CreatorManager>();
 
 await builder.Build().RunAsync();

@@ -8,7 +8,7 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public UserModel? User { get; set; }
+        public User? User { get; set; }
         public DateTime PaymentDate { get; set; }
         public double PaymentAmount { get; set; }
     }
