@@ -30,9 +30,9 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             return new ServiceResponse<List<string>> { Data = result };
         }
 
-        public async Task<ServiceResponse<List<ProductModel>>> SearchProducts(string searchText)
+        public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
         {
-            var response = new ServiceResponse<List<ProductModel>>
+            var response = new ServiceResponse<List<Product>>
             {
                 Data = await FindProductsBySearchText(searchText)
             };
@@ -40,7 +40,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
         }
 
-        private async Task<List<ProductModel>> FindProductsBySearchText(string searchText)
+        private async Task<List<Product>> FindProductsBySearchText(string searchText)
         {
             return await _context.Products
                             .Where(p => p.Title.ToLower().Contains(searchText.ToLower()))

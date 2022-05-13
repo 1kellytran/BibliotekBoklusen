@@ -95,12 +95,14 @@ namespace BibliotekBoklusen.Client.Services
         //    return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/SearchProducts/{searchText}");
 
         //}
-        public List<ProductModel> Products { get; set; } = new List<ProductModel>();
+        public List<Product> Products { get; set; } = new List<Product>();
         public string Message { get; set; } = "Loading Products..";
+        List<Product> IDataManager.Products { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public async Task SearchProducts(string searchText)
         {
             var result = await _httpClient
-                 .GetFromJsonAsync<ServiceResponse<List<ProductModel>>>($"api/product/search/{searchText}");
+                 .GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/search/{searchText}");
             if (result != null && result.Data != null)
             {
                 Products = result.Data;
@@ -108,15 +110,12 @@ namespace BibliotekBoklusen.Client.Services
             }
             if (Products.Count == 0) Message = "No products found.";
             ProductsChanged?.Invoke();
+        }
         public Task<List<Category>> GetAllCategories()
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Creator>> SearchProducts(string searchText)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public async Task<List<string>> GetProductSearchSuggestions(string searchText)
@@ -126,7 +125,10 @@ namespace BibliotekBoklusen.Client.Services
             return result.Data;
         }
 
-
+        Task<List<Creator>> IDataManager.SearchProducts(string searchText)
+        {
+            throw new NotImplementedException();
+        }
     }
     
 }

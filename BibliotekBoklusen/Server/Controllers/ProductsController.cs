@@ -135,14 +135,14 @@ namespace BibliotekBoklusen.Server.Controllers
 
 
         [HttpGet("search/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<ProductModel>>>> SearchProducts(string searchText)
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
         {
             var result = await _productService.SearchProducts(searchText);
             return Ok(result);
         }
 
         [HttpGet("searchsuggestions/{searchText}")]
-        public async Task<ActionResult<ServiceResponse<List<ProductModel>>>> GetProductSearchSuggestions(string searchText)
+        public async Task<ActionResult<ServiceResponse<List<Product>>>> GetProductSearchSuggestions(string searchText)
         {
             var result = await _productService.GetProductSearchSuggestions(searchText);
             return Ok(result);

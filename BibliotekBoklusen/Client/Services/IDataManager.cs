@@ -21,12 +21,10 @@
         // ***** SEARCH *****
         //Task<List<ProductCreatorModel>> SearchProducts(string searchText);
         event Action ProductsChanged;
-        List<ProductModel> Products { get; set; }
+        List<Product> Products { get; set; }
         string Message { get; set; }
 
-        Task SearchProducts(string searchText);
         Task<List<string>> GetProductSearchSuggestions(string searchText);
-
 
         Task<List<Creator>> SearchProducts(string searchText);
     }
