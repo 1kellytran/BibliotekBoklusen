@@ -7,17 +7,36 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class LoansController : ControllerBase
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly AppDbContext _context;
 
-        public LoansController(AppDbContext appDbContext)
+        public LoansController(AppDbContext context)
         {
-            _appDbContext = appDbContext;
+            _context = context;
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Get()
-        //{
+        [HttpGet]
+        public async Task<ActionResult<List<Loan>>> GetAllLoans()
+        {
+            var loans = _context.Loans.ToList();
 
-        //}
+            if (loans == null || loans.Count <= 0)
+            {
+                return NotFound("There are no seminars");
+            }
+            return Ok(loans);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Seminarium>> GetLoansById(int id)
+        {
+            var loan = _context.Loans.FirstOrDefault(s => s.CopyId == id);
+
+            if (loan == null)
+            {
+                return NotFound("There is no loan with that ID");
+            }
+            return Ok(loan);
+        }
+
     }
 }
