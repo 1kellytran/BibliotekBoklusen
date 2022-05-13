@@ -1,6 +1,7 @@
 ﻿@page "/allproducts"
 @page "/search/{searchText}"
 @inject IDataManager DataManager
+@inject ISearchManager SearchManager
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -58,7 +59,7 @@
     {
        if (SearchText != null)
         {
-            await DataManager.SearchProducts(SearchText);
+            await SearchManager.SearchProducts(SearchText);
         }
         else
         {

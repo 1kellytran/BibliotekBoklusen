@@ -21,7 +21,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetAllProducts()
+        public async Task<ActionResult<List<Product>>>GetAllProducts()
         {
             var productCreatorList = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
