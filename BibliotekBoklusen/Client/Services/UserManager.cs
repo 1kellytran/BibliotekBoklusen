@@ -23,9 +23,9 @@ namespace BibliotekBoklusen.Client.Services
             await _http.DeleteAsync($"api/user{email}");
         }
 
-        public async Task<List<User>> GetAllUser()
+        public async Task<List<UserModel>> GetAllUser()
         {
-            var result = await _http.GetFromJsonAsync<List<User>>($"api/user/GetAllUser");
+            var result = await _http.GetFromJsonAsync<List<UserModel>>($"api/user/GetAllUser");
 
             if (result != null)
             {
@@ -34,10 +34,10 @@ namespace BibliotekBoklusen.Client.Services
             return null;
         }
 
-        public async Task<User> GetUser(int id)
+        public async Task<UserModel> GetUser(int id)
         {
             //($"api/user/{id}")
-            var result = await _http.GetFromJsonAsync<User>($"api/user/{id}");
+            var result = await _http.GetFromJsonAsync<UserModel>($"api/user/{id}");
 
             if (result != null)
             {

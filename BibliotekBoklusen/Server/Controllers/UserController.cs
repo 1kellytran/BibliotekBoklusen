@@ -26,7 +26,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<User>> GetAllUser()
+        public ActionResult<List<UserModel>> GetAllUser()
         {
             var result = _context.Users.ToList();
             if (result == null)
@@ -40,7 +40,7 @@ namespace BibliotekBoklusen.Server.Controllers
         // get a specific user
         // GET api/UserController>/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserModel>> GetUser(int id)
         {
 
             var dbUser = _context.Users
@@ -142,14 +142,14 @@ namespace BibliotekBoklusen.Server.Controllers
 
         [HttpPost]
 
-        public async Task<IActionResult> ProductLoan(Product productToAdd)
+        public async Task<IActionResult> ProductLoan(ProductModel productToAdd)
         {
             var email = "bnma@hotmail.com";
             var user = _signInManager.UserManager.Users.FirstOrDefault(p => p.Email == email);
             if (user != null)
             {
                 var dbUser = _context.Users.FirstOrDefault(u => u.Email == email);
-                Reservation reservationModel = new()
+                ReservationModel reservationModel = new()
                 {
                     Product = productToAdd,
                     User = dbUser,

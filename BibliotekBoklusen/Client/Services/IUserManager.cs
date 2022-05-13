@@ -2,8 +2,8 @@
 {
     public interface IUserManager
     {
-        Task<List<User>> GetAllUser();
-        Task<User> GetUser(int id);
+        Task<List<UserModel>> GetAllUser();
+        Task<UserModel> GetUser(int id);
         Task UpdateUserinformation(UpdatedUserDto model);
         Task ChangePassword(PasswordDto editPassword);
         Task DeleteUser(string email);

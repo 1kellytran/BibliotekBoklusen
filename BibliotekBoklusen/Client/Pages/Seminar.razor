@@ -79,9 +79,9 @@ else
 </div>
 
 @code {
-    public List<Seminarium>? AllSeminars { get; set; } = new();
-    public Seminarium CreateSeminar { get; set; } = new();
-    public Seminarium UpdateSeminar { get; set; } = new();
+    public List<SeminariumModel>? AllSeminars { get; set; } = new();
+    public SeminariumModel CreateSeminar { get; set; } = new();
+    public SeminariumModel UpdateSeminar { get; set; } = new();
     public bool Edit;
 
     protected override async Task OnInitializedAsync()
@@ -89,12 +89,12 @@ else
         AllSeminars = await DataManager.GetAllSeminars();
     }
 
-    public async Task EditSeminar(int id, Seminarium seminarToUpdate)
+    public async Task EditSeminar(int id, SeminariumModel seminarToUpdate)
     {
         Edit = true;
     }
 
-    public async Task SaveEditSeminar(int id, Seminarium UpdateSeminar)
+    public async Task SaveEditSeminar(int id, SeminariumModel UpdateSeminar)
     {
         await DataManager.UpdateSeminar(id, UpdateSeminar);
         Edit = false;

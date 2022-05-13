@@ -86,7 +86,7 @@ namespace BibliotekBoklusen.Server.Controllers
                     UserName = model.Email
                 };
 
-                User userModel = new User()
+                UserModel userModel = new UserModel()
                 {
                     FirstName = model.FirstName,
                     LastName = model.LastName,
@@ -147,7 +147,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Admin);
             }
           
-            User userModel = new User()
+            UserModel userModel = new UserModel()
             {
 
                 FirstName = model.FirstName,

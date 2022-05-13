@@ -2,22 +2,22 @@
 
 namespace BibliotekBoklusen.Shared
 {
-    public class Reservation
+    public class ReservationModel
     {
         public int Id { get; set; }
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
-        public User? User { get; set; }
+        public UserModel? User { get; set; }
 
         [ForeignKey(nameof(Product))]
         public int? ProductId { get; set; }
-        public Product? Product { get; set; }
+        public ProductModel? Product { get; set; }
 
         public DateTime ReservationDate { get; set; }
 
-        [ForeignKey(nameof(ReservationStatus))]
+        [ForeignKey(nameof(Reservation))]
         public int? ReservationStatusId { get; set; }
-        public ReservationStatus? Reservations { get; set; }
+        public ReservationModel? Reservation { get; set; }
     }
 }

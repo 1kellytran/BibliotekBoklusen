@@ -1,6 +1,6 @@
 ﻿namespace BibliotekBoklusen.Shared
 {
-    public class Seminarium
+    public class SeminariumModel
     {
         public int Id { get; set; }
         public string Title { get; set; } = String.Empty;

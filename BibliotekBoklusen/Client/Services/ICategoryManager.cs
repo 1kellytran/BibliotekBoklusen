@@ -2,10 +2,10 @@
 {
     public interface ICategoryManager
     {
-        Task<List<Category>> GetAllCategoriesAsync();
-        Task<Category> GetCategoryByIdAsync(int id);
-        Task<string> AddCategory(Category category);
-        Task UpdateCategory(Category category);
+        Task<List<CategoryModel>> GetAllCategoriesAsync();
+        Task<CategoryModel> GetCategoryByIdAsync(int id);
+        Task<string> AddCategory(CategoryModel category);
+        Task UpdateCategory(CategoryModel category);
         Task DeleteCategoryAsync(int id);
     }
 }

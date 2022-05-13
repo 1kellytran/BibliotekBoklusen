@@ -1,6 +1,6 @@
 ﻿namespace BibliotekBoklusen.Shared
 {
-    public class User
+    public class UserModel
     {
         public int Id { get; set; }
         public string FirstName { get; set; } = String.Empty;
