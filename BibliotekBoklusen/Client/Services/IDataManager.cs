@@ -3,22 +3,22 @@
     public interface IDataManager
     {
         // ***** PRODUCT *****
-        Task<List<ProductCreatorModel>> GetAllProducts();
-        Task<ProductCreatorModel> GetProductById(int id);
-        Task CreateProduct(ProductModel product);
-        Task UpdateProduct(int id, ProductCreatorModel product);
+        Task<List<Product>> GetAllProducts();
+        Task<Product> GetProductById(int id);
+        Task CreateProduct(Product product);
+        Task UpdateProduct(int id, Product product);
         Task DeleteProduct(int id);
-        Task<List<CategoryModel>> GetAllCategories();
+        Task<List<Category>> GetAllCategories();
         IList<string> Types => new List<string>();
 
         // ***** SEMINAR *****
-        Task<List<SeminariumModel>> GetAllSeminars();
-        Task<SeminariumModel> GetSeminarById(int id);
-        Task CreateSeminar(SeminariumModel seminar);
-        Task UpdateSeminar(int id, SeminariumModel seminar);
+        Task<List<Seminarium>> GetAllSeminars();
+        Task<Seminarium> GetSeminarById(int id);
+        Task CreateSeminar(Seminarium seminar);
+        Task UpdateSeminar(int id, Seminarium seminar);
         Task DeleteSeminar(int id);
 
         // ***** SEARCH *****
-        Task<List<ProductCreatorModel>> SearchProducts(string searchText);
+        Task<List<Creator>> SearchProducts(string searchText);
     }
 }

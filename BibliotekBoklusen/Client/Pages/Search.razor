@@ -1,4 +1,4 @@
-﻿@page "/Search"
+﻿@*@page "/Search"
 @inject IDataManager DataManager
 @inject NavigationManager NavigationManager
 
@@ -23,20 +23,20 @@
 </BlazoredTypeahead>
 
 @code {
-	private ProductCreatorModel selectedProduct;
+	private Product selectedProduct;
 
-	private void HandleSearch(ProductCreatorModel product)
+	private void HandleSearch(Product product)
 	{
 		if(product == null) return;
 		selectedProduct = product;
-		NavigationManager.NavigateTo($"/product/{selectedProduct.ProductId}");
+		NavigationManager.NavigateTo($"/product/{selectedProduct.Id}");
 
 	}
 
-	private async Task<IEnumerable<ProductCreatorModel>>SearchProduct(string searchText)
+	private async Task<IEnumerable<Product>>SearchProduct(string searchText)
 	{
 		var response = await DataManager.SearchProducts(searchText);
 		return response;
 	}
 
-}
+}*@

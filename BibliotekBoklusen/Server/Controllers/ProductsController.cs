@@ -21,7 +21,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProductModel>>> GetAllProducts()
+        public async Task<ActionResult<List<Product>>> GetAllProducts()
         {
             var productCreatorList = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
@@ -37,7 +37,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProductModel>> GetProductById(int id)
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             var product = _context.Products.Include(p => p.Creators).Include(c => c.Category).FirstOrDefault(p => p.Id == id);
 
@@ -50,29 +50,42 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductModel productToAdd)
+        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
         {
-
+            // Kollar om produkten redan finns i db genom titel och typ.
             var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
+
             if (productExists == null)
             {
-                var category = new CategoryModel { CategoryName = "Superhjältar", isChecked = false };
-                var categories = new List<CategoryModel>();
-                categories.Add(category);
-                var creator = new Creator { FirstName = "astrid", LastName = "lindgren" };
-                var creators = new List<Creator>();
-                creators.Add(creator);
+                var categoryList = new List<Category>();
 
-                var product = new ProductModel()
+                // Kollar om kategorin redan finns i databasen. Lägger då till den i en lista.
+                foreach (var category in productToAdd.Category)
                 {
-                    Title = productToAdd.Title,
-                    PublishYear = 1986,
-                    Type = productToAdd.Type,
-                    Category = categories,
-                    Creators = creators
-                };
+                    var categoryExists = _context.Categories.FirstOrDefault(c => c.Id == category.Id);
+                    if (categoryExists != null)
+                        categoryList.Add(categoryExists);
+                    else
+                        categoryList.Add(category);
+                }
+                productToAdd.Category = categoryList;
 
-                _context.Products.Add(product);
+                var creatorList = new List<Creator>();
+
+                // Kollar om författaren redan finns. Lägger då till den i en ny lista.
+                foreach (var creator in productToAdd.Creators)
+                {
+                    var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == creator.FirstName.ToLower() && c.LastName.ToLower() == creator.LastName.ToLower());
+
+                    if (creatorExists != null)
+                        creatorList.Add(creatorExists);
+                    else
+                        creatorList.Add(creator);
+                }
+
+                productToAdd.Creators = creatorList;
+
+                _context.Products.Add(productToAdd);
                 await _context.SaveChangesAsync();
                 return Ok("Product has been added");
             }
@@ -80,17 +93,21 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] ProductCreatorModel productToUpdate)
+        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product productToUpdate)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == id);
+            if(product != null)
+            {
+                product.Title = productToUpdate.Title;
+                product.Type = productToUpdate.Type;
+                product.PublishYear = productToUpdate.PublishYear;
+                await _context.SaveChangesAsync();
 
-            product.Title = productToUpdate.Product.Title;
-            product.Type = productToUpdate.Product.Type;
-            product.PublishYear = productToUpdate.Product.PublishYear;
+                return Ok("Product has been updated");
+            }
+            return NotFound();
 
-            await _context.SaveChangesAsync();
-
-            return Ok("Product has been updated");
+         
         }
 
         [HttpDelete("{id}")]
@@ -110,10 +127,5 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Product has been deleted");
         }
 
-        //[HttpGet]
-        //public async Task<ActionResult<List<ProductCreatorModel>>> SearchProducts(string searchText)
-        //{
-        //    return Ok(await _productService.SearchProducts(searchText));
-        //}
     }
 }

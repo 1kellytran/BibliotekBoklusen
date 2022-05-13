@@ -21,6 +21,6 @@ builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<IDataManager, DataManager>();
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
-
+builder.Services.AddScoped<ICreatorManager, CreatorManager>();
 
 await builder.Build().RunAsync();

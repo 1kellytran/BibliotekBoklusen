@@ -10,26 +10,26 @@ namespace BibliotekBoklusen.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task <List<ProductCreatorModel>> GetAllProducts()
+        public async Task <List<Product>> GetAllProducts()
         {
-            List<ProductCreatorModel> products = new();
+            List<Product> products = new();
 
-            products = await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>("api/product");
+            products = await _httpClient.GetFromJsonAsync<List<Product>>("api/product");
 
             return products;
         }
 
-        public async Task<ProductCreatorModel> GetProductById(int id)
+        public async Task<Product> GetProductById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<ProductCreatorModel>($"api/product/{id}");
+            return await _httpClient.GetFromJsonAsync<Product>($"api/product/{id}");
         }
 
-        public async Task CreateProduct(ProductModel productToAdd)
+        public async Task CreateProduct(Product productToAdd)
         {
             await _httpClient.PostAsJsonAsync("api/products", productToAdd);
         }
 
-        public async Task UpdateProduct(int id, ProductCreatorModel product)
+        public async Task UpdateProduct(int id, Product product)
         {
             await _httpClient.PutAsJsonAsync($"api/product/UpdateProduct/{id}", product);
         }
@@ -38,14 +38,7 @@ namespace BibliotekBoklusen.Client.Services
         {
             await _httpClient.DeleteAsync($"api/product/DeleteProduct/{id}");
         }
-        public async Task<List<CategoryModel>> GetAllCategories()
-        {
-            List<CategoryModel> categories = new();
-
-            categories = await _httpClient.GetFromJsonAsync<List<CategoryModel>>("api/category");
-
-            return categories;
-        }
+  
         public IList<string> Types => new List<string>
         {
             new string("Film"),
@@ -56,9 +49,9 @@ namespace BibliotekBoklusen.Client.Services
         };
 
         // ***** SEMINAR *****
-        public async Task <List<SeminariumModel>> GetAllSeminars()
+        public async Task <List<Seminarium>> GetAllSeminars()
         {
-            var result = await _httpClient.GetFromJsonAsync<List<SeminariumModel>>("api/seminar/GetAllSeminars");
+            var result = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminar/GetAllSeminars");
             if(result != null || result.Count == 0)
             {
                 return result;
@@ -66,19 +59,19 @@ namespace BibliotekBoklusen.Client.Services
             return null;
         }
 
-        public async Task<SeminariumModel> GetSeminarById(int id)
+        public async Task<Seminarium> GetSeminarById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<SeminariumModel>("api/seminar/GetSeminarById");
+            return await _httpClient.GetFromJsonAsync<Seminarium>("api/seminar/GetSeminarById");
         }
 
-        public async Task CreateSeminar(SeminariumModel seminar)
+        public async Task CreateSeminar(Seminarium seminar)
         {
-            await _httpClient.PostAsJsonAsync<SeminariumModel>("api/seminar/CreateSeminar", seminar);
+            await _httpClient.PostAsJsonAsync<Seminarium>("api/seminar/CreateSeminar", seminar);
         }
 
-        public async Task UpdateSeminar(int id, SeminariumModel seminar)
+        public async Task UpdateSeminar(int id, Seminarium seminar)
         {
-            await _httpClient.PutAsJsonAsync<SeminariumModel>($"api/seminar/UpdateSeminar/{id}", seminar);
+            await _httpClient.PutAsJsonAsync<Seminarium>($"api/seminar/UpdateSeminar/{id}", seminar);
         }
 
         public async Task DeleteSeminar(int id)
@@ -86,11 +79,14 @@ namespace BibliotekBoklusen.Client.Services
             await _httpClient.DeleteAsync($"api/seminar/DeleteSeminar/{id}");
         }
 
-        // ***** SEARCH *****
-        public async Task<List<ProductCreatorModel>> SearchProducts(string searchText)
+        public Task<List<Category>> GetAllCategories()
         {
-            return await _httpClient.GetFromJsonAsync<List<ProductCreatorModel>>($"api/Product/SearchProducts/{searchText}");
+            throw new NotImplementedException();
+        }
 
+        public Task<List<Creator>> SearchProducts(string searchText)
+        {
+            throw new NotImplementedException();
         }
     }
 }

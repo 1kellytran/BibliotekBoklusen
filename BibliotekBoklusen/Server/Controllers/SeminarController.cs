@@ -16,7 +16,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<SeminariumModel>>> GetAllSeminars()
+        public async Task<ActionResult<List<Seminarium>>> GetAllSeminars()
         {
             var seminar = _context.Seminariums.ToList();
 
@@ -28,7 +28,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<SeminariumModel>> GetSeminarById(int id)
+        public async Task<ActionResult<Seminarium>> GetSeminarById(int id)
         {
             var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
 
@@ -40,7 +40,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSeminar([FromBody] SeminariumModel seminarToAdd)
+        public async Task<IActionResult> CreateSeminar([FromBody] Seminarium seminarToAdd)
         {
             _context.Seminariums.Add(seminarToAdd);
             await _context.SaveChangesAsync();
@@ -49,7 +49,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSeminar(int id, [FromBody] SeminariumModel seminarToUpdate)
+        public async Task<IActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
         {
             var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
 
