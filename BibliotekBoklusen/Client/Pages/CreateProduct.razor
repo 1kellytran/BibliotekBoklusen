@@ -3,7 +3,7 @@
 
 <h3>AddProduct</h3>
 
-<EditForm Model="Product">
+<EditForm Model="Product" OnValidSubmit=RegisterProduct>
     <DataAnnotationsValidator />
 
     <div class="form-group">
@@ -65,9 +65,9 @@
 
 @code {
     public Creator Creator { get; set; } = new();
-    public ProductModel Product { get; set; } = new();
+    public Product Product { get; set; } = new();
 
-    public List<CategoryModel> Categories { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
     public string type;
     string message;
 
