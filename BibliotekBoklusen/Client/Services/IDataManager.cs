@@ -11,12 +11,8 @@
         Task<List<Category>> GetAllCategories();
         IList<string> Types => new List<string>();
 
-        // ***** SEMINAR *****
-        Task<List<Seminarium>> GetAllSeminars();
-        Task<Seminarium> GetSeminarById(int id);
-        Task CreateSeminar(Seminarium seminar);
-        Task UpdateSeminar(int id, Seminarium seminar);
-        Task DeleteSeminar(int id);
+        
+       
 
         // ***** SEARCH *****
         //Task<List<ProductCreatorModel>> SearchProducts(string searchText);

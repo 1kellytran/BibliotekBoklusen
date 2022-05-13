@@ -1,5 +1,5 @@
 ﻿@page "/seminar"
-@inject IDataManager DataManager
+@inject ISeminarManager SeminarManager
 @inject NavigationManager NavigationManager
 
 <h3>Seminarium</h3>
@@ -86,7 +86,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        AllSeminars = await DataManager.GetAllSeminars();
+        AllSeminars = await SeminarManager.GetAllSeminars();
     }
 
     public async Task EditSeminar(int id, Seminarium seminarToUpdate)
@@ -96,18 +96,18 @@ else
 
     public async Task SaveEditSeminar(int id, Seminarium UpdateSeminar)
     {
-        await DataManager.UpdateSeminar(id, UpdateSeminar);
+        await SeminarManager.UpdateSeminar(id, UpdateSeminar);
         Edit = false;
     }
 
     public async Task DeleteSeminar(int id)
     {
-        await DataManager.DeleteSeminar(id);
+        await SeminarManager.DeleteSeminar(id);
     }
 
     public async Task HandleSeminar()
     {
-        await DataManager.CreateSeminar(CreateSeminar);
+        await SeminarManager.CreateSeminar(CreateSeminar);
         NavigationManager.NavigateTo("/Seminar");
     }
 }
