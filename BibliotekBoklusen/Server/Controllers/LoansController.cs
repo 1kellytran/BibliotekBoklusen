@@ -39,19 +39,22 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLoan(Loan loan)
+        public async Task<IActionResult> CreateLoan()
         {
-            _context.Loans.Add(loan);
+            Loan loan2 = new Loan();
+            loan2.LoanDate = DateTime.Now;
+            loan2.ReturnDate = DateTime.Now.AddDays(14);
+            _context.Loans.Add(loan2);
             await _context.SaveChangesAsync();
             
-            if (loan == null)
+            if (loan2 == null)
             {
                 return NotFound("Error");
             }
-            return Ok(loan);
+            return Ok(loan2);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLoan(int id)
         {
             var loan = _context.Loans.Where(x => x.CopyId == id).FirstOrDefault();
@@ -70,13 +73,13 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutLoan([FromRoute] int copyId, [FromBody] Product productToUpdate)
+        public async Task<IActionResult> UpdateLoan([FromBody] Loan loanToUpdate)
         {
 
-            var loan = _context.Loans.FirstOrDefault(x => x.CopyId == copyId);
+            var loan = _context.Loans.FirstOrDefault(x => x.CopyId == loanToUpdate.CopyId);
             if (loan != null)
             {
-                loan.LoanDate = DateTime.Now.AddDays(14);
+                loan.ReturnDate = loan.ReturnDate.AddDays(14);
                 await _context.SaveChangesAsync();
 
                 return Ok("Product has been updated");
