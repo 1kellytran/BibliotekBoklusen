@@ -1,6 +1,6 @@
 ﻿namespace BibliotekBoklusen.Client.Services
 {
-    public class FineManager
+    public class FineManager : IFineManager
     {
         private readonly HttpClient _httpClient;
 
@@ -15,7 +15,7 @@
             {
                 return null;
             }
-               
+
             return fines;
         }
 
@@ -26,7 +26,7 @@
             {
                 return null;
             }
-            
+
             return fine;
         }
 
@@ -37,7 +37,7 @@
             {
                 return await result.Content.ReadAsStringAsync();
             }
-                
+
             return null;
         }
 
