@@ -21,13 +21,13 @@ namespace BibliotekBoklusen.Server.Controllers
 
             if (loans == null || loans.Count <= 0)
             {
-                return NotFound("There are no seminars");
+                return NotFound("There are no loans");
             }
             return Ok(loans);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Seminarium>> GetLoansById(int id)
+        public async Task<ActionResult<Loan>> GetLoansById(int id)
         {
             var loan = _context.Loans.FirstOrDefault(s => s.CopyId == id);
 
@@ -41,17 +41,17 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateLoan()
         {
-            Loan loan2 = new Loan();
-            loan2.LoanDate = DateTime.Now;
-            loan2.ReturnDate = DateTime.Now.AddDays(14);
-            _context.Loans.Add(loan2);
+            Loan loan = new Loan();
+            loan.LoanDate = DateTime.Now;
+            loan.ReturnDate = DateTime.Now.AddDays(14);
+            _context.Loans.Add(loan);
             await _context.SaveChangesAsync();
             
-            if (loan2 == null)
+            if (loan == null)
             {
                 return NotFound("Error");
             }
-            return Ok(loan2);
+            return Ok(loan);
         }
 
         [HttpDelete("{id}")]
@@ -61,7 +61,7 @@ namespace BibliotekBoklusen.Server.Controllers
            
             if (loan == null)
             {
-                return BadRequest("There is no product with that ID");
+                return BadRequest("There is no loan with that ID");
             }
             else
             {
@@ -69,7 +69,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 await _context.SaveChangesAsync();
 
             }
-            return Ok("Product has been deleted");
+            return Ok("Loan has been deleted");
         }
 
         [HttpPut]
@@ -82,7 +82,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 loan.ReturnDate = loan.ReturnDate.AddDays(14);
                 await _context.SaveChangesAsync();
 
-                return Ok("Product has been updated");
+                return Ok("Loan has been updated");
             }
             return NotFound();
 
