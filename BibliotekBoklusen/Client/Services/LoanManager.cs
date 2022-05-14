@@ -11,25 +11,34 @@
         }
         public async Task<List<Loan>> GetAllLoansAsync()
         {
-            var creators = await _httpClient.GetFromJsonAsync<List<Loan>>("api/loans");
-            if (creators == null)
+            var loans = await _httpClient.GetFromJsonAsync<List<Loan>>("api/loans");
+            if (loans == null)
+            {
                 return null;
-            return creators;
+            }
+                
+            return loans;
         }
 
         public async Task<Loan> GetLoanByIdAsync(int id)
         {
-            var creator = await _httpClient.GetFromJsonAsync<Loan>($"api/loans/{id}");
-            if (creator == null)
+            var loan = await _httpClient.GetFromJsonAsync<Loan>($"api/loans/{id}");
+            if (loan == null)
+            {
                 return null;
-            return creator;
+            }
+                
+            return loan;
         }
 
         public async Task<string> AddLoan(Loan loan)
         {
             var result = await _httpClient.PostAsJsonAsync("api/loans", loan);
             if (result.IsSuccessStatusCode)
+            {
                 return await result.Content.ReadAsStringAsync();
+            }
+                
             return null;
         }
 
@@ -42,12 +51,6 @@
         {
             await _httpClient.DeleteAsync($"api/loans/{id}");
         }
-
-
-
-
-
-
 
     }
 
