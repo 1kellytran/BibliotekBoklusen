@@ -1,0 +1,76 @@
+﻿@inject ICategoryManager CategoryManager
+@inject NavigationManager NavigationManager
+
+<EditForm Model=Category OnValidSubmit=HandleAddCategory>
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="Title">Kategori namn:</label>
+        <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
+        <ValidationMessage For="@(() => Category.CategoryName)" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary mt-2">Lägg till</button>
+</EditForm>
+
+@message
+
+
+<div class="card-body">
+    <h3>Ta bort kategorier</h3>
+    @if (Categories != null)
+    {
+        <table class="table">
+            <thead class="thead-light mb-2">
+                <tr>
+                    <th>Kategorier</th>
+                </tr>
+            </thead>
+            @foreach (var category in Categories)
+            {
+                <tr  >
+                 <td @onclick="() => NavigateToCategory(category.Id)">@category.CategoryName</td>
+                 <a class="btn btn-danger" @onclick="() => HandleDeleteCategory(category.Id)">x</a>   
+                </tr>
+                
+            }
+        </table>
+    }
+</div>
+@code {
+    List<Category> Categories { get; set; }
+    public Category Category { get; set; } = new();
+    string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categories = await CategoryManager.GetAllCategoriesAsync();
+    }
+
+    async Task HandleDeleteCategory(int id)
+    {
+        await CategoryManager.DeleteCategoryAsync(id);
+        Categories = await CategoryManager.GetAllCategoriesAsync();
+        foreach(var category in Categories)
+        {
+            if(category.Id == id)
+            {
+                message = $"{category.CategoryName} har tagits bort";
+            }
+        }
+    }
+    async Task NavigateToCategory(int id)
+    {
+        NavigationManager.NavigateTo($"/category/{id}");
+    }
+    async Task HandleAddCategory()
+    {
+        var result = await CategoryManager.AddCategory(Category);
+        if (result != null)
+            message = $"{Category.CategoryName} har lagts till";
+        else
+            message = $"{Category.CategoryName} finns redan";
+
+        Categories = await CategoryManager.GetAllCategoriesAsync(); 
+    }
+}
