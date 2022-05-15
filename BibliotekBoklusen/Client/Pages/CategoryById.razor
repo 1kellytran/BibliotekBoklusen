@@ -1,6 +1,7 @@
 ﻿@page "/category/{Id:int}"
 @inject ICategoryManager CategoryManager
 
+
 <h3>@Category.CategoryName</h3>
 
 @if (Category != null)
@@ -36,6 +37,7 @@
 
     private void UpdateCategory()
     {
-       CategoryManager.UpdateCategory(Category);
+        CategoryManager.UpdateCategory(Category);
+       
     }
 }
