@@ -50,14 +50,15 @@
     async Task HandleDeleteCategory(int id)
     {
         await CategoryManager.DeleteCategoryAsync(id);
-        Categories = await CategoryManager.GetAllCategoriesAsync();
-        foreach(var category in Categories)
+         foreach(var category in Categories)
         {
             if(category.Id == id)
             {
                 message = $"{category.CategoryName} har tagits bort";
             }
         }
+        Categories = await CategoryManager.GetAllCategoriesAsync();
+       
     }
     async Task NavigateToCategory(int id)
     {
