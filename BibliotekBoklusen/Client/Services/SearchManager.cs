@@ -14,18 +14,36 @@
         public string Message { get; set; } = "Loading Products..";
 
         public event Action ProductsChanged;
+        public async Task<ServiceResponse<Product>> GetProductById(int productId)
+        {
+            var result = await _httpClient.GetFromJsonAsync<ServiceResponse<Product>>($"api/product/{productId}");
+            return result;
+        }
+
+        public async Task GetAllProducts()
+        {
+
+           var result = await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product");
+
+            Products = result.Data;
+
+            ProductsChanged.Invoke();
+
+
+        }
 
         public async Task<List<string>> GetProductSearchSuggestions(string searchText)
         {
             var result = await _httpClient
-              .GetFromJsonAsync<ServiceResponse<List<string>>>($"api/product/searchsuggestions/{searchText}");
+               .GetFromJsonAsync<ServiceResponse<List<string>>>($"api/products/searchsuggestions/{searchText}");
             return result.Data;
         }
 
         public async Task SearchProducts(string searchText)
         {
+
             var result = await _httpClient
-                .GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/product/search/{searchText}");
+                 .GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/search/{searchText}");
             if (result != null && result.Data != null)
             {
                 Products = result.Data;

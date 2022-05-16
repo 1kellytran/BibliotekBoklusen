@@ -1,7 +1,7 @@
 ﻿@page "/allproducts"
-@page "/search/{searchText}"
+
 @inject IDataManager DataManager
-@inject ISearchManager SearchManager
+
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -36,15 +36,14 @@
     public int Id { get; set; }
     public List<Product>? products { get; set; }
     public Product? productToUpdate { get; set; }
+   
 
-    [Parameter]
-    public string? SearchText { get; set; } = null;
 
     protected override async Task OnInitializedAsync()
     {
         products = await DataManager.GetAllProducts();
     }
-
+    
     public async Task EditProduct(int id, Product productToUpdate)
     {
         await DataManager.UpdateProduct(id, productToUpdate);
@@ -55,15 +54,5 @@
         await DataManager.DeleteProduct(id);
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-       if (SearchText != null)
-        {
-            await SearchManager.SearchProducts(SearchText);
-        }
-        else
-        {
-            await DataManager.GetAllProducts();
-        }
-    }
+    
 }

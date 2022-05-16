@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISeminarManager, SeminarManager>();
 
 
 
+
 builder.Services.AddScoped<ICreatorManager, CreatorManager>();
 
 await builder.Build().RunAsync();

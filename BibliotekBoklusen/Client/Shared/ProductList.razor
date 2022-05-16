@@ -1,0 +1,44 @@
+﻿@page "/ProductList"
+@inject ISearchManager SearchManager
+@implements IDisposable
+
+@if (SearchManager.Products == null|| SearchManager.Products.Count == 0)
+{
+    <span>@SearchManager.Message</span>
+}
+else{
+<ul class="list-unstyled">
+        @foreach (var product in SearchManager.Products)
+        {
+            <li class="media my-3">
+                <div class="media-img-wrapper mr-2">
+                    <a href="/product/@product.Id">
+                        
+                    <img class="media-img" src="#" alt="@product.Title" />
+                       
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="/product/@product.Id">
+                        <h4 class="mb-0">@product.Title</h4>
+                    </a>
+                    <p></p>
+                    <h5 class="price">
+                       
+                    </h5>
+                </div>
+            </li>
+        }
+    </ul>
+}
+@code {
+	protected override void OnInitialized()
+    {
+        SearchManager.ProductsChanged += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        SearchManager.ProductsChanged -= StateHasChanged;
+    }
+
+}
