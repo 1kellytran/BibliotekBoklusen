@@ -68,7 +68,7 @@ else
             </div>
             <div class="form-group">
                 <label for="dayandtime">Dag, datum & tid</label>
-                <InputText Id="dayandtime" class="form-control" @bind-Value="CreateSeminar.DayAndTime" />
+                <InputDate min = "TodaysDate" Id="dayandtime" class="form-control" @bind-Value="TodaysDate" />
             </div>
             <div>
                 <br />
@@ -82,6 +82,7 @@ else
     public List<Seminarium>? AllSeminars { get; set; } = new();
     public Seminarium CreateSeminar { get; set; } = new();
     public Seminarium UpdateSeminar { get; set; } = new();
+    public DateTime TodaysDate { get; set; } = DateTime.Now;
     public bool Edit;
 
     protected override async Task OnInitializedAsync()
@@ -107,6 +108,7 @@ else
 
     public async Task HandleSeminar()
     {
+        CreateSeminar.DayAndTime = TodaysDate;
         await SeminarManager.CreateSeminar(CreateSeminar);
         NavigationManager.NavigateTo("/Seminar");
     }
