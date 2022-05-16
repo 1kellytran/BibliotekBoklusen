@@ -1,6 +1,6 @@
 ﻿namespace BibliotekBoklusen.Client.Services
 {
-    public interface IDataManager
+    public interface IProductManager
     {
         Task<List<Product>> GetAllProducts();
         Task<Product> GetProductById(int id);
