@@ -100,7 +100,7 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 product.Title = productToUpdate.Title;
                 product.Type = productToUpdate.Type;
-                product.PublishYear = productToUpdate.PublishYear;
+                product.Published = productToUpdate.Published;
                 await _context.SaveChangesAsync();
 
                 return Ok("Product has been updated");

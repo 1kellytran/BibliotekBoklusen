@@ -28,9 +28,11 @@ namespace BibliotekBoklusen.Client.Services
             return await _httpClient.GetFromJsonAsync<Product>($"api/products/{id}");
         }
 
-        public async Task CreateProduct(Product productToAdd)
+        public async Task<string> CreateProduct(Product productToAdd)
         {
-            await _httpClient.PostAsJsonAsync("api/products", productToAdd);
+            var result = await _httpClient.PostAsJsonAsync("api/products", productToAdd);
+            var message = result.IsSuccessStatusCode ? $"Produkten {productToAdd.Title} tillagd" : null;
+            return message;
         }
 
         public async Task UpdateProduct(int id, Product product)

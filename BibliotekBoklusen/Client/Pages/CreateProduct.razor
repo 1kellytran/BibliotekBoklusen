@@ -1,5 +1,6 @@
 ﻿@page "/createproduct"
 @inject IDataManager DataManager
+@inject ICategoryManager CategoryManager
 
 <h3>AddProduct</h3>
 <div>
@@ -95,7 +96,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Categories = await DataManager.GetAllCategories();
+        Categories = await CategoryManager.GetAllCategoriesAsync();
     }
 
     public async Task RegisterProduct()
@@ -110,6 +111,7 @@
     {
         if (Creator != null)
         {
+            Product.Published = TodaysDate;
             Product.Creators.Add(Creator);
             Product.Category.AddRange(Categories.Where(x => x.isChecked));
             Products.Add(Product);
