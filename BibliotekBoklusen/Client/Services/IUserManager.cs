@@ -10,6 +10,7 @@
         Task<string> Login(LoginDto model);
         Task<string> Register(RegisterDto model);
         Task RegisterAdmin(RegisterDto model);
+        Task<User> GetCurrentUser(string userEmail);
 
     }
 }
