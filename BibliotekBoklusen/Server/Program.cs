@@ -60,6 +60,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IUserManager, UserManager>();
 
 var app = builder.Build();
 app.UseSwaggerUI();   

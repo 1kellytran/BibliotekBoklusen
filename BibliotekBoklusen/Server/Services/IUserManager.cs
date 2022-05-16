@@ -5,6 +5,6 @@ namespace BibliotekBoklusen.Server.Services
 {
     public interface IUserManager
     {
-        Task<User> GetCurrentUser(string userEmail)
+        Task<User> GetCurrentUser(string userEmail);
     }
 }
