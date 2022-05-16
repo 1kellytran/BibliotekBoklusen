@@ -1,9 +1,35 @@
 ﻿@page "/"
+@page "/search/{searchText}"
+
+@inject ISearchManager SearchManager
+@inject IDataManager DataManager
+
+
+
  <h3>Välkommen <AuthorizeView>
    @context.User.Identity.Name
 </AuthorizeView> </h3>
 
-
+<ProductList/>
 @code {
 
+	[Parameter]
+    public string? SearchText { get; set; } = null;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+       if (SearchText != null)
+        {
+            await SearchManager.SearchProducts(SearchText);
+        }
+        else
+        {
+            await DataManager.GetAllProducts();
+        }
+    }
+  
+	
+	
+   
 }
