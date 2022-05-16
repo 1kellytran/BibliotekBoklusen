@@ -1,6 +1,10 @@
 ﻿@inject NavigationManager NavigationManager
 @inject ISearchManager SearchManager
 
+@*<EditForm Model="SearchText" OnSubmit="SearchProducts">
+    <InputText @bind-Value="SearchText" placeholder="Search"></InputText>
+    <button class="btn btn-light">Search</button>
+</EditForm>*@
 <div class="input-group">
     <input @bind-value="searchText"
            @bind-value:event="oninput"
@@ -24,11 +28,13 @@
 </div>
 
 @code {
-	private string searchText = string.Empty;
+
+    
+    private string searchText = string.Empty;
     private List<string> suggestions = new List<string>();
     protected ElementReference searchInput;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
+     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
@@ -52,6 +58,10 @@
             suggestions = await SearchManager.GetProductSearchSuggestions(searchText);
         }
     }
+   
+
+    
 
 
 }
+

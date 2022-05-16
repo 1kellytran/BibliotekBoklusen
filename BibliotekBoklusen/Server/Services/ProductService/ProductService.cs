@@ -24,7 +24,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                     result.Add(product.Title);
                 }
 
-               
+           
+                
             }
 
             return new ServiceResponse<List<string>> { Data = result };
@@ -43,9 +44,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         private async Task<List<Product>> FindProductsBySearchText(string searchText)
         {
             return await _context.Products
-                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower()))
-                            
-                            .ToListAsync();
+                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())).ToListAsync()
+;                            
         }
 
     }
