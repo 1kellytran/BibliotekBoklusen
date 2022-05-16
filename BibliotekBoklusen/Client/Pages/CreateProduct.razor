@@ -3,63 +3,82 @@
 @inject ICategoryManager CategoryManager
 
 <h3>AddProduct</h3>
+<div>
+    <EditForm Model="Product" OnValidSubmit=RegisterProduct>
+        <DataAnnotationsValidator />
 
-<EditForm Model="Product" OnValidSubmit=RegisterProduct>
-    <DataAnnotationsValidator />
+        <div class="form-group col-4">
+            <label for="Title">Titel:</label>
+            <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
+            <ValidationMessage For="@(() => Product.Title)" />
+        </div>
 
-    <div class="form-group">
-        <label for="Title">Titel:</label>
-        <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
-        <ValidationMessage For="@(() => Product.Title)" />
-    </div>
+        <div class="row">
+            <label for="lastname">Skapare:</label>
 
-    <div class="form-group">
-        <label for="firstname">Författarens förnamn:</label>
-        <InputText Id="firstname" class="form-control" @bind-Value="Creator.FirstName" />
-        <ValidationMessage For="@(() => Creator.FirstName)" />
-    </div>
+            <div class="col-4">
+                <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
+                <ValidationMessage For="@(() => Creator.FirstName)" />
+            </div>
 
-    <div class="form-group">
-        <label for="lastname ">Författarens efternamn:</label>
-        <InputText Id="lastname" class="form-control" @bind-Value="Creator.LastName" />
-        <ValidationMessage For="@(() => Creator.LastName)" />
-    </div>
-    <br />
-    <div class="form-group">
-        <label>Välj genre:</label>
-        @if (Categories != null || Categories.Count <= 0)
+            <div class="col-4">
+                <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
+                <ValidationMessage For="@(() => Creator.LastName)" />
+            </div>
+            <div class="col-4 align-content-end">
+                <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+            </div>
+
+        </div>
+        @if (addCreator)
         {
-            @foreach (var Item in Categories)
-            {
-                <div class="form-group">
-                    <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
-                    <label for="@Item.CategoryName"> @Item.CategoryName</label>
+            <div class="row">
+                <div class="col-4">
+                    <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
+                    <ValidationMessage For="@(() => Creator.FirstName)" />
                 </div>
-            }
+
+                <div class="col-4">
+                    <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
+                    <ValidationMessage For="@(() => Creator.LastName)" />
+                </div>
+            </div>
         }
-    </div>
-    <br />
-    <div class="form-group">
-        <label for="publishYear ">Publicerad:</label>
-        <InputNumber Id="publishYear" class="form-control" @bind-Value="Product.PublishYear" />
-        <ValidationMessage For="@(() => Product.PublishYear)" />
-    </div>
-    <br />
-    <div class="form-group">
-        <label>Välj typ:</label>
-        <InputRadioGroup id="type" @bind-Value="type" class="form-control">
-            @foreach (var productType in DataManager.Types)
+
+        <div class="form-group col-2">
+            <label for="published ">Utgiven:</label>
+            <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
+            <ValidationMessage For="@(() => Product.Published)" />
+        </div>
+        <div class="form-group">
+            <div class="selectdiv">
+                <label>Typ:</label>
+                <InputSelect id="type" @bind-Value="Product.Type">
+                    <option value="" selected></option>
+                    @foreach (var productType in Enum.GetValues(typeof(ProductType)))
+                    {
+                        <option value="@productType">@productType</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Genre:</label>
+            <br />
+            @if (Categories != null || Categories.Count <= 0)
             {
-                <div class="form-group">
-                    <InputRadio id=@productType Value="productType" />
-                    <label for="productType">@productType</label>
-                </div>
+                @foreach (var Item in Categories)
+                {
+                    <div class="form-group">
+                        <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
+                        <label for="@Item.CategoryName"> @Item.CategoryName</label>
+                    </div>
+                }
             }
-        </InputRadioGroup>
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary">Add Product</button>
-</EditForm>
+        </div>
+        <button type="submit" class="btn btn-primary">Spara</button>
+    </EditForm>
+</div>
 <br />
 <h4 class="validation-message">@message</h4>
 
@@ -67,10 +86,13 @@
 @code {
     public Creator Creator { get; set; } = new();
     public Product Product { get; set; } = new();
+    public DateTime TodaysDate { get; set; } = DateTime.Now;
 
+    public List<Product> Products { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
-    public string type;
+
     string message;
+    bool addCreator;
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,12 +101,35 @@
 
     public async Task RegisterProduct()
     {
+        SetProductValues();
+        var result = await DataManager.CreateProduct(Product);
+        _ = result == null ? (message = "") : (message = result);
+        ClearForm();
+    }
+
+    void SetProductValues()
+    {
         if (Creator != null)
         {
-            Product.Type = type;
+            Product.Published = TodaysDate;
             Product.Creators.Add(Creator);
             Product.Category.AddRange(Categories.Where(x => x.isChecked));
+            Products.Add(Product);
         }
-        await DataManager.CreateProduct(Product);
+    }
+
+    void ClearForm()
+    {
+        Product = new Product();
+        Creator = new Creator();
+        foreach (var category in Categories)
+        {
+            category.isChecked = false;
+        }
+    }
+
+    void AddCreator()
+    {
+        _ = addCreator = true ? (addCreator == false) : (addCreator == true);
     }
 }

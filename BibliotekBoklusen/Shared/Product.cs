@@ -3,6 +3,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
+    public enum ProductType
+    {
+        Bok = 1,
+        [Display(Name = "E-bok")]
+        Ebok = 2,
+        Ljudbok = 3,
+        Film = 4
+    }
     public class Product
     {
         [Key]
@@ -12,12 +20,13 @@ namespace BibliotekBoklusen.Shared
         public string Title { get; set; } = String.Empty;
 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public int PublishYear { get; set; }
-        public string Type { get; set; } = String.Empty;
+        [Column(TypeName = "datetime2")]
+        public DateTime Published { get; set; }
+        public ProductType Type { get; set; }
 
         public List<Category>? Category { get; set; } = new();
         public List<Creator>? Creators { get; set; } = new();
-       
+
 
     }
 }

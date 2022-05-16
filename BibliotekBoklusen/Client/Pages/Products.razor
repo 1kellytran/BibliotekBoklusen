@@ -21,8 +21,12 @@
                 <tr>
                     <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
                     <td>@p.Type</td>
-                    <td>@p.PublishYear</td>
-                    @*<td>@p.Creator.FirstName @p.Creator.LastName</td>*@
+                    <td>@p.Published.ToString("yyyy/MM/dd")</td>
+                    @foreach(var creator in p.Creators)
+                    {
+                    <td>@creator.FirstName @creator.LastName</td>
+                    <br />
+                    }
                     <td><a class="btn btn-warning" @onclick="() => EditProduct(p.Id, p)">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
