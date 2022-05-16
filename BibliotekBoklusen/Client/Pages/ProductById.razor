@@ -1,5 +1,5 @@
 ﻿@page "/productbyid/{Id:int}"
-@inject IDataManager DataManager
+@inject IProductManager DataManager
 @attribute [Authorize]
 
 @if (product != null)

@@ -1,7 +1,8 @@
 ﻿@page "/allproducts"
 @page "/search/{searchText}"
-@inject IDataManager DataManager
 @inject ISearchManager SearchManager
+@inject ILoanManager LoanManager
+@inject IProductManager ProductManager
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -48,22 +49,24 @@
 
     protected override async Task OnInitializedAsync()
     {
-        products = await DataManager.GetAllProducts();
+        products = await ProductManager.GetAllProducts();
     }
 
     public async Task EditProduct(int id, Product productToUpdate)
     {
-        await DataManager.UpdateProduct(id, productToUpdate);
+        await ProductManager.UpdateProduct(id, productToUpdate);
     }
 
     public async Task DeleteProduct(int id)
     {
-        await DataManager.DeleteProduct(id);
+        await ProductManager.DeleteProduct(id);
     }
-
+   
     public async Task LoanProduct(int id)
     {
+        //var user = 
         
+       
     }
 
     protected override async Task OnParametersSetAsync()
@@ -74,7 +77,7 @@
         }
         else
         {
-            await DataManager.GetAllProducts();
+            await ProductManager.GetAllProducts();
         }
     }
 }

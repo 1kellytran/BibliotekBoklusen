@@ -2,11 +2,11 @@
 
 namespace BibliotekBoklusen.Client.Services
 {
-    public class DataManager : IDataManager
+    public class ProductManager : IProductManager
     {
         private readonly HttpClient _httpClient;        
 
-        public DataManager(HttpClient httpClient)
+        public ProductManager(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
