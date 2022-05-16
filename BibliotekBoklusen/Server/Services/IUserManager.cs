@@ -5,6 +5,6 @@ namespace BibliotekBoklusen.Server.Services
 {
     public interface IUserManager
     {
-        public JwtSecurityToken GetToken(List<Claim> authClaims);
+        Task<User> GetCurrentUser(string userEmail)
     }
 }

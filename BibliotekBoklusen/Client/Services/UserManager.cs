@@ -46,6 +46,16 @@ namespace BibliotekBoklusen.Client.Services
             return null;
         }
 
+
+        public async Task<User> GetCurrentUser(string userEmail)
+        {
+            //($"api/user/{id}")
+            var result = await _http.GetFromJsonAsync<User>($"api/user/currentuser?userEmail={userEmail}");
+            return result;
+
+  
+        }
+
         public async Task<string> Login(LoginDto model)
         {
             var result = await _http.PostAsJsonAsync($"api/authenticate/login", model);
@@ -56,6 +66,7 @@ namespace BibliotekBoklusen.Client.Services
                 if (token != null)
                 {
                     await _localStorageService.SetItemAsync("authToken", token);
+                    await _localStorageService.SetItemAsync("email", model.Email);
                     return null;
                 }
             }

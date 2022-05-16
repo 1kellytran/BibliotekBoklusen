@@ -38,13 +38,14 @@ namespace BibliotekBoklusen.Server.Controllers
 
                 if (!result)
                 {
-                    return Unauthorized("Felaktigt lösenord, försök igen");
+                    return Unauthorized("Wrong password.");
                 }
 
                 var userRoles = await _signInManager.UserManager.GetRolesAsync(user);
 
                 var authClaims = new List<Claim>
                 {
+                    new Claim(ClaimTypes.NameIdentifier, user.Email),
                     new Claim(ClaimTypes.Name, user.FirstName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 };
@@ -62,7 +63,7 @@ namespace BibliotekBoklusen.Server.Controllers
                     expiration = token.ValidTo
                 });
             }
-            return NotFound("Användare ej funnen");
+            return NotFound("User not found.");
         }
 
         [HttpPost]
@@ -73,7 +74,7 @@ namespace BibliotekBoklusen.Server.Controllers
             var userExistsInDbContext = _appDbContext.Users.FirstOrDefault(x => x.Email == model.Email);
 
             if (userExistsInAuthDb != null || userExistsInDbContext != null)
-                return BadRequest("Användare med den här email finns redan!");
+                return BadRequest("User already exists.");
 
             if (model != null)
             {
@@ -133,7 +134,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
-                //UserName = model.Username
             };
             var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)

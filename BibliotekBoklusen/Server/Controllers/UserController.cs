@@ -8,7 +8,7 @@ using System.Security.Claims;
 
 namespace BibliotekBoklusen.Server.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -53,6 +53,13 @@ namespace BibliotekBoklusen.Server.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet("currentuser")]
+        public async Task<User> GetCurrentUser([FromQuery]string userEmail)
+        {
+            var currentUser = await _userManager.GetCurrentUser(userEmail);
+            return currentUser;
         }
 
         // PUT api/<UserController>/5
