@@ -6,31 +6,38 @@
 {
     <span>@SearchManager.Message</span>
 }
-else{
-<ul class="list-unstyled">
-        @foreach (var product in SearchManager.Products)
-        {
-            <li class="media my-3">
-                <div class="media-img-wrapper mr-2">
-                    <a href="/product/@product.Id">
-                        
-                    <img class="media-img" src="#" alt="@product.Title" />
-                       
-                    </a>
-                </div>
-                <div class="media-body">
-                    <a href="/product/@product.Id">
-                        <h4 class="mb-0">@product.Title</h4>
-                    </a>
-                    <p></p>
-                    <h5 class="price">
-                       
-                    </h5>
-                </div>
-            </li>
-        }
-    </ul>
-}
+else
+    {
+<h3>Products</h3>
+    
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Titel</th>
+                    <th>Typ</th>
+                    <th>Utgåva</th>
+                    <th>Skapare</th>
+                </tr>
+            </thead>
+            @foreach (var p in SearchManager.Products)
+            {
+                <tr>
+                    <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
+                    <td>@p.Type</td>
+                    <td>@p.Published.ToString("yyyy/MM/dd")</td>
+                    @foreach(var creator in p.Creators)
+                    {
+                    <td>@creator.FirstName @creator.LastName</td>
+                    <br />
+                    }
+                    
+                   
+                </tr>
+            }
+        </table>
+    }
+
+
 @code {
 	protected override void OnInitialized()
     {
