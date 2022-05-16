@@ -2,7 +2,7 @@
 @page "/search/{searchText}"
 
 @inject ISearchManager SearchManager
-@inject IDataManager DataManager
+@inject IProductManager ProductManager
 
 
 
@@ -25,7 +25,8 @@
         }
         else
         {
-            await DataManager.GetAllProducts();
+            //ändring
+           await SearchManager.GetAllProducts();
         }
     }
   

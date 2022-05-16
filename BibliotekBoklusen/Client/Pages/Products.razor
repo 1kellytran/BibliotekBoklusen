@@ -1,6 +1,6 @@
 ﻿@page "/allproducts"
 
-@page "/search/{searchText}"
+
 @inject ISearchManager SearchManager
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
@@ -70,15 +70,5 @@
        
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-       if (SearchText != null)
-        {
-            await SearchManager.SearchProducts(SearchText);
-        }
-        else
-        {
-            await ProductManager.GetAllProducts();
-        }
-    }
+   
 }
