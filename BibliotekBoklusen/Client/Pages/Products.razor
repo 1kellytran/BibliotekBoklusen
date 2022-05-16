@@ -27,6 +27,8 @@
                     <td>@creator.FirstName @creator.LastName</td>
                     <br />
                     }
+                    
+                    <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
                     <td><a class="btn btn-warning" @onclick="() => EditProduct(p.Id, p)">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
@@ -57,6 +59,11 @@
     public async Task DeleteProduct(int id)
     {
         await DataManager.DeleteProduct(id);
+    }
+
+    public async Task LoanProduct(int id)
+    {
+        
     }
 
     protected override async Task OnParametersSetAsync()
