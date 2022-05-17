@@ -23,18 +23,16 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>>GetAllProducts()
         {
-            var productCreatorList = _context.Products.Include(p => p.Creators)
+            var products = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
 
-            if (productCreatorList == null)
+            if (products == null)
             {
                 return BadRequest("No products found");
             }
 
-            return Ok(productCreatorList);
+            return Ok(products);
         }
-
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
@@ -53,9 +51,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
         {
             // Kollar om produkten redan finns i db genom titel och typ.
-            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
-
-            
+            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);            
 
             if (productExists == null)
             {
@@ -84,7 +80,6 @@ namespace BibliotekBoklusen.Server.Controllers
                     else
                         creatorList.Add(creator);
                 }
-
                 productToAdd.Creators = creatorList;
 
                 _context.Products.Add(productToAdd);
@@ -94,7 +89,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 _productService.CreateProductCopies(getProduct);
 
                 return Ok("Product has been added");
-
             }
             return BadRequest("Product already exists");
         }
@@ -112,9 +106,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
                 return Ok("Product has been updated");
             }
-            return NotFound();
-
-         
+            return NotFound();        
         }
 
         [HttpDelete("{id}")]
@@ -139,7 +131,6 @@ namespace BibliotekBoklusen.Server.Controllers
         //{
         //    return Ok(await _productService.SearchProducts(searchText));
         //}
-
 
         [HttpGet("search/{searchText}")]
         public async Task<ActionResult<ServiceResponse<List<Product>>>> SearchProducts(string searchText)
