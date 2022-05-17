@@ -123,6 +123,10 @@ namespace BibliotekBoklusen.Server.Controllers
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
             }
+
+            var list = _context.productCopies.Where(p=>p.ProductId == id).ToList();
+            _context.productCopies.RemoveRange(list);
+            _context.SaveChanges();
             return Ok("Product has been deleted");
         }
 
