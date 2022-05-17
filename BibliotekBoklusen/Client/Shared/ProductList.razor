@@ -8,40 +8,39 @@
     <span>@SearchManager.Message</span>
 }*@
 
-<h3>Products</h3>
-    
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Titel</th>
-                    <th>Typ</th>
-                    <th>Utgåva</th>
-                    <th>Skapare</th>
-                    <th>Genre</th>
-                </tr>
-            </thead>
-            @foreach (var p in SearchManager.Products)
-            {
-                <tr>
-                    <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
-                    <td>@p.Type</td>
-                    <td>@p.Published.ToString("yyyy/MM/dd")</td>
-                    @foreach(var creator in p.Creators)
-                    {
+    <h3>Products</h3>
+
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Titel</th>
+                <th>Typ</th>
+                <th>Utgåva</th>
+                <th>Skapare</th>
+                <th>Genre</th>
+            </tr>
+        </thead>
+        @foreach (var p in SearchManager.Products)
+        {
+            <tr>
+                <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
+                <td>@p.Type</td>
+                <td>@p.Published.ToString("yyyy/MM/dd")</td>
+                @foreach (var creator in p.Creators)
+                {
                     <td>@creator.FirstName @creator.LastName</td>
                     <br />
-                    }
-                    @foreach(var category in p.Category)
-                    {
+                }
+                @foreach (var category in p.Category)
+                {
                     <td>@category.CategoryName</td>
                     <br />
-                    }
-                    
-                   
-                </tr>
-            }
-        </table>
-   
+                }
+
+
+            </tr>
+        }
+    </table>
 
 
 @code {
