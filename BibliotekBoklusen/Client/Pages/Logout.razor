@@ -19,6 +19,7 @@
     private async void HandleLogout()
     {
         var result = LocalStorage.RemoveItemAsync("authToken");
+        var result2 = LocalStorage.RemoveItemAsync("email");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
         NavigationManager.NavigateTo("/");
     } 

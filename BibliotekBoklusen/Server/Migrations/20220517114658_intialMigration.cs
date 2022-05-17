@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class intialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,14 +38,28 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "productCopies",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_productCopies", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PublishYear = table.Column<int>(type: "int", nullable: false),
-                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Published = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    NumberOfCopiesOwned = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -74,7 +88,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DayAndTime = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    DayAndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -173,7 +187,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     CopyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    ProductCopyId = table.Column<int>(type: "int", nullable: true),
                     LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -181,9 +195,9 @@ namespace BibliotekBoklusen.Server.Migrations
                 {
                     table.PrimaryKey("PK_Loans", x => x.CopyId);
                     table.ForeignKey(
-                        name: "FK_Loans_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
+                        name: "FK_Loans_productCopies_ProductCopyId",
+                        column: x => x.ProductCopyId,
+                        principalTable: "productCopies",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Loans_Users_UserId",
@@ -290,9 +304,9 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Loans_ProductId",
+                name: "IX_Loans_ProductCopyId",
                 table: "Loans",
-                column: "ProductId");
+                column: "ProductCopyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Loans_UserId",
@@ -345,10 +359,13 @@ namespace BibliotekBoklusen.Server.Migrations
                 name: "Loans");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "ReservationStatuses");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "productCopies");
 
             migrationBuilder.DropTable(
                 name: "Users");
