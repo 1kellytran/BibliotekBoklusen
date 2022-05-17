@@ -33,7 +33,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
         public async Task<ServiceResponse<List<Product>>> SearchProducts(string searchText)
         {
-            var response = new ServiceResponse<List<Product>>
+            var response = new ServiceResponse<List<Product>>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
             {
                 Data = await FindProductsBySearchText(searchText)
             };
@@ -44,8 +44,19 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         private async Task<List<Product>> FindProductsBySearchText(string searchText)
         {
             return await _context.Products
-                            .Where(p => p.Title.ToLower().Contains(searchText.ToLower())).ToListAsync()
-;                            
+                        .Include(c => c.Creators)
+                        .Include(c => c.Category)
+                        .Where(p => p.Title.ToLower().Contains(searchText.ToLower()) || 
+                        p.Creators.Any(cr => cr.FirstName.ToLower().Contains(searchText.ToLower()) ||
+                        p.Creators.Any(cr => cr.LastName.ToLower().Contains(searchText.ToLower())|| 
+                        p.Category.Any(c => c.CategoryName.ToLower().Contains(searchText.ToLower()))))
+                        ).ToListAsync();
+            
+           
+
+
+
+
         }
 
     }
