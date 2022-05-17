@@ -63,11 +63,12 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             ProductCopy pc = new();
             pc.ProductId = product.Id;
             
-            for(int copyId=1; copyId<product.NumberOfCopiesOwned; copyId++)
+            for(int copyId=1; copyId<=product.NumberOfCopiesOwned; copyId++)
             {
                 pc.CopyId = copyId;
+                pc.Id = 0;
                 await _context.productCopies.AddAsync(pc);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
             }
             
         }
