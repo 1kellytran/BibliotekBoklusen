@@ -23,6 +23,7 @@ builder.Services.AddScoped<IProductManager, ProductManager>();
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 builder.Services.AddScoped<ISearchManager, SearchManager>();
 builder.Services.AddScoped<ISeminarManager, SeminarManager>();
+builder.Services.AddScoped<ILoanManager, LoanManager>();
 
 
 

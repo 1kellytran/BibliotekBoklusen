@@ -55,6 +55,8 @@ namespace BibliotekBoklusen.Server.Controllers
             // Kollar om produkten redan finns i db genom titel och typ.
             var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
 
+            
+
             if (productExists == null)
             {
                 var categoryList = new List<Category>();
@@ -87,7 +89,12 @@ namespace BibliotekBoklusen.Server.Controllers
 
                 _context.Products.Add(productToAdd);
                 await _context.SaveChangesAsync();
+
+                var getProduct = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
+                _productService.CreateProductCopies(getProduct);
+
                 return Ok("Product has been added");
+
             }
             return BadRequest("Product already exists");
         }

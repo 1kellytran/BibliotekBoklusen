@@ -1,9 +1,9 @@
 ﻿@page "/allproducts"
-
-
+@inject Blazored.LocalStorage.ILocalStorageService localStorage;
 @inject ISearchManager SearchManager
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
+@inject IUserManager UserManager
 
 
 <NotAuthorized>
@@ -45,14 +45,18 @@
     public int Id { get; set; }
     public List<Product>? products { get; set; }
     public Product? productToUpdate { get; set; }
-   
+    public User CurrentUser {get; set;}
+
 
 
     protected override async Task OnInitializedAsync()
     {
+        var userEmail =await localStorage.GetItemAsync<string>("email");
+    CurrentUser = await UserManager.GetCurrentUser(userEmail);
+
         products = await ProductManager.GetAllProducts();
     }
-    
+
     public async Task EditProduct(int id, Product productToUpdate)
     {
         await ProductManager.UpdateProduct(id, productToUpdate);
@@ -62,12 +66,17 @@
     {
         await ProductManager.DeleteProduct(id);
     }
-   
+
     public async Task LoanProduct(int id)
     {
-        //var user = 
-        
-       
+        //var product = await ProductManager.GetProductById(id);
+        //Loan loan = new();
+        ////loan.Product = product;
+        ////loan.User = CurrentUser;
+        //loan.UserId = CurrentUser.Id;
+        //loan.ProductId = product.Id;
+        //LoanManager.AddLoan(loan);
+
     }
 
    

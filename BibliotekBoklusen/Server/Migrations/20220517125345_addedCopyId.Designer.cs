@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220513083208_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220517125345_addedCopyId")]
+    partial class addedCopyId
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,7 +179,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("LoanDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int?>("ProductCopyId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReturnDate")
@@ -190,7 +190,7 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("CopyId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductCopyId");
 
                     b.HasIndex("UserId");
 
@@ -205,20 +205,41 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("PublishYear")
+                    b.Property<int>("NumberOfCopiesOwned")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Published")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCopy", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CopyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("productCopies");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Reservation", b =>
@@ -277,9 +298,8 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("DayAndTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("DayAndTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -385,15 +405,15 @@ namespace BibliotekBoklusen.Server.Migrations
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Loan", b =>
                 {
-                    b.HasOne("BibliotekBoklusen.Shared.Product", "Product")
+                    b.HasOne("BibliotekBoklusen.Shared.ProductCopy", "ProductCopy")
                         .WithMany()
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("ProductCopyId");
 
                     b.HasOne("BibliotekBoklusen.Shared.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Product");
+                    b.Navigation("ProductCopy");
 
                     b.Navigation("User");
                 });

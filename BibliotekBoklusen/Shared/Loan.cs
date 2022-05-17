@@ -12,10 +12,11 @@ namespace BibliotekBoklusen.Shared
         public int? UserId { get; set; }
         public User? User { get; set; }
 
-        [ForeignKey(nameof(Product))]
-        public int? ProductId { get; set; }
-        public Product? Product { get; set; }
+        [ForeignKey(nameof(ProductCopy))]
+        public int? ProductCopyId { get; set; }
+        public ProductCopy? ProductCopy { get; set; }
+
         public DateTime LoanDate { get; set; } = DateTime.Now;
-        public DateTime ReturnDate { get; set; }
+        public DateTime ReturnDate { get; set; }=DateTime.Now.AddDays(14);
     }
 }

@@ -24,6 +24,7 @@ namespace BibliotekBoklusen.Shared
         public DateTime Published { get; set; }
         public ProductType Type { get; set; }
 
+        public int NumberOfCopiesOwned { get; set; }
         public List<Category>? Category { get; set; } = new();
         public List<Creator>? Creators { get; set; } = new();
 

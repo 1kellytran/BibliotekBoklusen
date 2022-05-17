@@ -19,12 +19,13 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<ReservationStatus> ReservationStatuses { get; set; }
         public DbSet<FinePayment> FinePayments { get; set; }
         public DbSet<Fine> Fines { get; set; }
+        public DbSet<ProductCopy> productCopies { get; set; }
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
-                
-           
+            //modelBuilder.Entity<ProductCopy>().HasKey(p => new { p.Id, p.ProductId });
+
+
             modelBuilder.Entity<Category>()
                 .HasData(new Category() { Id = 1, CategoryName = "Deckare" },
                 new Category() { Id = 2, CategoryName = "Feelgood" },

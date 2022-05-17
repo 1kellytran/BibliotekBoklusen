@@ -58,6 +58,19 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
 
         }
+        public async Task CreateProductCopies(Product product)
+        {
+            ProductCopy pc = new();
+            pc.ProductId = product.Id;
+            
+            for(int copyId=1; copyId<product.NumberOfCopiesOwned; copyId++)
+            {
+                pc.CopyId = copyId;
+                await _context.productCopies.AddAsync(pc);
+                await _context.SaveChangesAsync();
+            }
+            
+        }
 
     }
 }

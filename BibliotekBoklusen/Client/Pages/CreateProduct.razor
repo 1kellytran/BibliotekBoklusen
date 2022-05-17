@@ -50,6 +50,11 @@
             <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
             <ValidationMessage For="@(() => Product.Published)" />
         </div>
+         <div class="form-group col-2">
+            <label for="NumberOfCopies ">Antal Kopior:</label>
+            <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
+            <ValidationMessage For="@(() => Product.Published)" />
+        </div>
         <div class="form-group">
             <div class="selectdiv">
                 <label>Typ:</label>
@@ -87,10 +92,8 @@
     public Creator Creator { get; set; } = new();
     public Product Product { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-
     public List<Product> Products { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
-
     string message;
     bool addCreator;
 
@@ -106,6 +109,7 @@
         _ = result == null ? (message = "") : (message = result);
         ClearForm();
     }
+    
 
     void SetProductValues()
     {

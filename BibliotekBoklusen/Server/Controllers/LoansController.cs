@@ -39,19 +39,17 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateLoan()
+        public async Task<IActionResult> CreateLoan([FromBody] Loan loan)
         {
-            Loan loan = new Loan();
-            loan.LoanDate = DateTime.Now;
-            loan.ReturnDate = DateTime.Now.AddDays(14);
-            _context.Loans.Add(loan);
+           
+            await _context.Loans.AddAsync(loan);
             await _context.SaveChangesAsync();
             
             if (loan == null)
             {
                 return NotFound("Error");
             }
-            return Ok(loan);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
