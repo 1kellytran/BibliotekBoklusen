@@ -29,7 +29,7 @@ else
                 <td>@s.Title</td>
                 <td>@s.FirstName</td>
                 <td>@s.LastName</td>
-                <td>@s.DayAndTime</td>
+                <td>@s.DayAndTime.ToString()</td>
                 <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
                 <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
             </tr>
@@ -104,12 +104,13 @@ else
     public async Task DeleteSeminar(int id)
     {
         await SeminarManager.DeleteSeminar(id);
+        AllSeminars = await SeminarManager.GetAllSeminars();
     }
 
     public async Task HandleSeminar()
     {
         CreateSeminar.DayAndTime = TodaysDate;
         await SeminarManager.CreateSeminar(CreateSeminar);
-        NavigationManager.NavigateTo("/Seminar");
+        AllSeminars = await SeminarManager.GetAllSeminars();
     }
 }

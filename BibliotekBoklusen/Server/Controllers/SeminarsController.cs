@@ -4,13 +4,13 @@
 
 namespace BibliotekBoklusen.Server.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class SeminarController : ControllerBase
+    public class SeminarsController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public SeminarController(AppDbContext context)
+        public SeminarsController(AppDbContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var seminar = _context.Seminariums.ToList();
 
-            if (seminar == null || seminar.Count <= 0)
+            if (seminar == null || seminar.Count == 0)
             {
                 return NotFound("There are no seminars");
             }

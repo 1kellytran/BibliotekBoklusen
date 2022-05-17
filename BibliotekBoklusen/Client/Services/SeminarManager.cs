@@ -3,9 +3,6 @@
     public class SeminarManager : ISeminarManager
     {
         private readonly HttpClient _httpClient;
-
-
-
         public SeminarManager(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -13,32 +10,30 @@
 
         public async Task<List<Seminarium>> GetAllSeminars()
         {
-            var result = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminar/GetAllSeminars");
-            if (result != null || result.Count == 0)
-            {
-                return result;
-            }
-            return null;
+            List<Seminarium> seminars = new();
+            seminars = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminars");
+
+            return seminars;
         }
 
         public async Task<Seminarium> GetSeminarById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Seminarium>("api/seminar/GetSeminarById");
+            return await _httpClient.GetFromJsonAsync<Seminarium>($"api/seminars/{id}");
         }
 
         public async Task CreateSeminar(Seminarium seminar)
         {
-            await _httpClient.PostAsJsonAsync<Seminarium>("api/seminar/CreateSeminar", seminar);
+            await _httpClient.PostAsJsonAsync<Seminarium>("api/seminars", seminar);
         }
 
         public async Task UpdateSeminar(int id, Seminarium seminar)
         {
-            await _httpClient.PutAsJsonAsync<Seminarium>($"api/seminar/UpdateSeminar/{id}", seminar);
+            await _httpClient.PutAsJsonAsync<Seminarium>($"api/seminars/{id}", seminar);
         }
 
         public async Task DeleteSeminar(int id)
         {
-            await _httpClient.DeleteAsync($"api/seminar/DeleteSeminar/{id}");
+            await _httpClient.DeleteAsync($"api/seminars/{id}");
         }
     }
 }
