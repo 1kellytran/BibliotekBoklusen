@@ -1,13 +1,13 @@
 ﻿@page "/ProductList"
 @inject ISearchManager SearchManager
+
 @implements IDisposable
 
-@if (SearchManager.Products == null|| SearchManager.Products.Count == 0)
+@*@if (SearchManager.Products == null|| SearchManager.Products.Count == 0)
 {
     <span>@SearchManager.Message</span>
-}
-else
-    {
+}*@
+
 <h3>Products</h3>
     
         <table class="table">
@@ -17,6 +17,7 @@ else
                     <th>Typ</th>
                     <th>Utgåva</th>
                     <th>Skapare</th>
+                    <th>Genre</th>
                 </tr>
             </thead>
             @foreach (var p in SearchManager.Products)
@@ -30,12 +31,17 @@ else
                     <td>@creator.FirstName @creator.LastName</td>
                     <br />
                     }
+                    @foreach(var category in p.Category)
+                    {
+                    <td>@category.CategoryName</td>
+                    <br />
+                    }
                     
                    
                 </tr>
             }
         </table>
-    }
+   
 
 
 @code {
