@@ -89,9 +89,9 @@ namespace BibliotekBoklusen.Client.Services
             await _http.PostAsJsonAsync("api/authenticate/register-admin", model);
         }
 
-        public async Task UpdateUserinformation(UpdatedUserDto model)
+        public async Task UpdateUserinformation(UpdatedUserDto model, int id)
         {
-            await _http.PutAsJsonAsync("api/user", model);
+            await _http.PutAsJsonAsync($"api/user/{id}", model);
         }
 
 

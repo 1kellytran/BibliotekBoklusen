@@ -4,7 +4,7 @@
     {
         Task<List<User>> GetAllUser();
         Task<User> GetUser(int id);
-        Task UpdateUserinformation(UpdatedUserDto model);
+        Task UpdateUserinformation(UpdatedUserDto model, int id);
         Task ChangePassword(PasswordDto editPassword);
         Task DeleteUser(int id);
         Task<string> Login(LoginDto model);

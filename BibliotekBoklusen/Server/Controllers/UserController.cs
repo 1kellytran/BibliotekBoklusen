@@ -79,6 +79,7 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 userDb.FirstName = model.FirstName;
                 userDb.LastName = model.LastName;
+                userDb.IsActive = model.IsActive;
 
                 _context.Update(userDb);
                 await _context.SaveChangesAsync();
