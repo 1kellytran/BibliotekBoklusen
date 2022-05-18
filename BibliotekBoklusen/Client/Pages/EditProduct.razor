@@ -9,8 +9,8 @@
 
         <div class="form-group col-4">
             <label for="Title">Titel:</label>
-            <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
-            <ValidationMessage For="@(() => Product.Title)" />
+            <InputText Id="Title" class="form-control" @bind-Value="ProductToUpdate.Title" />
+            <ValidationMessage For="@(() => ProductToUpdate.Title)" />
         </div>
 
         <div class="row">
@@ -48,17 +48,17 @@
         <div class="form-group col-2">
             <label for="published ">Utgiven:</label>
             <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
-            <ValidationMessage For="@(() => Product.Published)" />
+            <ValidationMessage For="@(() => ProductToUpdate.Published)" />
         </div>
          <div class="form-group col-2">
             <label for="NumberOfCopies ">Antal Kopior:</label>
-            <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
-            <ValidationMessage For="@(() => Product.Published)" />
+            <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="ProductToUpdate.NumberOfCopiesOwned" />
+            <ValidationMessage For="@(() => ProductToUpdate.Published)" />
         </div>
         <div class="form-group">
             <div class="selectdiv">
                 <label>Typ:</label>
-                <InputSelect id="type" @bind-Value="Product.Type">
+                <InputSelect id="type" @bind-Value="ProductToUpdate.Type">
                     <option value="" selected></option>
                     @foreach (var productType in Enum.GetValues(typeof(ProductType)))
                     {
@@ -95,7 +95,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Product = await ProductManager.GetProductById(Id);
+        ProductToUpdate = await ProductManager.GetProductById(Id);
         Categories = await CategoryManager.GetAllCategoriesAsync();
     }
 
