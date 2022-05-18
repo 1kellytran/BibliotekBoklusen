@@ -4,6 +4,7 @@
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
+@inject IProductCopyManager ProductCopyManager
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -16,6 +17,7 @@
                     <th>Typ</th>
                     <th>Utgåva</th>
                     <th>Skapare</th>
+                    <th>Tillgängliga Ex</th>
                 </tr>
             </thead>
             @foreach (var p in products)
@@ -63,8 +65,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //var userEmail = await localStorage.GetItemAsync<string>("email");
-        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+        CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         products = await ProductManager.GetAllProducts();
     }
@@ -86,14 +88,9 @@
         products = await ProductManager.GetAllProducts();
     }
 
-    public async Task LoanProduct(int id)
+    public async Task LoanProduct(int productId)
     {
-        //var product = await ProductManager.GetProductById(id);
-        //Loan loan = new();
-        ////loan.Product = product;
-        ////loan.User = CurrentUser;
-        //loan.UserId = CurrentUser.Id;
-        //loan.ProductId = product.Id;
-        //LoanManager.AddLoan(loan);
+      
+        LoanManager.AddLoan(productId, CurrentUser.Id);
     }
 }

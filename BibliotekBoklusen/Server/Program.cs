@@ -61,6 +61,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<ILoanService, LoanService>();
 
 var app = builder.Build();
 app.UseSwaggerUI();   

@@ -11,6 +11,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             _context = context;
            
         }
+
         public async Task<ServiceResponse<List<string>>> GetProductSearchSuggestions(string searchText)
         {
             var products = await FindProductsBySearchText(searchText);
@@ -52,12 +53,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                         p.Category.Any(c => c.CategoryName.ToLower().Contains(searchText.ToLower()))))
                         ).ToListAsync();
             
-           
-
-
-
-
         }
+
         public async Task CreateProductCopies(Product product)
         {
             ProductCopy pc = new();
@@ -72,6 +69,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             }
             
         }
+
+       
 
     }
 }
