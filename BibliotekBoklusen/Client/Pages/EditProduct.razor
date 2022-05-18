@@ -1,0 +1,111 @@
+﻿@page "/editproduct/{Id:int}"
+@inject IProductManager ProductManager
+@inject ICategoryManager CategoryManager
+
+<h3>EditProduct</h3
+
+    <EditForm Model="Product" OnValidSubmit=SaveEditProduct>
+        <DataAnnotationsValidator />
+
+        <div class="form-group col-4">
+            <label for="Title">Titel:</label>
+            <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
+            <ValidationMessage For="@(() => Product.Title)" />
+        </div>
+
+        <div class="row">
+            <label for="lastname">Skapare:</label>
+
+            <div class="col-4">
+                <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
+                <ValidationMessage For="@(() => Creator.FirstName)" />
+            </div>
+
+            <div class="col-4">
+                <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
+                <ValidationMessage For="@(() => Creator.LastName)" />
+            </div>
+            <div class="col-4 align-content-end">
+                <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+            </div>
+
+        </div>
+        @if (addCreator)
+        {
+            <div class="row">
+                <div class="col-4">
+                    <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
+                    <ValidationMessage For="@(() => Creator.FirstName)" />
+                </div>
+
+                <div class="col-4">
+                    <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
+                    <ValidationMessage For="@(() => Creator.LastName)" />
+                </div>
+            </div>
+        }
+
+        <div class="form-group col-2">
+            <label for="published ">Utgiven:</label>
+            <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
+            <ValidationMessage For="@(() => Product.Published)" />
+        </div>
+         <div class="form-group col-2">
+            <label for="NumberOfCopies ">Antal Kopior:</label>
+            <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
+            <ValidationMessage For="@(() => Product.Published)" />
+        </div>
+        <div class="form-group">
+            <div class="selectdiv">
+                <label>Typ:</label>
+                <InputSelect id="type" @bind-Value="Product.Type">
+                    <option value="" selected></option>
+                    @foreach (var productType in Enum.GetValues(typeof(ProductType)))
+                    {
+                        <option value="@productType">@productType</option>
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Genre:</label>
+            <br />
+            @if (Categories != null || Categories.Count <= 0)
+            {
+                @foreach (var Item in Categories)
+                {
+                    <div class="form-group">
+                        <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
+                        <label for="@Item.CategoryName"> @Item.CategoryName</label>
+                    </div>
+                }
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Spara</button>
+    </EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Creator Creator { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
+    public Product ProductToUpdate { get; set; } = new();
+    public DateTime TodaysDate { get; set; } = DateTime.Now;
+    bool addCreator;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Product = await ProductManager.GetProductById(Id);
+        Categories = await CategoryManager.GetAllCategoriesAsync();
+    }
+
+    public async Task SaveEditProduct()
+    {
+        await ProductManager.UpdateProduct(Id, ProductToUpdate);
+    }
+
+    void AddCreator()
+    {
+        _ = addCreator = true ? (addCreator == false) : (addCreator == true);
+    }
+}

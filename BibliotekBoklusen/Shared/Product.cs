@@ -27,7 +27,5 @@ namespace BibliotekBoklusen.Shared
         public int NumberOfCopiesOwned { get; set; }
         public List<Category>? Category { get; set; } = new();
         public List<Creator>? Creators { get; set; } = new();
-
-
     }
 }

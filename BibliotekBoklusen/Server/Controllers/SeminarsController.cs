@@ -42,10 +42,14 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateSeminar([FromBody] Seminarium seminarToAdd)
         {
-            _context.Seminariums.Add(seminarToAdd);
-            await _context.SaveChangesAsync();
+            if(seminarToAdd != null)
+            {
+                _context.Seminariums.Add(seminarToAdd);
+                await _context.SaveChangesAsync();
 
-            return Ok("Seminar has been added");
+                return Ok("Seminar has been added");
+            }
+            return BadRequest("Could not add. Did you forget to fill in something?");
         }
 
         [HttpPut("{id}")]

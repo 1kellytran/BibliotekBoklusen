@@ -4,13 +4,13 @@
 
 <h3>Seminarium</h3>
 
-@if (AllSeminars.Count == 0)
+@if (AllSeminars == null)
+{
+    <h4>Laddar...</h4>
+}
+else if (AllSeminars.Count == 0)
 {
     <h4>Inga seminarium för tillfället</h4>
-}
-else if (AllSeminars == null)
-{
-    <h4>Loading...</h4>
 }
 else
 {
@@ -20,7 +20,7 @@ else
                 <th>Title</th>
                 <th>First name</th>
                 <th>Last name</th>
-                <th>Datum</th>
+                <th>Datum & tid</th>
             </tr>
         </thead>
         @foreach (var s in AllSeminars)
@@ -41,7 +41,7 @@ else
                 <input type="text" @bind-value="s.FirstName" /><br />
                 <label>Efternamn</label><br />
                 <input type="text" @bind-value="s.LastName" /><br />
-                <label>Dag, datum & tid</label><br />
+                <label>Datum & tid</label><br />
                 <input type="text" @bind-value="s.DayAndTime" /><br />
                 <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
             }
@@ -49,41 +49,14 @@ else
     </table>
 }
 
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">Registrera ny seminarium</h5>
-        <EditForm Model="CreateSeminar" OnSubmit="HandleSeminar">
-
-            <div class="form-group">
-                <label for="title">Titel</label>
-                <InputText Id="title" class="form-control" @bind-Value="CreateSeminar.Title" />
-            </div>
-            <div class="form-group">
-                <label for="firstname">Föreläsarens förnamn</label>
-                <InputText Id="firstname" class="form-control" @bind-Value="CreateSeminar.FirstName" />
-            </div>
-            <div class="form-group">
-                <label for="lastname">Föreläsarens efternamn</label>
-                <InputText Id="lastname" class="form-control" @bind-Value="CreateSeminar.LastName" />
-            </div>
-            <div class="form-group">
-                <label for="dayandtime">Dag, datum & tid</label>
-                <InputDate min = "TodaysDate" Id="dayandtime" class="form-control" @bind-Value="TodaysDate" />
-            </div>
-            <div>
-                <br />
-                <button type="submit" class="btn btn-primary">Registrera seminarium</button>
-            </div>
-        </EditForm>
-    </div>
-</div>
-
 @code {
     public List<Seminarium>? AllSeminars { get; set; } = new();
     public Seminarium CreateSeminar { get; set; } = new();
     public Seminarium UpdateSeminar { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
+    public string message;
     public bool Edit;
+    public int SortTitle = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -107,10 +80,11 @@ else
         AllSeminars = await SeminarManager.GetAllSeminars();
     }
 
-    public async Task HandleSeminar()
+    public async Task RegisterSeminar()
     {
         CreateSeminar.DayAndTime = TodaysDate;
-        await SeminarManager.CreateSeminar(CreateSeminar);
+        var result = await SeminarManager.CreateSeminar(CreateSeminar);
+        _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
         AllSeminars = await SeminarManager.GetAllSeminars();
     }
 }

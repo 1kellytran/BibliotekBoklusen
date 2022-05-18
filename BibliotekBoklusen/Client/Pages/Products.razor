@@ -30,7 +30,7 @@
                         <br />
                     }
                     <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                    <td><a class="btn btn-warning" @onclick="() => EditProduct(p.Id, p)">i</a></td>
+                    <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
                 @if (Edit == true)
