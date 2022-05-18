@@ -1,0 +1,65 @@
+﻿@page "/AccountSettings"
+@inject IUserManager UserManager
+@inject ILocalStorageService localStorage;
+
+<h3>AccountSettings</h3>
+
+@if (!editUser)
+{
+    <p>
+        <span>@user.FirstName @user.LastName</span><br />
+      
+    </p>
+    <button class="btn btn-primary" @onclick="EditUser">Edit</button>
+}
+else
+{
+    <EditForm Model="updatedUser" OnSubmit="SubmitUser">
+        <div class="mb-3">
+            <label for="firstname">First Name</label>
+            <InputText id="firstname" @bind-Value="updatedUser.FirstName" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label for="lastname">Last Name</label>
+            <InputText id="lastname" @bind-Value="updatedUser.LastName" class="form-control" />
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+}
+
+@code {
+    User user = new User();
+
+    UpdatedUserDto updatedUser = new UpdatedUserDto();
+
+
+    bool editUser = false;
+    public string Email { get; set; }
+
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+
+        user = await UserManager.GetCurrentUser(userEmail);
+    }
+
+    private async Task SubmitUser()
+    {
+        editUser = false;
+        updatedUser.IsActive = user.IsActive;
+        await UserManager.UpdateUserinformation(updatedUser, user.Id);
+
+    }
+
+  
+
+    private void EditUser()
+    {
+        editUser = true;
+    }
+}
+
+
