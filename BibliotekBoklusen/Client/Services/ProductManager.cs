@@ -4,7 +4,7 @@ namespace BibliotekBoklusen.Client.Services
 {
     public class ProductManager : IProductManager
     {
-        private readonly HttpClient _httpClient;        
+        private readonly HttpClient _httpClient;
 
         public ProductManager(HttpClient httpClient)
         {

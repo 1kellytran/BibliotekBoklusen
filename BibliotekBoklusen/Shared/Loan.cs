@@ -6,7 +6,7 @@ namespace BibliotekBoklusen.Shared
     public class Loan
     {
         [Key]
-        public int CopyId { get; set; }
+        public int Id { get; set; }
 
         [ForeignKey(nameof(User))]
         public int? UserId { get; set; }
@@ -16,7 +16,11 @@ namespace BibliotekBoklusen.Shared
         public int? ProductCopyId { get; set; }
         public ProductCopy? ProductCopy { get; set; }
 
+       
+
         public DateTime LoanDate { get; set; } = DateTime.Now;
         public DateTime ReturnDate { get; set; }=DateTime.Now.AddDays(14);
+
+        
     }
 }

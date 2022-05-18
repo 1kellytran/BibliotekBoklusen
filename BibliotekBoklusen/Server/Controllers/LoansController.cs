@@ -8,10 +8,12 @@ namespace BibliotekBoklusen.Server.Controllers
     public class LoansController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly ILoanService _loanService;
 
-        public LoansController(AppDbContext context)
+        public LoansController(AppDbContext context, ILoanService loanService)
         {
             _context = context;
+            _loanService = loanService;
         }
 
         [HttpGet]
@@ -29,7 +31,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Loan>> GetLoansById(int id)
         {
-            var loan = _context.Loans.FirstOrDefault(s => s.CopyId == id);
+            var loan = _context.Loans.FirstOrDefault(s => s.Id == id);
 
             if (loan == null)
             {
@@ -38,13 +40,17 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(loan);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateLoan([FromBody] Loan loan)
+        [HttpPost("{productId}")]
+        public async Task<IActionResult> CreateLoan([FromRoute]int productId,[FromBody]int userId)
         {
-           
+            Loan loan= await _loanService.CreateLoan(productId, userId);
             await _context.Loans.AddAsync(loan);
-            await _context.SaveChangesAsync();
+            _context.SaveChangesAsync();
             
+            //_loanService.SetBoolProductCopy();
+            
+            _context.SaveChangesAsync();
+
             if (loan == null)
             {
                 return NotFound("Error");
@@ -55,7 +61,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLoan(int id)
         {
-            var loan = _context.Loans.Where(x => x.CopyId == id).FirstOrDefault();
+            var loan = _context.Loans.Where(x => x.Id == id).FirstOrDefault();
            
             if (loan == null)
             {
@@ -74,7 +80,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> UpdateLoan([FromBody] Loan loanToUpdate)
         {
 
-            var loan = _context.Loans.FirstOrDefault(x => x.CopyId == loanToUpdate.CopyId);
+            var loan = _context.Loans.FirstOrDefault(x => x.Id == loanToUpdate.Id);
             if (loan != null)
             {
                 loan.ReturnDate = loan.ReturnDate.AddDays(14);
