@@ -37,6 +37,13 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(result);
         }
 
+        [HttpGet("users")]
+        public async Task<ActionResult<ServiceResponse<List<User>>>> SearchForMembers([FromQuery] string searchText)
+        {
+            var result = await _userManager.SearchForMembers(searchText);
+            return Ok(result);
+        }
+
         // get a specific user
         // GET api/UserController>/id
         [HttpGet("{id}")]
@@ -56,7 +63,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("currentuser")]
-        public async Task<User> GetCurrentUser([FromQuery]string userEmail)
+        public async Task<User> GetCurrentUser([FromQuery] string userEmail)
         {
             var currentUser = await _userManager.GetCurrentUser(userEmail);
             return currentUser;
@@ -126,24 +133,13 @@ namespace BibliotekBoklusen.Server.Controllers
         //    return BadRequest("User could not be deleted");
         //}
 
-        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
-            _context.Remove(userDb);
-            await _context.SaveChangesAsync();
-            if (userDb != null)
-            {
-                var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
-                if (user != null)
-                {
-                    await _signInManager.UserManager.DeleteAsync(user);
-                   
-                    return Ok("User Deleted");
-                }
-            }
-            return BadRequest("User could not be deleted");
+            await _userManager.DeleteUserFromDb(id);
+
+            return Ok("User has been deleted");
+
         }
 
 

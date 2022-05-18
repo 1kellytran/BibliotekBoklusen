@@ -18,9 +18,9 @@ namespace BibliotekBoklusen.Client.Services
             await _http.PutAsJsonAsync($"api/users/ChangePassword", editPassword);
         }
 
-        public async Task DeleteUser(string email)
+        public async Task DeleteUser(int id)
         {
-            await _http.DeleteAsync($"api/user{email}");
+            await _http.DeleteAsync($"api/user/{id}");
         }
 
         public async Task<List<User>> GetAllUser()
