@@ -31,9 +31,9 @@
             return loan;
         }
 
-        public async Task<string> AddLoan(Loan loan)
+        public async Task<string> AddLoan(int productId, int userId)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/loans", loan);
+            var result = await _httpClient.PostAsJsonAsync($"api/loans/{productId}", userId);
             if (result.IsSuccessStatusCode)
             {
                 return await result.Content.ReadAsStringAsync();
@@ -44,7 +44,7 @@
 
         public async Task UpdateLoan(Loan loanToUpdate)
         {
-            await _httpClient.PutAsJsonAsync($"api/loans/{loanToUpdate.CopyId}", loanToUpdate);
+            await _httpClient.PutAsJsonAsync($"api/loans/{loanToUpdate.Id}", loanToUpdate);
 
         }
         public async Task DeleteLoanAsync(int id)

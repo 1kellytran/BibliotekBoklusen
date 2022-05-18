@@ -20,5 +20,7 @@ namespace BibliotekBoklusen.Shared
         public int ProductId { get; set; }
         Product product { get; set; }
 
+        public bool IsLoaned { get; set; }
+
     }
 }
