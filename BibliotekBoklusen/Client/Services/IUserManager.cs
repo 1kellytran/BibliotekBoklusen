@@ -6,7 +6,7 @@
         Task<User> GetUser(int id);
         Task UpdateUserinformation(UpdatedUserDto model);
         Task ChangePassword(PasswordDto editPassword);
-        Task DeleteUser(string email);
+        Task DeleteUser(int id);
         Task<string> Login(LoginDto model);
         Task<string> Register(RegisterDto model);
         Task RegisterAdmin(RegisterDto model);

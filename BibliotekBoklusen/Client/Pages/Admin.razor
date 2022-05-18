@@ -1,17 +1,29 @@
 ﻿@page "/admin"
 @attribute [Authorize(Roles = "Librarian, Admin")]
+@inject ISearchManager SearchManager
+@inject IUserManager UserManager
 
-<h3>Admin</h3>
 
-<hr class="my-4">
 
 <div class="text-center mb-3 pb-2 mt-3">
     <h4>Hantera</h4>
+    <hr class="my-4">
+
 </div>
+
+          <AuthorizeView Context="_context" Roles=Admin>
+                <div class="form-group">
+                     <div class="col">
+        <div class="form-outline">
+            <a @onclick="SearchMember">Sök på bibliotekarier</a>
+        </div>
+    </div>
+                </div>
+            </AuthorizeView>
 <div class="form-group">
     <div class="col">
         <div class="form-outline">
-            <a @onclick="AddLibrarian">Registrera användare</a>
+            <href @onclick="AddLibrarian">Registrera användare</href>
         </div>
     </div>
     <div class="col">
@@ -31,11 +43,6 @@
     </div>
     <div class="col">
         <div class="form-outline">
-            <a @onclick="AddProducts">Lägg till seminarium</a>
-        </div>
-    </div>
-    <div class="col">
-        <div class="form-outline">
             <a @onclick="AddProducts">Lägg till produkter</a>
         </div>
     </div>
@@ -46,39 +53,113 @@
     </div>
 </div>
 
-@if(addLibrarian)
+@if (addLibrarian)
 {
     <Register></Register>
 }
 
+@if (addProducts)
+{
+    <CreateProduct></CreateProduct>
+}
+@if (viewProducts)
+{
+    <Products></Products>
+}
+@if (viewSeminar)
+{
+    <Seminar></Seminar>
+}
+@if (searchMembers)
+{
+    <EditForm Model=searchWord OnSubmit="HandleSearchMember">
+        <label for="searchWord">Search</label>
+        <input type="text" placeholder="sök på medlemmar" id=searchWord @bind-value="searchWord" />
+        <button class="btn btn-primary"> Sök</button>
+    </EditForm>
+    @if (Users != null || Users.Count != 0)
+    {
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Namn</th>
+                    <th>Email</th>
+                    <th>Medlem sedan</th>
+                    <th>Aktiv</th>
+                </tr>
+            </thead>
+            @foreach (var user in Users)
+            {
+                <tr>
+                    @*<a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>*@
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.Created.ToString("d")</td>
+                    <td>@user.IsActive</td>
+
+                    @*<td><a class="btn btn-primary" @onclick="() => UserLoans(user.Id)">Lånhistorik</a></td>*@
+                    <td><a class="btn btn-warning" @onclick="() => EditUser(user.Id, user)">i</a></td>
+                    <td><a class="btn btn-danger" @onclick="() => DeleteUser(user.Id)">x</a></td>
+                </tr>
+            }
+        </table>
+    }
+}
+@if (handleReturns)
+{
+    <h2>Kunna hantera inlämningar</h2>
+}
+
 @code {
     bool addLibrarian;
+    bool addProducts;
+    bool viewProducts;
+    bool viewSeminar;
+    bool searchMembers;
+    bool handleReturns;
+    private string searchWord = "";
+    public List<User> Users { get; set; } = new();
+
     void AddLibrarian()
     {
         _ = !addLibrarian ? addLibrarian = true : addLibrarian = false;
     }
     void SearchMember()
     {
-
+        _ = !searchMembers ? searchMembers = true : searchMembers = false;
     }
-
+    async Task HandleSearchMember()
+    {
+        Users = await SearchManager.SearchMember(searchWord);
+    }
     void ViewProducts()
     {
-
+        _ = !viewProducts ? viewProducts = true : viewProducts = false;
     }
-
     void ViewSeminarium()
     {
-
+        _ = !viewSeminar ? viewSeminar = true : viewSeminar = false;
     }
-
     void AddProducts()
     {
-
+        _ = !addProducts ? addProducts = true : addProducts = false;
     }
-
     void HandleReturns()
+    {
+        _ = !handleReturns ? handleReturns = true : handleReturns = false;
+    }
+    //void UserLoans(int userId)
+    //{
+
+    //}
+    void EditUser(int userId, User user)
     {
 
     }
+    async Task DeleteUser(int userId)
+    {
+        await UserManager.DeleteUser(userId);
+        Users = await SearchManager.SearchMember(searchWord);
+    }
+
 }

@@ -134,6 +134,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 LastName = model.LastName,
                 Email = model.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.Email
             };
             var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)

@@ -13,6 +13,7 @@
 
         Task SearchProducts(string searchText);
         Task<List<string>> GetProductSearchSuggestions(string searchText);
+        Task<List<User>> SearchMember(string searchText);
 
     }
 }

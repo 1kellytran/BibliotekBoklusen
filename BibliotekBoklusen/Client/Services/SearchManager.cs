@@ -11,6 +11,7 @@
         }
 
         public List<Product> Products { get; set; } = new List<Product>();
+        public List<User> Users { get; set; } = new List<User>();
         public string Message { get; set; } = "Loading Products..";
 
         public event Action ProductsChanged;
@@ -51,6 +52,20 @@
             }
             if (Products.Count == 0) Message = "No products found.";
             ProductsChanged?.Invoke();
+        }
+        public async Task<List<User>> SearchMember(string searchText)
+        {
+
+            var result = await _httpClient
+                 .GetFromJsonAsync<ServiceResponse<List<User>>>($"api/user/users?searchText={searchText}");
+            if (result != null && result.Data != null)
+            {
+                Users = result.Data;
+                return Users;
+            }
+            return null;
+            //if (Products.Count == 0) Message = "No users found.";
+            //ProductsChanged?.Invoke();
         }
     }
 }
