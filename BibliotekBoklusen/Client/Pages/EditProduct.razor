@@ -1,10 +1,11 @@
 ﻿@page "/editproduct/{Id:int}"
 @inject IProductManager ProductManager
 @inject ICategoryManager CategoryManager
+@inject ICreatorManager CreatorManager
 
-<h3>EditProduct</h3
+<h3>Edit product: "@ProductToUpdate.Title"</h3
 
-    <EditForm Model="ProductToUpdate" OnValidSubmit=SaveEditProduct>
+    <EditForm Model="ProductToUpdate" OnSubmit=SaveEditProduct>
         <DataAnnotationsValidator />
 
         <div class="form-group col-4">
@@ -13,9 +14,27 @@
             <ValidationMessage For="@(() => ProductToUpdate.Title)" />
         </div>
 
+    @foreach (var c in ProductToUpdate.Creators)
+    {
         <div class="row">
-            <label for="lastname">Skapare:</label>
+        <label for="lastname">Skapare:</label>
+        <div class="col-4">
+            <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="c.FirstName" />
+            <ValidationMessage For="@(() => c.FirstName)" />
+        </div>
 
+        <div class="col-4">
+            <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="c.LastName" />
+            <ValidationMessage For="@(() => c.LastName)" />
+        </div>
+        <div class="col-4 align-content-end">
+            <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+        </div>
+        </div>
+    }
+    @if (addCreator)
+    {
+        <div class="row">
             <div class="col-4">
                 <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
                 <ValidationMessage For="@(() => Creator.FirstName)" />
@@ -25,32 +44,21 @@
                 <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
                 <ValidationMessage For="@(() => Creator.LastName)" />
             </div>
-            <div class="col-4 align-content-end">
-                <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
-            </div>
-
         </div>
-        @if (addCreator)
-        {
-            <div class="row">
-                <div class="col-4">
-                    <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
-                    <ValidationMessage For="@(() => Creator.FirstName)" />
-                </div>
-
-                <div class="col-4">
-                    <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
-                    <ValidationMessage For="@(() => Creator.LastName)" />
-                </div>
-            </div>
-        }
+        <div class="col-4 align-content-end">
+            <h3 class="btn btn-secondary" @onclick="SaveCreator">OK</h3>
+        </div>
+        <div class="col-4 align-content-end">
+            <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+        </div>
+        }    
 
         <div class="form-group col-2">
             <label for="published ">Utgiven:</label>
             <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
             <ValidationMessage For="@(() => ProductToUpdate.Published)" />
         </div>
-         <div class="form-group col-2">
+        <div class="form-group col-2">
             <label for="NumberOfCopies ">Antal Kopior:</label>
             <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="ProductToUpdate.NumberOfCopiesOwned" />
             <ValidationMessage For="@(() => ProductToUpdate.Published)" />
@@ -87,6 +95,7 @@
 @code {
     [Parameter]
     public int Id { get; set; }
+    public List<Creator> Creators { get; set; } = new();
     public Creator Creator { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
     public Product ProductToUpdate { get; set; } = new();
@@ -100,12 +109,23 @@
     }
 
     public async Task SaveEditProduct()
-    {
-        await ProductManager.UpdateProduct(Id, ProductToUpdate);
+    {       
+        if(Creator.FirstName != null)
+        {
+            ProductToUpdate.Creators.Add(Creator);
+        }        
+            Creator = new();
+            await ProductManager.UpdateProduct(Id, ProductToUpdate);
     }
 
     void AddCreator()
     {
         _ = addCreator = true ? (addCreator == false) : (addCreator == true);
+    }
+
+    void SaveCreator()
+    {
+        Creators.Add(Creator);
+        addCreator = false;
     }
 }

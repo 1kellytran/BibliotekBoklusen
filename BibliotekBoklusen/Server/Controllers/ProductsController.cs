@@ -21,7 +21,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>>GetAllProducts()
+        public async Task<ActionResult<List<Product>>> GetAllProducts()
         {
             var products = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
@@ -39,7 +39,6 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var product = _context.Products.Include(p => p.Creators).Include(c => c.Category).FirstOrDefault(p => p.Id == id);
 
-
             if (product == null)
             {
                 return BadRequest("There is no product with that ID");
@@ -51,7 +50,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
         {
             // Kollar om produkten redan finns i db genom titel och typ.
-            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);            
+            var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
 
             if (productExists == null)
             {
@@ -97,16 +96,34 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product productToUpdate)
         {
             var product = _context.Products.FirstOrDefault(x => x.Id == id);
-            if(product != null)
+            if (product != null)
             {
+                var creatorList = new List<Creator>();
+                foreach (var c in productToUpdate.Creators)
+                {
+                    var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == c.FirstName.ToLower() && c.LastName.ToLower() == c.LastName.ToLower());
+
+                    if (creatorExists != null)
+                    {
+                        creatorList.Add(creatorExists);
+                    }
+                    else
+                    {
+                        creatorList.Add(c);
+                    }
+                }
+
+                productToUpdate.Creators = creatorList;
                 product.Title = productToUpdate.Title;
+                product.Creators = productToUpdate.Creators;
                 product.Type = productToUpdate.Type;
                 product.Published = productToUpdate.Published;
+                product.Category = productToUpdate.Category;
                 await _context.SaveChangesAsync();
 
                 return Ok("Product has been updated");
             }
-            return NotFound();        
+            return NotFound();
         }
 
         [HttpDelete("{id}")]
@@ -124,7 +141,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            var list = _context.productCopies.Where(p=>p.ProductId == id).ToList();
+            var list = _context.productCopies.Where(p => p.ProductId == id).ToList();
             _context.productCopies.RemoveRange(list);
             _context.SaveChanges();
             return Ok("Product has been deleted");
