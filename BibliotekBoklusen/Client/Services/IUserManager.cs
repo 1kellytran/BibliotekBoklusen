@@ -5,12 +5,13 @@
         Task<List<User>> GetAllUser();
         Task<User> GetUser(int id);
         Task UpdateUserinformation(UpdatedUserDto model, int id);
-        Task ChangePassword(PasswordDto editPassword);
+        Task<string> ChangePassword(PasswordDto editPassword);
         Task DeleteUser(int id);
         Task<string> Login(LoginDto model);
         Task<string> Register(RegisterDto model);
         Task RegisterAdmin(RegisterDto model);
         Task<User> GetCurrentUser(string userEmail);
+     
 
     }
 }

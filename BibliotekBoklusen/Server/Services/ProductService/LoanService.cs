@@ -1,4 +1,7 @@
 ﻿using BibliotekBoklusen.Client.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace BibliotekBoklusen.Server.Services.ProductService
 {
@@ -11,19 +14,22 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             _context = context;
 
         }
-        public ProductCopy productCopyn { get; set; }
+        public ProductCopy productCopy { get; set; }
 
         public async Task<Loan> CreateLoan(int productId, int userId)
         {
             var prodcop = _context.productCopies.Where(pc => pc.ProductId == productId && pc.IsLoaned == false).ToList();
-            productCopyn = prodcop.FirstOrDefault(pc => pc.ProductId == productId);
-            productCopyn.IsLoaned = true;
-            _context.productCopies.Update(productCopyn);
-            _context.SaveChanges();
-            if (productCopyn != null)
+            productCopy = prodcop.FirstOrDefault(pc => pc.ProductId == productId);
+
+            if (productCopy != null)
             {
+                productCopy.IsLoaned = true;
+                
+                _context.productCopies.Update(productCopy);
+                _context.SaveChanges();
+
                 Loan loan = new();
-                loan.ProductCopyId = productCopyn.Id;
+                loan.ProductCopyId = productCopy.Id;
                 loan.UserId = userId;
                 return loan;
             }
@@ -33,6 +39,30 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             }
             
         }
-        
+        public async Task<List<Loan>> GetLoansById(int userId)
+        {
+            List<Product> products = new();
+            var productCopies = _context.Loans.Include(p => p.ProductCopy).ThenInclude(p => p.product).Where(pc => pc.UserId == userId).ToList();
+            return productCopies;
+            
+        }
+        public async Task<bool> ReturnLoan(int productCopyId)
+        {
+
+            var personLoans = _context.productCopies.FirstOrDefault(pc => pc.Id == productCopyId);
+
+            if (personLoans != null)
+            {
+                personLoans.IsLoaned = false;
+                _context.productCopies.Update(personLoans);
+                _context.SaveChanges();
+                return true;
+            }
+            else return false;
+
+
+
+        }
+
     }
 }

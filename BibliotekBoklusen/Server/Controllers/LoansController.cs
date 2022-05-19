@@ -19,6 +19,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Loan>>> GetAllLoans()
         {
+            
             var loans = _context.Loans.ToList();
 
             if (loans == null || loans.Count <= 0)
@@ -29,33 +30,36 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Loan>> GetLoansById(int id)
+        public async Task<ActionResult> GetLoansById(int id)
         {
-            var loan = _context.Loans.FirstOrDefault(s => s.Id == id);
 
-            if (loan == null)
+            var productUserHas = _loanService.GetLoansById(id);
+            
+
+            if (productUserHas == null)
             {
                 return NotFound("There is no loan with that ID");
             }
-            return Ok(loan);
+            return Ok(productUserHas);
         }
 
         [HttpPost("{productId}")]
-        public async Task<IActionResult> CreateLoan([FromRoute]int productId,[FromBody]int userId)
+        public async Task<ActionResult<string>> CreateLoan([FromRoute]int productId,[FromBody]int userId)
         {
             Loan loan= await _loanService.CreateLoan(productId, userId);
-            await _context.Loans.AddAsync(loan);
-            _context.SaveChangesAsync();
-            
-            //_loanService.SetBoolProductCopy();
-            
-            _context.SaveChangesAsync();
 
-            if (loan == null)
+            if (loan !=null)
             {
-                return NotFound("Error");
+                await _context.Loans.AddAsync(loan);
+                _context.SaveChangesAsync();
+                return Ok("Loan har lagts till");
             }
-            return Ok();
+            
+            else
+            {
+                return NotFound("Inga exemplar finns tillgängliga av denna boken");
+            }
+            
         }
 
         [HttpDelete("{id}")]
@@ -76,19 +80,21 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Loan has been deleted");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateLoan([FromBody] Loan loanToUpdate)
+        [HttpPut("{productCopyId}")]
+        public async Task<IActionResult> ReturnLoan([FromRoute] int productCopyId)
         {
+           var response= await _loanService.ReturnLoan(productCopyId);
 
-            var loan = _context.Loans.FirstOrDefault(x => x.Id == loanToUpdate.Id);
-            if (loan != null)
+            if (response)
             {
-                loan.ReturnDate = loan.ReturnDate.AddDays(14);
-                await _context.SaveChangesAsync();
-
+              
                 return Ok("Loan has been updated");
             }
-            return NotFound();
+            else
+            {
+                return NotFound();
+            }
+            
 
         }
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BibliotekBoklusen.Shared
 {
-    public class UserChangePassword
+    public class UserChangePasswordDto
     {
         [Required, StringLength(100, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;

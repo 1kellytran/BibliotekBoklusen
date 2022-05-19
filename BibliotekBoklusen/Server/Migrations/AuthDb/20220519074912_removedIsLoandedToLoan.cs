@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations.AuthDb
 {
-    public partial class Initialcreate : Migration
+    public partial class removedIsLoandedToLoan : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

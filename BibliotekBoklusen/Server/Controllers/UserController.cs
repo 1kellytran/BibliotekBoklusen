@@ -1,4 +1,5 @@
 ﻿using BibliotekBoklusen.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
@@ -16,13 +17,19 @@ namespace BibliotekBoklusen.Server.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
         private readonly IUserManager _userManager;
+        
 
-        public UserController(SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, AppDbContext context, IUserManager userManager)
+        public UserController(SignInManager<ApplicationUser> signInManager, 
+            RoleManager<IdentityRole> roleManager, 
+            AppDbContext context, 
+            IUserManager userManager
+            )
         {
             _signInManager = signInManager;
             _roleManager = roleManager;
             _context = context;
             _userManager = userManager;
+            
         }
 
         [HttpGet]
@@ -166,5 +173,7 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return BadRequest("User was not found :(");
         }
+
+   
     }
 }

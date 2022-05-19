@@ -1,8 +1,8 @@
 global using BibliotekBoklusen.Shared;
 global using BibliotekBoklusen.Server.Data;
 global using BibliotekBoklusen.Server.Services;
-
 global using BibliotekBoklusen.Server.Services.ProductService;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +63,7 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
+
 using(ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
 {
     var context = servicepProvider.GetRequiredService<AuthDbContext>();
@@ -88,6 +89,7 @@ using(ServiceProvider servicepProvider = builder.Services.BuildServiceProvider()
         await userManager.AddToRoleAsync(newUser, "Admin");
     }
 }
+
 
 var app = builder.Build();
 app.UseSwaggerUI();   
