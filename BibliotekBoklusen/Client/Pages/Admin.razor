@@ -2,6 +2,7 @@
 @attribute [Authorize(Roles = "Librarian, Admin")]
 @inject ISearchManager SearchManager
 @inject IUserManager UserManager
+@inject ILoanManager LoanManager
 
 
 
@@ -107,7 +108,12 @@
 }
 @if (handleReturns)
 {
-    <h2>Kunna hantera inlämningar</h2>
+    <label>Skriv in Id på boken som ska återlämnas</label>
+    <br />
+    <input type="number" @bind-value="copyToReturn" />
+    <br />
+    <button @onclick="ReturnLoan" type="submit">Ok</button>
+
 }
 
 @code {
@@ -120,6 +126,7 @@
     private string searchWord = "";
     public List<User> Users { get; set; } = new();
     UpdatedUserDto User = new();
+    private int copyToReturn;
 
     void AddLibrarian()
     {
@@ -153,6 +160,10 @@
     //{
 
     //}
+    async Task ReturnLoan()
+    {
+        await LoanManager.ReturnLoanAsync(copyToReturn);
+    }
     async Task EditUser(int userId, User user)
     {
         User.FirstName = user.FirstName;

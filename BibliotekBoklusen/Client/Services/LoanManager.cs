@@ -16,7 +16,7 @@
             {
                 return null;
             }
-                
+
             return loans;
         }
 
@@ -27,7 +27,7 @@
             {
                 return null;
             }
-                
+
             return loan;
         }
 
@@ -38,7 +38,7 @@
             {
                 return await result.Content.ReadAsStringAsync();
             }
-                
+
             return null;
         }
 
@@ -47,9 +47,9 @@
             await _httpClient.PutAsJsonAsync($"api/loans/{loanToUpdate.Id}", loanToUpdate);
 
         }
-        public async Task DeleteLoanAsync(int id)
+        public async Task ReturnLoanAsync(int id)
         {
-            await _httpClient.DeleteAsync($"api/loans/{id}");
+            await _httpClient.PutAsJsonAsync($"api/loans", id);
         }
 
     }
