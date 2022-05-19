@@ -63,6 +63,32 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
+using(ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
+{
+    var context = servicepProvider.GetRequiredService<AuthDbContext>();
+    var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    context.Database.Migrate();
+
+    if(!context.Users.Any())
+    {
+        IdentityRole adminRole = new();
+        adminRole.Name = "Admin";
+
+        await roleManager.CreateAsync(adminRole);
+
+        ApplicationUser newUser = new();
+        newUser.UserName = "admin";
+        newUser.Email = "admin@admin.com";
+        string password = "admin123";
+
+        await userManager.CreateAsync(newUser, password);
+
+        await userManager.AddToRoleAsync(newUser, "Admin");
+    }
+}
+
 var app = builder.Build();
 app.UseSwaggerUI();   
 
