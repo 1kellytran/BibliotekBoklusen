@@ -11,15 +11,15 @@
 
 </div>
 
-          <AuthorizeView Context="_context" Roles=Admin>
-                <div class="form-group">
-                     <div class="col">
-        <div class="form-outline">
-            <a @onclick="SearchMember">Sök på bibliotekarier</a>
+<AuthorizeView Context="_context" Roles=Admin>
+    <div class="form-group">
+        <div class="col">
+            <div class="form-outline">
+                <a @onclick="SearchMember">Sök på bibliotekarier</a>
+            </div>
         </div>
     </div>
-                </div>
-            </AuthorizeView>
+</AuthorizeView>
 <div class="form-group">
     <div class="col">
         <div class="form-outline">
@@ -119,6 +119,7 @@
     bool handleReturns;
     private string searchWord = "";
     public List<User> Users { get; set; } = new();
+    UpdatedUserDto User = new();
 
     void AddLibrarian()
     {
@@ -152,9 +153,12 @@
     //{
 
     //}
-    void EditUser(int userId, User user)
+    async Task EditUser(int userId, User user)
     {
+        User.FirstName = user.FirstName;
+        User.LastName = user.LastName;
 
+        await UserManager.UpdateUserinformation(User, userId);
     }
     async Task DeleteUser(int userId)
     {
