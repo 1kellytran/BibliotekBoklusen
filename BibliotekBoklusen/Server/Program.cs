@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; // nytt
 // Add services to the container.
 
-builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling=Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+builder.Services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddRazorPages();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -64,39 +64,37 @@ builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
 
-using(ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
+using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
 {
     var context = servicepProvider.GetRequiredService<AuthDbContext>();
     var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    if(context == null)
+
+    context.Database.Migrate();
+
+    if (!context.Users.Any())
     {
-        context.Database.Migrate();
+        IdentityRole adminRole = new();
+        adminRole.Name = "Admin";
 
-        if (!context.Users.Any())
-        {
-            IdentityRole adminRole = new();
-            adminRole.Name = "Admin";
+        await roleManager.CreateAsync(adminRole);
 
-            await roleManager.CreateAsync(adminRole);
+        ApplicationUser newUser = new();
+        newUser.UserName = "admin";
+        newUser.Email = "admin@admin.com";
+        string password = "admin123";
 
-            ApplicationUser newUser = new();
-            newUser.UserName = "admin";
-            newUser.Email = "admin@admin.com";
-            string password = "admin123";
+        await userManager.CreateAsync(newUser, password);
 
-            await userManager.CreateAsync(newUser, password);
-
-            await userManager.AddToRoleAsync(newUser, "Admin");
-        }
+        await userManager.AddToRoleAsync(newUser, "Admin");
     }
-    
+
 }
 
 
 var app = builder.Build();
-app.UseSwaggerUI();   
+app.UseSwaggerUI();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
