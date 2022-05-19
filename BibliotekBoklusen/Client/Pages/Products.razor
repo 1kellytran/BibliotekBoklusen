@@ -58,7 +58,7 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<Product>? products { get; set; }
+    public List<Product>? products { get; set; } = new List<Product>();
     public Product? productToUpdate { get; set; }
     public User CurrentUser { get; set; }
     public bool Edit;
