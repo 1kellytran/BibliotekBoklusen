@@ -18,9 +18,11 @@ namespace BibliotekBoklusen.Shared
 
         [ForeignKey(nameof(product))]
         public int ProductId { get; set; }
-        Product product { get; set; }
+        public Product product { get; set; }
 
         public bool IsLoaned { get; set; }
+
+       
 
     }
 }

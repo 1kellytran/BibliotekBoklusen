@@ -240,6 +240,8 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.ToTable("productCopies");
                 });
 
@@ -417,6 +419,17 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("ProductCopy");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCopy", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Reservation", b =>

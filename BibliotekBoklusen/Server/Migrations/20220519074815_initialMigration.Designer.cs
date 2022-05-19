@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220517123349_intialMigration2")]
-    partial class intialMigration2
+    [Migration("20220519074815_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -170,11 +170,11 @@ namespace BibliotekBoklusen.Server.Migrations
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Loan", b =>
                 {
-                    b.Property<int>("CopyId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CopyId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<DateTime>("LoanDate")
                         .HasColumnType("datetime2");
@@ -188,7 +188,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("CopyId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ProductCopyId");
 
@@ -231,10 +231,18 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("CopyId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsLoaned")
+                        .HasColumnType("bit");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("productCopies");
                 });
@@ -413,6 +421,17 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Navigation("ProductCopy");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BibliotekBoklusen.Shared.ProductCopy", b =>
+                {
+                    b.HasOne("BibliotekBoklusen.Shared.Product", "product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("BibliotekBoklusen.Shared.Reservation", b =>
