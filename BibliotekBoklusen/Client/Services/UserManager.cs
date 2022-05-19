@@ -13,9 +13,14 @@ namespace BibliotekBoklusen.Client.Services
             _http = http;
             _localStorageService = localStorageService;
         }
-        public async Task ChangePassword(PasswordDto editPassword)
+        public async Task<string> ChangePassword(PasswordDto editPassword)
         {
-            await _http.PutAsJsonAsync($"api/users/ChangePassword", editPassword);
+            var result = await _http.PutAsJsonAsync($"api/user/ChangePassword", editPassword);
+            if (result.IsSuccessStatusCode)
+            {
+                return "Lösenordet har ändrats";
+            }
+            return "Försök igen";
         }
 
         public async Task DeleteUser(int id)
@@ -94,6 +99,6 @@ namespace BibliotekBoklusen.Client.Services
             await _http.PutAsJsonAsync($"api/user/{id}", model);
         }
 
-
+        
     }
 }

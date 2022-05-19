@@ -15,5 +15,8 @@
         Task<List<string>> GetProductSearchSuggestions(string searchText);
         Task<List<User>> SearchMember(string searchText);
 
+        
     }
+
 }
+

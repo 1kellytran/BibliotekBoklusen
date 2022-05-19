@@ -1,8 +1,8 @@
 global using BibliotekBoklusen.Shared;
 global using BibliotekBoklusen.Server.Data;
 global using BibliotekBoklusen.Server.Services;
-
 global using BibliotekBoklusen.Server.Services.ProductService;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
@@ -62,6 +62,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserManager, UserManager>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+
 
 var app = builder.Build();
 app.UseSwaggerUI();   

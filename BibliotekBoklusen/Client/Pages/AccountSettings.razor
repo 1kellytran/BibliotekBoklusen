@@ -2,6 +2,7 @@
 @inject IUserManager UserManager
 @inject ILocalStorageService localStorage;
 
+
 <h3>AccountSettings</h3>
 
 @if (!editUser)
@@ -11,6 +12,9 @@
       
     </p>
     <button class="btn btn-primary" @onclick="EditUser">Edit</button>
+    
+
+
 }
 else
 {

@@ -11,6 +11,6 @@ namespace BibliotekBoklusen.Shared
         public string NewPassword { get; set; }
         [Required(ErrorMessage = "New Password needs to be confrimed")]
         [Compare(nameof(NewPassword), ErrorMessage = "Passwords don't match")]
-        public string NewPasswordConfirmed { get; set; }
+        public string? NewPasswordConfirmed { get; set; }
     }
 }
