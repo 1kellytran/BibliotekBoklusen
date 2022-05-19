@@ -80,8 +80,8 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("Loan has been deleted");
         }
 
-        [HttpPut("{productCopyId}")]
-        public async Task<IActionResult> ReturnLoan([FromRoute] int productCopyId)
+        [HttpPut]
+        public async Task<IActionResult> ReturnLoan([FromBody] int productCopyId)
         {
            var response= await _loanService.ReturnLoan(productCopyId);
 
