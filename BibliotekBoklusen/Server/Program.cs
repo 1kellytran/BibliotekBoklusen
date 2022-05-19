@@ -70,24 +70,28 @@ using(ServiceProvider servicepProvider = builder.Services.BuildServiceProvider()
     var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    context.Database.Migrate();
-
-    if(!context.Users.Any())
+    if(context == null)
     {
-        IdentityRole adminRole = new();
-        adminRole.Name = "Admin";
+        context.Database.Migrate();
 
-        await roleManager.CreateAsync(adminRole);
+        if (!context.Users.Any())
+        {
+            IdentityRole adminRole = new();
+            adminRole.Name = "Admin";
 
-        ApplicationUser newUser = new();
-        newUser.UserName = "admin";
-        newUser.Email = "admin@admin.com";
-        string password = "admin123";
+            await roleManager.CreateAsync(adminRole);
 
-        await userManager.CreateAsync(newUser, password);
+            ApplicationUser newUser = new();
+            newUser.UserName = "admin";
+            newUser.Email = "admin@admin.com";
+            string password = "admin123";
 
-        await userManager.AddToRoleAsync(newUser, "Admin");
+            await userManager.CreateAsync(newUser, password);
+
+            await userManager.AddToRoleAsync(newUser, "Admin");
+        }
     }
+    
 }
 
 
