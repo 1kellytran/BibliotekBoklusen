@@ -5,6 +5,7 @@
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
+@inject IReservationManager ReservationManager
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -31,7 +32,31 @@
                         <td>@creator.FirstName @creator.LastName</td>
                         <br />
                     }
-                    <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+
+                    @foreach (var product in AvailableLoans)
+                    {
+                        @if (p.Id == product.Id)
+                        {
+                            isAvailable = true;
+
+                        }
+
+                    }
+                    @if (isAvailable == true)
+                    {
+                        <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+                    }
+                    else
+                    {
+                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)" >Reservera</a></td>
+                    }
+
+
+
+
+
+
+
                     <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
@@ -92,5 +117,9 @@
     {
       
         LoanManager.AddLoan(productId, CurrentUser.Id);
+    }
+    public async Task ReserveProduct(int productId)
+    {
+        ReservationManager.AddReservation(productId, CurrentUser.Id);
     }
 }
