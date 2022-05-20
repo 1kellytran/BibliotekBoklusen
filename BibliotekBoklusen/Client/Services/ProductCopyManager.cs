@@ -1,4 +1,6 @@
-﻿namespace BibliotekBoklusen.Client.Services
+﻿using System.Net.Http.Json;
+
+namespace BibliotekBoklusen.Client.Services
 {
     public class ProductCopyManager : IProductCopyManager
     {
@@ -8,9 +10,13 @@
         {
             _httpClient = httpClient;
         }
-        public async Task<List<ProductCopy>> GetProductCopyById(int id)
+        public async Task<List<Product>> GetAllLoans()
         {
-            return await _httpClient.GetFromJsonAsync<List<ProductCopy>>($"api/productcopies/{id}");
+            
+            var allLoans= await  _httpClient.GetFromJsonAsync<List<Product>>("api/productcopies/dinmamma");
+            return allLoans;
         }
+
+        
     }
 }

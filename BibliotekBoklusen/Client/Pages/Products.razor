@@ -31,7 +31,36 @@
                         <td>@creator.FirstName @creator.LastName</td>
                         <br />
                     }
-                    <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+                   
+                    @foreach (var product in AvailableLoans)
+                    {
+                        @if (p.Id == product.Id)
+                        {
+                            <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+                        }
+                       
+                    }
+                    
+                    @foreach (var product in AvailableLoans)
+                    {
+                        @if (p.Id != product.Id)
+                        {
+                            <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Reservera</a></td>
+                        }
+                       
+                    }
+                     
+                  
+                    
+                    
+
+                   
+                       
+                    
+                  
+                        
+                    
+                    
                     <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
@@ -51,6 +80,8 @@
                     }
                 }
             }
+             
+             
         </table>
     }
 </NotAuthorized>
@@ -62,12 +93,14 @@
     public Product? productToUpdate { get; set; }
     public User CurrentUser { get; set; }
     public bool Edit;
+    public List<Product> AvailableLoans { get; set; }
+    
 
     protected override async Task OnInitializedAsync()
     {
-        //var userEmail = await localStorage.GetItemAsync<string>("email");
-        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
-
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        AvailableLoans = await ProductCopyManager.GetAllLoans();
         products = await ProductManager.GetAllProducts();
     }
 
@@ -90,7 +123,7 @@
 
     public async Task LoanProduct(int productId)
     {
-      
+        
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
 }
