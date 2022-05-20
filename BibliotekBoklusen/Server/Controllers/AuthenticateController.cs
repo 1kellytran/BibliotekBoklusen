@@ -115,52 +115,9 @@ namespace BibliotekBoklusen.Server.Controllers
                 var dbContextResult = await _appDbContext.SaveChangesAsync();
 
                 if (dbContextResult != 0)
-                    return Ok("Användare skapad");
+                    return Ok("User created");
             }
             return BadRequest();
-        }
-
-        [HttpPost]
-        [Route("register-admin")]
-        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterDto model)
-        {
-            var userExists = await _signInManager.UserManager.FindByEmailAsync(model.Email);
-            if (userExists != null)
-                return BadRequest("User already exists!");
-
-            ApplicationUser user = new()
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.Email
-            };
-            var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                return BadRequest("User creation failed! Please check user details and try again.");
-
-            if (!await _roleManager.RoleExistsAsync(UserRoles.Admin))
-                await _roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
-
-            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-            {
-                await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Admin);
-            }
-          
-            User userModel = new User()
-            {
-
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                IsActive = true
-
-            };
-
-            _appDbContext.Users.Add(userModel);
-            await _appDbContext.SaveChangesAsync();
-            return Ok("User created successfully!");
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)
         {
