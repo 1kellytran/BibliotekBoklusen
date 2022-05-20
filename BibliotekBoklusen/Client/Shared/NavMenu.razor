@@ -1,65 +1,33 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">BibliotekBoklusen</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="createproduct">
-                <span class="oi oi-wrench" aria-hidden="true"></span> CreateProduct
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="registerseminar">
-                <span class="oi oi-wrench" aria-hidden="true"></span> Register Seminar
-            </NavLink>
-        </div>
-        <AuthorizeView Roles="Librarian, Admin">
-            <Authorized>
-                <NavLink class="nav-link" href="admin">
-                    <span class="oi oi-wrench" aria-hidden="true"></span> Admin
-                </NavLink>
-            </Authorized>
-        </AuthorizeView>
-        <AuthorizeView>
-            <NotAuthorized>
-                <NavLink class="nav-link" href="login">
-                    <span class="oi oi-account-login" aria-hidden="true"></span> Logga in
-                </NavLink>
-                <NavLink class="nav-link" href="register">
-                    <span class="oi oi-people" aria-hidden="true"></span> Registera
-                </NavLink>
-            </NotAuthorized>
-            <Authorized>
-                <NavLink class="nav-link" href="myprofile">
-                    <span class="oi oi-person" aria-hidden="true"></span> Min sida
-                </NavLink>
-                <NavLink class="nav-link" href="logout">
-                    <span class="oi oi-account-logout" aria-hidden="true"></span> Logga ut
-                </NavLink>
-            </Authorized>
-        </AuthorizeView>
-
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+﻿
+<MudNavMenu>
+    <MudNavLink Href="/" Match="NavLinkMatch.All">Biblioteket Boklusen</MudNavLink>
+    <AuthorizeView Roles="Librarian, Admin">
+        <MudNavGroup Title="Admin" Expanded="true">
+            <AuthorizeView Context="_context" Roles="Admin">
+                     <MudNavGroup Title="Personal" Expanded="false">
+                <MudNavLink Href="/createproduct" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Administrera personal</MudNavLink>
+            </MudNavGroup>
+            </AuthorizeView>
+            <MudNavGroup Title="Produkter" Expanded="false">
+                <MudNavLink Href="/createproduct" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Lägg till produkter</MudNavLink>
+            </MudNavGroup>
+            <MudNavGroup Title="Seminarium" Expanded="false">
+                <MudNavLink Href="/registerseminar" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Skapa seminarium</MudNavLink>
+            </MudNavGroup>
+        </MudNavGroup>
+    </AuthorizeView>
+    <AuthorizeView>
+        <Authorized>
+            <MudNavGroup Title="Profil" Expanded="false">
+                <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
+                <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
+            </MudNavGroup>
+            <MudNavLink Href="/logout" Icon="@Icons.Filled.Logout">Logga ut</MudNavLink>
+        </Authorized>
+        <NotAuthorized>
+            <MudNavLink Href="/login" Icon=@Icons.Filled.Login>Logga in</MudNavLink>
+            <MudNavLink Href="/register" Icon=@Icons.Filled.AppRegistration>Registrera</MudNavLink>
+        </NotAuthorized>
+    </AuthorizeView>
+    <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+</MudNavMenu>

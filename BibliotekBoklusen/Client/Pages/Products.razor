@@ -37,9 +37,7 @@
                         @if (p.Id == product.Id)
                         {
                             isAvailable = true;
-
                         }
-
                     }
                     @if (isAvailable == true)
                     {
@@ -49,12 +47,6 @@
                     {
                         <td><a class="btn" >Reservera</a></td>
                     }
-
-
-
-
-
-
 
                     <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
@@ -106,8 +98,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
-        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        //var userEmail = await localStorage.GetItemAsync<string>("email");
+        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         products = await ProductManager.GetAllProducts();
     }
