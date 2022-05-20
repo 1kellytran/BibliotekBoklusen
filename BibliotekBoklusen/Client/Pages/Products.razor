@@ -5,6 +5,7 @@
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
+@inject IReservationManager ReservationManager
 
 <NotAuthorized>
     <h3>Products</h3>
@@ -47,7 +48,7 @@
                     }
                     else
                     {
-                        <td><a class="btn" >Reservera</a></td>
+                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)" >Reservera</a></td>
                     }
 
 
@@ -134,5 +135,9 @@
 
         LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
+    }
+    public async Task ReserveProduct(int productId)
+    {
+        ReservationManager.AddReservation(productId, CurrentUser.Id);
     }
 }
