@@ -22,7 +22,7 @@ namespace BibliotekBoklusen.Shared
 
         public bool IsLoaned { get; set; }
 
-       
+        
 
     }
 }

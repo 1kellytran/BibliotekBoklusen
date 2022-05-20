@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Controllers
 {
@@ -13,28 +12,25 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             _context = context;
         }
-        
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
+   
        
-        [HttpGet("{id}")]
-        public async Task <List<ProductCopy>> GetProductCopy(int id)
+        [HttpGet("{dinmamma}")]
+
+        public async Task<ActionResult<List<Product>>> GetAllLoans()
         {
-            var prodcop=  _context.productCopies.Where(pc => pc.ProductId == id).ToList();
-           
-            if (prodcop !=null)
-            {
-                return prodcop;
-            }
-            else
-            {
-                return null;
-            }
+            var allLoans = _context.productCopies.Where(p =>p.IsLoaned ==false).GroupBy(p => p.ProductId).Select(g => g.OrderBy(p => p.Id).FirstOrDefault()).ToList();/*_context.productCopies.Where(p => p.IsLoaned == false).Take(1).ToList();*/
+            List<Product> availableProducts = new();
             
+            foreach (var productId in allLoans)
+            {
+                var availableProduct = _context.Products.Include(p => p.Creators)
+                .Include(c => c.Category).FirstOrDefault(p => p.Id == productId.ProductId);
+                    availableProducts.Add(availableProduct);
+            }
+
+            
+            return availableProducts;
+
         }
 
        
