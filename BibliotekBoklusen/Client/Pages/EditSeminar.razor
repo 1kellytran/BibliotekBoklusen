@@ -1,0 +1,47 @@
+﻿@page "/editseminar/{Id:int}"
+@inject ISeminarManager SeminarManager
+@inject NavigationManager NavigationManager
+
+<h3>Update information for seminar: "@SeminarToUpdate.Title"</h3>
+<EditForm Model="SeminarToUpdate" OnSubmit="HandleSeminar">
+    @*<DataAnnotationsValidator>*@
+        <div class="form-group col-4">
+            <label for="Title">Titel:</label>
+            <InputText Id="Title" class="form-control" @bind-Value="SeminarToUpdate.Title" />
+            <ValidationMessage For="@(() => SeminarToUpdate.Title)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">Firstname:</label>
+            <InputText Id="Firstname" class="form-control" @bind-Value="SeminarToUpdate.FirstName" />
+            <ValidationMessage For="@(() => SeminarToUpdate.FirstName)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">LastName:</label>
+            <InputText Id="LastName" class="form-control" @bind-Value="SeminarToUpdate.LastName" />
+            <ValidationMessage For="@(() => SeminarToUpdate.LastName)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">DayAndTime:</label>
+            <InputDate Id="DayAndTime" class="form-control" @bind-Value="SeminarToUpdate.DayAndTime" />
+            <ValidationMessage For="@(() => SeminarToUpdate.DayAndTime)" />
+        </div>
+    @*</DataAnnotationsValidator>*@
+    <button type="submit" class="btn btn-primary">Spara ändringar</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Seminarium SeminarToUpdate { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        SeminarToUpdate = await SeminarManager.GetSeminarById(Id);
+    }
+
+    public async Task HandleSeminar()
+    {
+        await SeminarManager.UpdateSeminar(Id, SeminarToUpdate);
+        NavigationManager.NavigateTo("/seminar");
+    }
+}
