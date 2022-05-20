@@ -26,6 +26,7 @@ builder.Services.AddScoped<ISearchManager, SearchManager>();
 builder.Services.AddScoped<ISeminarManager, SeminarManager>();
 builder.Services.AddScoped<ILoanManager, LoanManager>();
 builder.Services.AddScoped<IProductCopyManager, ProductCopyManager>();
+builder.Services.AddScoped<IReservationManager, ReservationManager>();
 
 
 

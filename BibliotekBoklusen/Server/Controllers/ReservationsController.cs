@@ -33,16 +33,18 @@ namespace BibliotekBoklusen.Server.Controllers
 
             if (reservation == null)
             {
-                return NotFound("There is no reservation with that ID");
+                return NotFound("There is no reservation with that Id");
             }
             return Ok(reservation);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateReservation()
+        [HttpPost("{productId}")]
+        public async Task<IActionResult> CreateReservation([FromRoute] int productId, [FromBody] int userId)
         {
             Reservation reservation = new Reservation();
             reservation.ReservationDate = DateTime.Now;
+            reservation.UserId = userId;
+            reservation.ProductId = productId;
             _context.Reservations.Add(reservation);
             await _context.SaveChangesAsync();
 

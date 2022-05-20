@@ -30,9 +30,9 @@
             return reservation;
         }
 
-        public async Task<string> AddReservation(Reservation reservation)
+        public async Task<string> AddReservation(int productId, int userId)
         {
-            var result = await _httpClient.PostAsJsonAsync("api/reservations", reservation);
+            var result = await _httpClient.PostAsJsonAsync($"api/reservations/{productId}", userId);
             if (result.IsSuccessStatusCode)
             {
                 return await result.Content.ReadAsStringAsync();
