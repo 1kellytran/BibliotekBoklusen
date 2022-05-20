@@ -31,64 +31,26 @@
                         <td>@creator.FirstName @creator.LastName</td>
                         <br />
                     }
-
-                    @foreach (var product in AvailableLoans)
-                    {
-                        @if (p.Id == product.Id)
-                        {
-                            isAvailable = true;
-
-                        }
-
-                    }
-                    @if (isAvailable == true)
-                    {
-                        <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                    }
-                    else
-                    {
-                        <td><a class="btn" >Reservera</a></td>
-                    }
-
-
-
-
-
-
-
+                    <td><a class="btn btn-primary" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
                     <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
                 </tr>
                 @if (Edit == true)
                 {
-                    @foreach (var c in p.Creators)
-                    {
-                        <label>Titel</label>
-                        <br />
-                        <input type="text" @bind-value="p.Title" />
-                        <br />
-                        <label>Förnamn</label>
-                        <br />
-                        <input type="text" @bind-value=c.FirstName />
-                        <label>Efternamn</label>
-                        <br />
-                        <input type="text" @bind-value="c.LastName" />
-                        <br />
-                        <label>Dag, datum & tid</label>
-                        <br />
-                        <input type="text" @bind-value="p.Published" />
-                        <br />
+                    @foreach(var c in p.Creators)
+                    {    
+                        <label>Titel</label><br />
+                        <input type="text" @bind-value="p.Title" /><br />
+                        <label>Förnamn</label><br />
+                        <input type="text" @bind-value=c.FirstName/>
+                        <label>Efternamn</label><br />
+                        <input type="text" @bind-value="c.LastName" /><br />
+                        <label>Dag, datum & tid</label><br />
+                        <input type="text" @bind-value="p.Published" /><br />
                         <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
                     }
                 }
-                @if (isAvailable == true)
-                {
-                    isAvailable = false;
-                }
             }
-
-
-
         </table>
     }
 </NotAuthorized>
@@ -96,19 +58,16 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<Product>? products { get; set; }
+    public List<Product>? products { get; set; } = new List<Product>();
     public Product? productToUpdate { get; set; }
     public User CurrentUser { get; set; }
     public bool Edit;
-    public List<Product> AvailableLoans { get; set; }
-    private bool isAvailable;
-
 
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await localStorage.GetItemAsync<string>("email");
         CurrentUser = await UserManager.GetCurrentUser(userEmail);
-        AvailableLoans = await ProductCopyManager.GetAllLoans();
+
         products = await ProductManager.GetAllProducts();
     }
 
@@ -131,8 +90,7 @@
 
     public async Task LoanProduct(int productId)
     {
-
+      
         LoanManager.AddLoan(productId, CurrentUser.Id);
-        AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 }
