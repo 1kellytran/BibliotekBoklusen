@@ -1,5 +1,4 @@
-﻿@page "/registerSeminar"
-@inject ISeminarManager SeminarManager
+﻿@inject ISeminarManager SeminarManager
 
 <h3>RegisterSeminar</h3>
 
@@ -26,15 +25,15 @@
             </div>
             <div>
                 <br />
-                <button type="submit" class="btn btn-primary">Registrera seminarium</button>
+                <button type="submit" class="btn btn-primary">Lägg till</button>
             </div>
         </EditForm>
     </div>
 </div>
-<h2 style="color:forestgreen">@message</h2>
-<a href="/seminar">Se alla seminarium här</a>
+<h6 style="color:forestgreen">@message</h6>
 
 @code {
+    public List<Seminarium> AllSeminars { get; set; }
     public Seminarium CreateSeminar { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     public string message;
@@ -44,5 +43,6 @@
         CreateSeminar.DayAndTime = TodaysDate;
         var result = await SeminarManager.CreateSeminar(CreateSeminar);
         _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
+        AllSeminars = await SeminarManager.GetAllSeminars();
     }
 }

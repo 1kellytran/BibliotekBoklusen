@@ -99,9 +99,9 @@ namespace BibliotekBoklusen.Server.Controllers
             if (product != null)
             {
                 var creatorList = new List<Creator>();
-                foreach (var c in productToUpdate.Creators)
+                foreach (var creator in productToUpdate.Creators)
                 {
-                    var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == c.FirstName.ToLower() && c.LastName.ToLower() == c.LastName.ToLower());
+                    var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == creator.FirstName.ToLower() && c.LastName.ToLower() == creator.LastName.ToLower());
 
                     if (creatorExists != null)
                     {
@@ -109,7 +109,7 @@ namespace BibliotekBoklusen.Server.Controllers
                     }
                     else
                     {
-                        creatorList.Add(c);
+                        creatorList.Add(creator);
                     }
                 }
 
