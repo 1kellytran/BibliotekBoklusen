@@ -12,15 +12,15 @@
     <div class="dropdown-menu dropdown-menu-right @UserMenuCssClass">
         <AuthorizeView>
             <Authorized>
-                <a href="profile" class="dropdown-item">Profile</a>
-                <a href="orders" class="dropdown-item">Orders</a>
+                <a href="MyProfile" class="dropdown-item">Min Profil</a>
+                
                 <hr />
                 <AdminMenu />
-                <button class="dropdown-item" @onclick="Logout">Logout</button>
+                <a href="Logout" class="dropdown-item">Logga ut</a>
             </Authorized>
             <NotAuthorized>
                 <a href="login?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)" class="dropdown-item">Login</a>
-                <a href="register" class="dropdown-item">Register</a>
+               <a href="Register" class="dropdown-item">Register</a>
             </NotAuthorized>
         </AuthorizeView>
     </div>
@@ -42,11 +42,5 @@
         showUserMenu = false;
     }
 
-    private async Task Logout()
-    {
-        await LocalStorage.RemoveItemAsync("authToken");
-        
-        await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("");
-    }
+   
 }
