@@ -48,7 +48,7 @@
                     }
                     else
                     {
-                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)" >Reservera</a></td>
+                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
                     }
 
 
@@ -62,16 +62,23 @@
                 </tr>
                 @if (Edit == true)
                 {
-                    @foreach(var c in p.Creators)
-                    {    
-                        <label>Titel</label><br />
-                        <input type="text" @bind-value="p.Title" /><br />
-                        <label>Förnamn</label><br />
-                        <input type="text" @bind-value=c.FirstName/>
-                        <label>Efternamn</label><br />
-                        <input type="text" @bind-value="c.LastName" /><br />
-                        <label>Dag, datum & tid</label><br />
-                        <input type="text" @bind-value="p.Published" /><br />
+                    @foreach (var c in p.Creators)
+                    {
+                        <label>Titel</label>
+                        <br />
+                        <input type="text" @bind-value="p.Title" />
+                        <br />
+                        <label>Förnamn</label>
+                        <br />
+                        <input type="text" @bind-value=c.FirstName />
+                        <label>Efternamn</label>
+                        <br />
+                        <input type="text" @bind-value="c.LastName" />
+                        <br />
+                        <label>Dag, datum & tid</label>
+                        <br />
+                        <input type="text" @bind-value="p.Published" />
+                        <br />
                         <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
                     }
                 }
@@ -87,6 +94,8 @@
     public Product? productToUpdate { get; set; }
     public User CurrentUser { get; set; }
     public bool Edit;
+    public List<Product> AvailableLoans { get; set; }
+    private bool isAvailable;
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,7 +123,7 @@
 
     public async Task LoanProduct(int productId)
     {
-      
+
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
     public async Task ReserveProduct(int productId)
