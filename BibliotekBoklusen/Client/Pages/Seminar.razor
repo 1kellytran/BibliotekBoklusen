@@ -4,66 +4,6 @@
 
 <h3>Seminarium</h3>
 
-<AuthorizeView Context="_context" Roles="Librarian, Admin">
-    @if (AllSeminars == null)
-    {
-        <h4>Laddar...</h4>
-    }
-    else if (AllSeminars.Count == 0)
-    {
-        <h4>Inga seminarium för tillfället</h4>
-    }
-    else
-    {
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Title</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Datum & tid</th>
-                </tr>
-            </thead>
-            @foreach (var s in AllSeminars)
-            {
-                <tr>
-                    <td>@s.Title</td>
-                    <td>@s.FirstName</td>
-                    <td>@s.LastName</td>
-                    <td>@s.DayAndTime.ToString()</td>
-                    <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
-                    <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
-                </tr>
-                @if (Edit == true)
-                {
-                    <label>Titel</label>
-                    <br />
-                    <input type="text" @bind-value="s.Title" />
-                    <br />
-                    <label>Förnamn</label>
-                    <br />
-                    <input type="text" @bind-value="s.FirstName" />
-                    <br />
-                    <label>Efternamn</label>
-                    <br />
-                    <input type="text" @bind-value="s.LastName" />
-                    <br />
-                    <label>Datum & tid</label>
-                    <br />
-                    <input type="text" @bind-value="s.DayAndTime" />
-                    <br />
-                    <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
-                }
-            }
-        </table>
-    }
-    <button class="btn btn-success" @onclick="() => ShowRegisterSeminar()">Registrera seminarium</button><br />
-
-    @if (RegisterSeminar)
-    {
-        <RegisterSeminar></RegisterSeminar>
-    }
-</AuthorizeView>
 
 @if (AllSeminars == null)
 {
@@ -91,9 +31,42 @@ else
                 <td>@s.FirstName</td>
                 <td>@s.LastName</td>
                 <td>@s.DayAndTime.ToString()</td>
+                <AuthorizeView Context="_context" Roles="Librarian, Admin">
+                    <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
+                    <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
+                </AuthorizeView>
             </tr>
+            @if (Edit == true)
+            {
+                <label>Titel</label>
+                <br />
+                <input type="text" @bind-value="s.Title" />
+                <br />
+                <label>Förnamn</label>
+                <br />
+                <input type="text" @bind-value="s.FirstName" />
+                <br />
+                <label>Efternamn</label>
+                <br />
+                <input type="text" @bind-value="s.LastName" />
+                <br />
+                <label>Datum & tid</label>
+                <br />
+                <input type="text" @bind-value="s.DayAndTime" />
+                <br />
+                <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
+            }
         }
     </table>
+}
+<AuthorizeView Context="_context" Roles="Librarian, Admin">
+    <button class="btn btn-success" @onclick="() => ShowRegisterSeminar()">Registrera seminarium</button>
+</AuthorizeView>
+<br />
+
+@if (RegisterSeminar)
+{
+    <RegisterSeminar></RegisterSeminar>
 }
 
 @code {

@@ -8,7 +8,7 @@
 @inject IReservationManager ReservationManager
 
 <NotAuthorized>
-    <h3>Products</h3>
+    <h3>Produkter</h3>
     @if (products != null)
     {
         <table class="table">
@@ -48,9 +48,10 @@
                     {
                         <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
                     }
-
+                    <AuthorizeView Roles="Admin, Librarian">
                     <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
                     <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
+                     </AuthorizeView>
                 </tr>
                 @if (Edit == true)
                 {

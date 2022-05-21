@@ -4,31 +4,24 @@
 @inject ISearchManager SearchManager
 @inject IProductManager ProductManager
 
-
-    <ProductList/>
-
-
+<ProductList />
 
 @code {
 
-	[Parameter]
+    [Parameter]
     public string? SearchText { get; set; } = null;
 
 
     protected override async Task OnParametersSetAsync()
     {
-       if (SearchText != null)
+        if (SearchText != null)
         {
             await SearchManager.SearchProducts(SearchText);
         }
         else
         {
             //ändring
-           await ProductManager.GetAllProducts();
+            await ProductManager.GetAllProducts();
         }
     }
-  
-	
-	
-   
 }

@@ -3,12 +3,12 @@
 
 @implements IDisposable
 
-@*@if (SearchManager.Products == null|| SearchManager.Products.Count == 0)
+@if (SearchManager.Products == null || SearchManager.Products.Count == 0)
 {
-    <span>@SearchManager.Message</span>
-}*@
-
-    <h3>Products</h3>
+}
+else
+{
+    <h3>Produkter</h3>
 
     <table class="table">
         <thead class="thead-light">
@@ -29,22 +29,21 @@
                 @foreach (var creator in p.Creators)
                 {
                     <td>@creator.FirstName @creator.LastName</td>
-                    <br />
                 }
                 @foreach (var category in p.Category)
                 {
                     <td>@category.CategoryName</td>
-                    <br />
                 }
-
-
             </tr>
         }
     </table>
+}
+
+
 
 
 @code {
-	protected override void OnInitialized()
+    protected override void OnInitialized()
     {
         SearchManager.ProductsChanged += StateHasChanged;
     }
