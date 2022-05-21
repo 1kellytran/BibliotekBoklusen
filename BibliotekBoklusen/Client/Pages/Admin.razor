@@ -4,6 +4,26 @@
 @inject IUserManager UserManager
 @inject ILoanManager LoanManager
 
+<MudPaper Width="250px" Class="d-inline-flex py-3" Elevation="0">
+    <MudNavMenu Class="mud-width-full">
+        <MudText Typo="Typo.h6" Class="px-4">Admin</MudText>
+        <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Meny</MudText>
+        <MudDivider Class="my-2" />
+        <MudNavLink Icon="fas fa-chart-line">Rapporter</MudNavLink>
+        <MudNavGroup Title="Produkter" Icon="fas fa-cogs" Expanded="false">
+            <MudNavLink Href="/allproducts" Icon="fas fa-server">Alla produkter</MudNavLink>
+            <MudNavLink Href="/createproduct" Icon="fas fa-server">Lägg till produkter</MudNavLink>
+        </MudNavGroup>
+        <MudNavGroup Title="Seminarium" Icon="fas fa-cogs" Expanded="false">
+            <MudNavLink Href="/seminar" Icon="fas fa-receipt">Kommande seminarium</MudNavLink>
+            <MudNavLink Href="/seminar" Icon="fas fa-receipt">Lägg till seminarium</MudNavLink>
+        </MudNavGroup>
+        <MudNavGroup Title="Personal" Icon="fas fa-users" Expanded="false">
+            <MudNavLink @onclick="AddLibrarian" Icon="fas fa-users" IconColor="Color.Success">Administrera personal</MudNavLink>
+            <MudNavLink Icon="fas fa-user-shield" IconColor="Color.Info">Säkerhet</MudNavLink>
+        </MudNavGroup>
+    </MudNavMenu>
+</MudPaper>
 
 
 <div class="text-center mb-3 pb-2 mt-3">

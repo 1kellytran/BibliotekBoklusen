@@ -4,6 +4,7 @@
     <AuthorizeView Roles="Librarian, Admin">
         <MudNavGroup Title="Admin" Expanded="true">
             <AuthorizeView Context="_context" Roles="Admin">
+                <MudNavLink Href="/admin" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>
                      <MudNavGroup Title="Personal" Expanded="false">
                 <MudNavLink Href="/createproduct" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Administrera personal</MudNavLink>
             </MudNavGroup>
