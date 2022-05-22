@@ -13,7 +13,7 @@ namespace BibliotekBoklusen.Client.Services
         public async Task<List<Product>> GetAllLoans()
         {
             
-            var allLoans= await  _httpClient.GetFromJsonAsync<List<Product>>("api/productcopies/dinmamma");
+            var allLoans= await  _httpClient.GetFromJsonAsync<List<Product>>("api/productcopies/getall");
             return allLoans;
         }
 

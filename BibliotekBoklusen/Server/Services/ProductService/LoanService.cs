@@ -46,13 +46,40 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             return productCopies;
             
         }
+
+        public async Task<List<Product>> GetTopProducts()
+        {
+            var topProductsIDs = _context.Loans // table with a row for each loan of a product
+              .Include(p => p.ProductCopy).ThenInclude(p => p.product.Creators)
+              .GroupBy(p => p.ProductCopy.ProductId) //group all rows with same product id together
+              .OrderByDescending(g => g.Count()) // move products with highest loan to the top
+              .Take(5) // take top 5
+              .Select(x => x.Key) // get id of products
+              .ToList(); // execute query and convert it to a list
+
+            var topProducts = _context.Products  // table with products information
+                .Where(x => topProductsIDs.Contains(x.Id)).ToList(); // get info of products that their Ids are retrieved in previous query
+
+            return topProducts;
+        }
+
         public async Task<bool> ReturnLoan(int productCopyId)
         {
+            Loan loanToUpdate = new();
 
             var personLoans = _context.productCopies.FirstOrDefault(pc => pc.Id == productCopyId);
-
+            var loans = _context.Loans.ToList();
+            foreach (var loan in loans)
+            {
+                if (loan.ProductCopyId == productCopyId && loan.isReturned==false)
+                {
+                    loanToUpdate=loan;
+                }
+            }
             if (personLoans != null)
             {
+                loanToUpdate.isReturned = true;
+                _context.Loans.Update(loanToUpdate);
                 personLoans.IsLoaned = false;
                 _context.productCopies.Update(personLoans);
                 _context.SaveChanges();

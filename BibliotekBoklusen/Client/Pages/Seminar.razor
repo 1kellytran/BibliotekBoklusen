@@ -22,41 +22,46 @@ else
                 <th>First name</th>
                 <th>Last name</th>
                 <th>Datum & tid</th>
-            </tr>
-        </thead>
-        @foreach (var s in AllSeminars)
-        {
-            <tr>
-                <td>@s.Title</td>
-                <td>@s.FirstName</td>
-                <td>@s.LastName</td>
-                <td>@s.DayAndTime.ToString()</td>
                 <AuthorizeView Context="_context" Roles="Librarian, Admin">
-                    <td><a class="btn btn-warning" @onclick="() => EditSeminar(s.Id, s)">i</a></td>
-                    <td><a class="btn btn-danger" @onclick="() => DeleteSeminar(s.Id)">x</a></td>
+                    <th></th>
+                    <th></th>
                 </AuthorizeView>
             </tr>
-            @if (Edit == true)
+        </thead>
+        <tbody>
+            @foreach (var s in AllSeminars)
             {
-                <label>Titel</label>
-                <br />
-                <input type="text" @bind-value="s.Title" />
-                <br />
-                <label>Förnamn</label>
-                <br />
-                <input type="text" @bind-value="s.FirstName" />
-                <br />
-                <label>Efternamn</label>
-                <br />
-                <input type="text" @bind-value="s.LastName" />
-                <br />
-                <label>Datum & tid</label>
-                <br />
-                <input type="text" @bind-value="s.DayAndTime" />
-                <br />
-                <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
+                <tr>
+                    <td>@s.Title</td>
+                    <td>@s.FirstName</td>
+                    <td>@s.LastName</td>
+                    <td>@s.DayAndTime.ToString()</td>
+                    <AuthorizeView Context="_context" Roles="Librarian, Admin">
+                        <td><MudButton @onclick="() => EditSeminar(s.Id, s)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteSeminar(s.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
+                    </AuthorizeView>
+                </tr>
+                @if (Edit == true)
+                {
+                    <label>Titel</label>
+                    <br />
+                    <input type="text" @bind-value="s.Title" />
+                    <br />
+                    <label>Förnamn</label>
+                    <br />
+                    <input type="text" @bind-value="s.FirstName" />
+                    <br />
+                    <label>Efternamn</label>
+                    <br />
+                    <input type="text" @bind-value="s.LastName" />
+                    <br />
+                    <label>Datum & tid</label>
+                    <br />
+                    <input type="text" @bind-value="s.DayAndTime" />
+                    <br />
+                    <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
+                }
             }
-        }
+        </tbody>
     </table>
 }
 <AuthorizeView Context="_context" Roles="Librarian, Admin">

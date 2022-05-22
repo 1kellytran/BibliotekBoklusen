@@ -30,6 +30,13 @@
 
             return loan;
         }
+        public async Task<List<Loan>> GetLoansByUserId(int userId)
+        {
+
+            var result = await _httpClient.GetFromJsonAsync<List<Loan>>($"api/loansByUser/{userId}");
+            return result;
+
+        }
 
         public async Task<string> AddLoan(int productId, int userId)
         {
@@ -52,6 +59,12 @@
             await _httpClient.PutAsJsonAsync($"api/loans", id);
         }
 
+        public async Task<List<Product>> GetTopProducts()
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<Product>>("api/Loans/TopProducts");
+
+            return result;
+        }
     }
 
 }

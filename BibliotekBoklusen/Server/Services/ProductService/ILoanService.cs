@@ -8,6 +8,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         Task<Loan> CreateLoan(int ProductId, int UserId);
         Task<List<Loan>> GetLoansById(int userId);
         Task<bool> ReturnLoan(int productCopyId);
+        Task<List<Product>> GetTopProducts();
 
     }
 }

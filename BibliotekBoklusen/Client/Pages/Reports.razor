@@ -1,0 +1,72 @@
+﻿@page "/reports"
+<h3>Reports</h3>
+
+<AuthorizeView Roles="Librarian, Admin">
+    <div class="form-group">
+        <div class="col">
+            <div class="form-outline">
+                <href @onclick="ShowProductsToBeReturned">Användare med aktiva lån</href>
+            </div>
+            <div class="form-outline">
+                <href @onclick="ShowProductsToBeReturned">Användare med flest lån</href>
+            </div>
+        </div>
+    </div>
+</AuthorizeView>
+
+<div class="form-group">
+    <div class="col"> 
+        <href @onclick="ShowPopularProducts">Boklusens mest populära</href>
+    </div>
+</div>
+
+@if (ProductsToBeReturned)
+{
+    <NeedToReturn></NeedToReturn>
+}
+
+@if (WhoLoansAlot)
+{
+    <UserLoansAlot></UserLoansAlot>
+}
+
+@if (PopularProducts)
+{
+    <PopularProducts></PopularProducts>
+}
+
+@code {
+    bool ProductsToBeReturned;
+    bool WhoLoansAlot;
+    bool PopularProducts;
+
+    void ShowProductsToBeReturned()
+    {
+        _ = !ProductsToBeReturned ? ProductsToBeReturned = true : ProductsToBeReturned = false; 
+    }
+
+    void ShowWhoLoansAlot()
+    {
+        _ = !WhoLoansAlot ? WhoLoansAlot = true : WhoLoansAlot = false;
+    }
+
+    void ShowPopularProducts()
+    {
+        _ = !PopularProducts ? PopularProducts = true : PopularProducts = false;
+    }
+
+
+<TopProducts/>
+
+
+
+
+
+
+
+
+
+
+@code {
+
+}

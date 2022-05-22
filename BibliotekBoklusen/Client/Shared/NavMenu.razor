@@ -1,4 +1,3 @@
-﻿
 <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Biblioteket Boklusen</MudNavLink>
     <AuthorizeView Roles="Librarian, Admin">
@@ -27,6 +26,7 @@
 
     <AuthorizeView Roles="Member">
         <MudNavLink Href="/allproducts" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Produkter</MudNavLink>
+         <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
         <MudNavGroup Title="Profil" Expanded="false">
             <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
             <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
@@ -34,6 +34,10 @@
     </AuthorizeView>
     <AuthorizeView>
         <Authorized>
+            <MudNavGroup Title="Profil" Expanded="false">
+                <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
+                <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
+            </MudNavGroup>
             <MudNavLink Href="/logout" Icon="@Icons.Filled.Logout">Logga ut</MudNavLink>
         </Authorized>
         <NotAuthorized>

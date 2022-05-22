@@ -95,23 +95,41 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product productToUpdate)
         {
-            var product = _context.Products.FirstOrDefault(x => x.Id == id);
+            var product = _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefault(x => x.Id == id);
             if (product != null)
             {
                 var creatorList = new List<Creator>();
+                var categoryList = new List<Category>();
+                var newCreator = new Creator();
+
                 foreach (var creator in productToUpdate.Creators)
                 {
                     var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == creator.FirstName.ToLower() && c.LastName.ToLower() == creator.LastName.ToLower());
-
+                
                     if (creatorExists != null)
                     {
                         creatorList.Add(creatorExists);
                     }
                     else
                     {
-                        creatorList.Add(creator);
+                        newCreator.FirstName = creator.FirstName;
+                        newCreator.LastName = creator.LastName;
+
+                        _context.Creators.Add(newCreator);
+                        _context.SaveChanges();
+                        creatorList.Add(newCreator);
                     }
                 }
+
+                foreach (var category in productToUpdate.Category)
+                {
+                    var categoryExists = _context.Categories.FirstOrDefault(c => c.Id == category.Id);
+                    if (categoryExists != null)
+                        categoryList.Add(categoryExists);
+                    else
+                        categoryList.Add(category);
+                }
+                productToUpdate.Category = categoryList;
 
                 productToUpdate.Creators = creatorList;
                 product.Title = productToUpdate.Title;
@@ -119,11 +137,14 @@ namespace BibliotekBoklusen.Server.Controllers
                 product.Type = productToUpdate.Type;
                 product.Published = productToUpdate.Published;
                 product.Category = productToUpdate.Category;
+                product.NumberOfCopiesOwned = productToUpdate.NumberOfCopiesOwned;
+                //_context.Creators.UpdateRange(product.Creators);
+                _context.Update(product);
                 await _context.SaveChangesAsync();
 
                 return Ok("Product has been updated");
             }
-            return NotFound();
+            return BadRequest();
         }
 
         [HttpDelete("{id}")]
