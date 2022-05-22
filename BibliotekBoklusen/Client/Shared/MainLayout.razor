@@ -8,11 +8,16 @@
     <MudAppBar Color="Color.Info" Dense="true">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <AuthorizeView>
-            <MudIcon Style="color:whitesmoke" Icon="@Icons.Filled.Person" Title="Inloggad" />
-            @context.User.Identity.Name
-            <MudNavLink Icon=@Icons.Filled.Logout Href="/logout" Style="color:whitesmoke">Logga ut</MudNavLink>
+            <Authorized>
+                <MudIcon Style="color:whitesmoke" Icon="@Icons.Filled.Person" Title="Inloggad" />
+                @context.User.Identity.Name
+                <MudNavLink Icon=@Icons.Filled.Logout Href="/logout" Style="color:whitesmoke">Logga ut</MudNavLink>
+            </Authorized>
+            <NotAuthorized>
+                <MudNavLink Href="/login" Icon=@Icons.Filled.Login>Logga in</MudNavLink>
+            </NotAuthorized>
         </AuthorizeView>
-        <Search/>
+        <Search />
         <UserButton />
     </MudAppBar>
 
