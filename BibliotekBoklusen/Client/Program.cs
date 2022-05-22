@@ -2,10 +2,11 @@ global using BibliotekBoklusen.Shared;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Blazored.LocalStorage;
 global using System.Net.Http.Json;
+global using BibliotekBoklusen.Client.Services;
 using BibliotekBoklusen.Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using BibliotekBoklusen.Client.Services;
+
 using MudBlazor.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);

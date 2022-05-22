@@ -1,0 +1,23 @@
+﻿@inject IUserManager UserManager
+@message;
+
+@code {
+    string searchText;
+    string message;
+    private List<User> Members = new List<User>();
+
+    private async Task<List<User>> SearchForMembers()
+    {
+        var result = await UserManager.GetUsersBySearch(searchText);
+        if (result == null)
+        {
+            message = "Inga användare funna";
+        }
+        else
+        {
+            Members = result;
+            return Members;
+        }
+        return Members;
+    }
+}

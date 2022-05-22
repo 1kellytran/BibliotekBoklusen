@@ -32,26 +32,27 @@
                         <td>@creator.FirstName @creator.LastName</td>
                         <br />
                     }
-
-                    @foreach (var product in AvailableLoans)
-                    {
-                        @if (p.Id == product.Id)
+                    <AuthorizeView Roles="Member">
+                        @foreach (var product in AvailableLoans)
                         {
-                            isAvailable = true;
+                            @if (p.Id == product.Id)
+                            {
+                                isAvailable = true;
+                            }
                         }
-                    }
-                    @if (isAvailable == true)
-                    {
-                        <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                    }
-                    else
-                    {
-                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
-                    }
+                        @if (isAvailable == true)
+                        {
+                            <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+                        }
+                        else
+                        {
+                            <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
+                        }
+                    </AuthorizeView>
                     <AuthorizeView Roles="Admin, Librarian">
-                    <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
-                    <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
-                     </AuthorizeView>
+                        <td><a class="btn btn-warning" href="/EditProduct/@p.Id">i</a></td>
+                        <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
+                    </AuthorizeView>
                 </tr>
                 @if (Edit == true)
                 {

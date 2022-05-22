@@ -58,6 +58,11 @@ namespace BibliotekBoklusen.Server.Services
 
             await DeleteUserFromAuthDbContext(userDb.Email);
         }
+
+        public async Task<List<User>> GetEmployees()
+        {
+            return await _context.Users.Where(u => u.IsLibrarian == true).ToListAsync();
+        }
     }
 }
 

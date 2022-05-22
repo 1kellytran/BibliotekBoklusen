@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -17,11 +18,11 @@ namespace BibliotekBoklusen.Server.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
         private readonly IUserManager _userManager;
-        
 
-        public UserController(SignInManager<ApplicationUser> signInManager, 
-            RoleManager<IdentityRole> roleManager, 
-            AppDbContext context, 
+
+        public UserController(SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            AppDbContext context,
             IUserManager userManager
             )
         {
@@ -29,10 +30,10 @@ namespace BibliotekBoklusen.Server.Controllers
             _roleManager = roleManager;
             _context = context;
             _userManager = userManager;
-            
+
         }
 
-        [HttpGet]
+        [HttpGet("getallusers")]
         public ActionResult<List<User>> GetAllUser()
         {
             var result = _context.Users.ToList();
@@ -82,20 +83,35 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model, int id)
         {
             var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
-            if (userDb != null)
+            var authUser = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
+
+            if (userDb != null && authUser != null)
             {
+                authUser.FirstName = model.FirstName;
+                authUser.LastName = model.LastName;
+
                 userDb.FirstName = model.FirstName;
                 userDb.LastName = model.LastName;
                 userDb.IsActive = model.IsActive;
 
+                if (model.IsAdmin)
+                {
+                    userDb.IsAdmin = true;
+                    await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
+                    await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Admin);
+                }
+                else
+                {
+                    userDb.IsAdmin = false;
+                    await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
+                    await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Librarian);
+
+                }
+
                 _context.Update(userDb);
                 await _context.SaveChangesAsync();
 
-                var AuthUser = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
-                if (AuthUser != null)
-                    AuthUser.FirstName = model.FirstName;
-                AuthUser.LastName = model.LastName;
-                _signInManager.UserManager.UpdateAsync(AuthUser);
+                _signInManager.UserManager.UpdateAsync(authUser);
                 return Ok("Change successful");
             }
 
@@ -174,6 +190,11 @@ namespace BibliotekBoklusen.Server.Controllers
             return BadRequest("User was not found :(");
         }
 
-   
+
+        [HttpGet("usersBySearch")]
+        public async Task<List<User>> SearchUsers(string searchText)
+        {
+            return await _context.Users.Where(u => u.FirstName.ToLower().Contains(searchText.ToLower()) || u.LastName.ToLower().Contains(searchText.ToLower())).ToListAsync();
+        }
     }
 }

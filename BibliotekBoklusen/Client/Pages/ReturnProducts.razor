@@ -1,0 +1,20 @@
+﻿@page "/returnproducts"
+@inject ILoanManager LoanManager
+
+<h3>Returna Produkter</h3>
+
+<div>
+    <label>Skriv in exemplarId som ska återlämnas</label>
+    <br />
+    <input type="number" @bind-value="copyToReturn" />
+    <br />
+    <button @onclick="ReturnLoan" type="submit">Ok</button>
+</div>
+
+@code {
+        private int copyToReturn;
+      async Task ReturnLoan()
+    {
+        await LoanManager.ReturnLoanAsync(copyToReturn);
+    }
+}

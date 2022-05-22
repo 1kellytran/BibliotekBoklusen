@@ -15,18 +15,28 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
+        private readonly IUserManager _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _appDbContext;
 
-        public AuthenticateController(SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
+        public AuthenticateController(IUserManager userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _appDbContext = appDbContext;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetEmployees()
+        {
+            var result = await _userManager.GetEmployees();
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
@@ -92,9 +102,10 @@ namespace BibliotekBoklusen.Server.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,
-                    IsActive = true
+                    IsActive = true,
+                    IsLibrarian = model.IsLibrarian
                 };
-         
+
                 var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
 
                 if (!result.Succeeded)
@@ -103,13 +114,28 @@ namespace BibliotekBoklusen.Server.Controllers
                 if (model.IsLibrarian)
                 {
                     if (!await _roleManager.RoleExistsAsync(UserRoles.Librarian))
+                    {
                         await _roleManager.CreateAsync(new IdentityRole(UserRoles.Librarian));
+                    }
 
                     if (await _roleManager.RoleExistsAsync(UserRoles.Librarian))
                     {
                         await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Librarian);
                     }
                 }
+                else
+                {
+                    if (!await _roleManager.RoleExistsAsync(UserRoles.Member))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(UserRoles.Member));
+                    }
+                    if (await _roleManager.RoleExistsAsync(UserRoles.Member))
+                    {
+                        await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Member);
+                    }
+                }
+
+
 
                 _appDbContext.Users.Add(userModel);
                 var dbContextResult = await _appDbContext.SaveChangesAsync();

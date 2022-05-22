@@ -9,5 +9,6 @@ namespace BibliotekBoklusen.Server.Services
         Task<ServiceResponse<List<User>>> SearchForMembers(string searchText);
         Task DeleteUserFromDb(int userId);
         Task DeleteUserFromAuthDbContext(string email);
+        Task<List<User>> GetEmployees();
     }
 }

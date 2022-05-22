@@ -1,0 +1,102 @@
+﻿@inject IUserManager UserManager
+@page "/members"
+<div>
+    <h6 class="validation-message">@message</h6>
+</div>
+@if (editUser)
+{
+    <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Förnamn</th>
+                    <th scope="col">Efternamn</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Medlem sedan</th>
+                    <th scope="col">Aktiv</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input @bind="userToUpdate.FirstName" /></td>
+                    <td><input @bind="userToUpdate.LastName" /></td>
+                    <td>@userToEdit.Email</td>
+                    <td>@userToEdit.Created.ToString("d")</td>
+                    <td><input type="checkbox" @bind="userToUpdate.IsActive" /></td>
+                    <td><button type="submit" class="btn btn-primary">Spara</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </EditForm>
+}
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Förnamn</th>
+            <th scope="col">Efternamn</th>
+            <th scope="col">Email</th>
+            <th scope="col">Medlem sedan</th>
+            <th scope="col">Aktiv</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var member in Members)
+        {
+            <tr>
+                <td>@member.FirstName</td>
+                <td>@member.LastName</td>
+                <td>@member.Email</td>
+                <td>@member.Created.ToString("d")</td>
+                <td>@member.IsActive</td>
+                <td>
+                    <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                    <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private List<User> Members = new List<User>();
+    UpdatedUserDto userToUpdate = new UpdatedUserDto();
+    User userToEdit = new User();
+    int userId;
+    bool editUser = false;
+    string message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        message = "";
+        Members = await UserManager.GetAllUser();
+    }
+
+    private void EditUser(User user)
+    {
+        userToUpdate.FirstName = user.FirstName;
+        userToUpdate.LastName = user.LastName;
+        userToUpdate.IsActive = user.IsActive;
+        userToEdit = user;
+        userId = user.Id;
+        editUser = true;
+    }
+
+    private async Task UpdateUser()
+    {
+        editUser = false;
+        await UserManager.UpdateUserinformation(userToUpdate, userId);
+        Members = await UserManager.GetAllUser();
+        message = "Användaren har uppdaterats";
+    }
+
+    private async Task DeleteUser(int userId)
+    {
+        await UserManager.DeleteUser(userId);
+        Members = await UserManager.GetAllUser();
+    }
+
+}
