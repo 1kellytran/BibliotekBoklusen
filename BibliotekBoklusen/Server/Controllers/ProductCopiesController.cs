@@ -14,7 +14,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
    
        
-        [HttpGet("{dinmamma}")]
+        [HttpGet("{getall}")]
 
         public async Task<ActionResult<List<Product>>> GetAllLoans()
         {

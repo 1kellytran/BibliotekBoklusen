@@ -58,7 +58,7 @@ namespace BibliotekBoklusen.Client.Services
             var result = await _http.GetFromJsonAsync<User>($"api/user/currentuser?userEmail={userEmail}");
             return result;
 
-  
+
         }
 
         public async Task<string> Login(LoginDto model)

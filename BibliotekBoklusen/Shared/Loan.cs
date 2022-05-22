@@ -15,9 +15,7 @@ namespace BibliotekBoklusen.Shared
         [ForeignKey(nameof(ProductCopy))]
         public int? ProductCopyId { get; set; }
         public ProductCopy? ProductCopy { get; set; }
-
-       
-
+        public bool isReturned { get; set; }
         public DateTime LoanDate { get; set; } = DateTime.Now;
         public DateTime ReturnDate { get; set; }=DateTime.Now.AddDays(14);
 
