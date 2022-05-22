@@ -98,7 +98,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
         }
 
-        [HttpGet ("Topproducts")]
+        [HttpGet ("TopProducts")]
         public async Task<ActionResult<List<Product>>> GetTopProducts()
         {
 

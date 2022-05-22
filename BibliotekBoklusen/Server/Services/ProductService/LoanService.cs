@@ -50,7 +50,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         public async Task<List<Product>> GetTopProducts()
         {
             var topProductsIDs = _context.Loans // table with a row for each loan of a product
-              .GroupBy(x => x.ProductCopyId) //group all rows with same product id together
+              .Include(p => p.ProductCopy).ThenInclude(p => p.product.Creators)
+              .GroupBy(p => p.ProductCopy.ProductId) //group all rows with same product id together
               .OrderByDescending(g => g.Count()) // move products with highest loan to the top
               .Take(5) // take top 5
               .Select(x => x.Key) // get id of products

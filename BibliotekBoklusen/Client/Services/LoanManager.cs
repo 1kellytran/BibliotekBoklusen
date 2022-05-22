@@ -52,6 +52,12 @@
             await _httpClient.PutAsJsonAsync($"api/loans", id);
         }
 
+        public async Task<List<Product>> GetTopProducts()
+        {
+            var result = await _httpClient.GetFromJsonAsync<List<Product>>("api/Loans/TopProducts");
+
+            return result;
+        }
     }
 
 }
