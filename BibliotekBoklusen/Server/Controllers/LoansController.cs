@@ -100,5 +100,17 @@ namespace BibliotekBoklusen.Server.Controllers
 
         }
 
+        [HttpGet ("TopProducts")]
+        public async Task<ActionResult<List<Product>>> GetTopProducts()
+        {
+
+            var result = await _loanService.GetTopProducts();
+              
+            return Ok(result);
+
+        }
+
+
+
     }
 }

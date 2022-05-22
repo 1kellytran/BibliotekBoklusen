@@ -9,5 +9,7 @@ namespace BibliotekBoklusen.Client.Services
         Task ReturnLoanAsync(int id);
         Task UpdateLoan(Loan loanToUpdate);
         Task<List<Loan>> GetLoansByUserId(int userId);
+
+        Task<List<Product>> GetTopProducts();
     }
 }
