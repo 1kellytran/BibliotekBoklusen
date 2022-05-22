@@ -83,6 +83,10 @@
                         <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
                     }
                 }
+                @if (isAvailable)
+                {
+                    isAvailable = false;
+                }
             }
         </table>
     }
@@ -97,15 +101,15 @@
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     public Product ProductToUpdate { get; set; } = new();
     public Creator Creator { get; set; } = new();
-    public User CurrentUser { get; set; }
+    public User CurrentUser { get; set; } = new();
     private bool isAvailable;
     private bool addCreator;
     public bool Edit;
 
     protected override async Task OnInitializedAsync()
     {
-        //var userEmail = await localStorage.GetItemAsync<string>("email");
-        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+        CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         products = await ProductManager.GetAllProducts();
@@ -132,6 +136,7 @@
     {
 
         LoanManager.AddLoan(productId, CurrentUser.Id);
+         AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 
     public async Task ReserveProduct(int productId)
