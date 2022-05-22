@@ -29,7 +29,8 @@
                     <td>@p.Published.ToString("yyyy")</td>
                     @foreach (var creator in p.Creators)
                     {
-                        <td>@creator.FirstName @creator.LastName</td><br />
+                        <td>@creator.FirstName @creator.LastName</td>
+                        <br />
                     }
                     <AuthorizeView Roles="Member">
                         @foreach (var product in AvailableLoans)
@@ -40,16 +41,15 @@
                             }
                         }
 
-                    }
-
-                    @if (isAvailable == true)
-                    {
-                        <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                    }
-                    else
-                    {
-                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
-                    }
+                        @if (isAvailable == true)
+                        {
+                            <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
+                        }
+                        else
+                        {
+                            <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
+                        }
+                    </AuthorizeView>
                     <AuthorizeView Roles="Admin, Librarian">
                         <td><MudButton @onclick="() => EditProduct(p.Id, p)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteProduct(p.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
 
@@ -79,9 +79,9 @@
                             <option value="" selected></option>
                             @foreach (var productType in Enum.GetValues(typeof(ProductType)))
                             {
-                                <option value="@productType">@productType</option>
+                            <option value="@productType">@productType</option>
                             }
-                        </InputSelect>*@
+                            </InputSelect>*@
                         <br>
                         <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
                     }
@@ -139,7 +139,7 @@
     {
 
         LoanManager.AddLoan(productId, CurrentUser.Id);
-         AvailableLoans = await ProductCopyManager.GetAllLoans();
+        AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 
     public async Task ReserveProduct(int productId)
