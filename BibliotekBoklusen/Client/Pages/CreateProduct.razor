@@ -15,7 +15,6 @@
 
         <div class="row">
             <label for="lastname">Skapare:</label>
-
             <div class="col-4">
                 <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
                 <ValidationMessage For="@(() => Creator.FirstName)" />
@@ -28,7 +27,6 @@
             <div class="col-4 align-content-end">
                 <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
             </div>
-
         </div>
         @if (addCreator)
         {
@@ -50,7 +48,7 @@
             <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
             <ValidationMessage For="@(() => Product.Published)" />
         </div>
-         <div class="form-group col-2">
+        <div class="form-group col-2">
             <label for="NumberOfCopies ">Antal Kopior:</label>
             <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
             <ValidationMessage For="@(() => Product.Published)" />
