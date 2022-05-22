@@ -19,7 +19,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Loan>>> GetAllLoans()
         {
-            
+
             var loans = _context.Loans.ToList();
 
             if (loans == null || loans.Count <= 0)
@@ -34,7 +34,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
 
             var productUserHas = _loanService.GetLoansById(id);
-            
+
 
             if (productUserHas == null)
             {
@@ -43,30 +43,32 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(productUserHas);
         }
 
-        [HttpPost("{productId}")]
-        public async Task<ActionResult<string>> CreateLoan([FromRoute]int productId,[FromBody]int userId)
-        {
-            Loan loan= await _loanService.CreateLoan(productId, userId);
 
-            if (loan !=null)
+
+        [HttpPost("{productId}")]
+        public async Task<ActionResult<string>> CreateLoan([FromRoute] int productId, [FromBody] int userId)
+        {
+            Loan loan = await _loanService.CreateLoan(productId, userId);
+
+            if (loan != null)
             {
                 await _context.Loans.AddAsync(loan);
                 _context.SaveChangesAsync();
                 return Ok("Loan har lagts till");
             }
-            
+
             else
             {
                 return NotFound("Inga exemplar finns tillgängliga av denna boken");
             }
-            
+
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLoan(int id)
         {
             var loan = _context.Loans.Where(x => x.Id == id).FirstOrDefault();
-           
+
             if (loan == null)
             {
                 return BadRequest("There is no loan with that ID");

@@ -48,11 +48,21 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         }
         public async Task<bool> ReturnLoan(int productCopyId)
         {
+            Loan loanToUpdate = new();
 
             var personLoans = _context.productCopies.FirstOrDefault(pc => pc.Id == productCopyId);
-
+            var loans = _context.Loans.ToList();
+            foreach (var loan in loans)
+            {
+                if (loan.ProductCopyId == productCopyId && loan.isReturned==false)
+                {
+                    loanToUpdate=loan;
+                }
+            }
             if (personLoans != null)
             {
+                loanToUpdate.isReturned = true;
+                _context.Loans.Update(loanToUpdate);
                 personLoans.IsLoaned = false;
                 _context.productCopies.Update(personLoans);
                 _context.SaveChanges();
