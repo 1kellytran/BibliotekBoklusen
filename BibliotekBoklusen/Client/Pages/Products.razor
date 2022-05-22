@@ -29,8 +29,7 @@
                     <td>@p.Published.ToString("yyyy")</td>
                     @foreach (var creator in p.Creators)
                     {
-                        <td>@creator.FirstName @creator.LastName</td>
-                        <br />
+                        <td>@creator.FirstName @creator.LastName</td><br />
                     }
 
                     @foreach (var product in AvailableLoans)
@@ -40,6 +39,7 @@
                             isAvailable = true;
                         }
                     }
+
                     @if (isAvailable == true)
                     {
                         <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
@@ -49,11 +49,10 @@
                         <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
                     }
                     <AuthorizeView Roles="Admin, Librarian">
-                    <td><a class="btn btn-warning" @onclick="() => EditProduct(p.Id, p)">i</a></td>
-                    <td><a class="btn btn-danger" @onclick="() => DeleteProduct(p.Id)">x</a></td>
-                     </AuthorizeView>
+                        <td><MudButton @onclick="() => EditProduct(p.Id, p)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteProduct(p.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
+                    </AuthorizeView>
                 </tr>
-                @if (Edit == true)
+                @if (Edit)
                 {
                     @foreach (var c in p.Creators)
                     {
@@ -80,6 +79,7 @@
                                 <option value="@productType">@productType</option>
                             }
                         </InputSelect>*@
+                        <br>
                         <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
                     }
                 }
@@ -91,12 +91,16 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<Product>? products { get; set; } = new List<Product>();
-    public Product? productToUpdate { get; set; }
+    public List<Product>? products { get; set; } = new();
+    public List<Category> Categories { get; set; } = new();
+    public List<Product> AvailableLoans { get; set; } = new();
+    public DateTime TodaysDate { get; set; } = DateTime.Now;
+    public Product ProductToUpdate { get; set; } = new();
+    public Creator Creator { get; set; } = new();
     public User CurrentUser { get; set; }
-    public bool Edit;
-    public List<Product> AvailableLoans { get; set; }
     private bool isAvailable;
+    private bool addCreator;
+    public bool Edit;
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,7 +108,6 @@
         //CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();
-
         products = await ProductManager.GetAllProducts();
     }
 
@@ -130,8 +133,14 @@
 
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
+
     public async Task ReserveProduct(int productId)
     {
         ReservationManager.AddReservation(productId, CurrentUser.Id);
+    }
+
+    void AddCreator()
+    {
+        _ = addCreator = true ? (addCreator == false) : (addCreator == true);
     }
 }

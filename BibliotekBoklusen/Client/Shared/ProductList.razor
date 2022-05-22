@@ -40,7 +40,8 @@ else
                     <td>@category.CategoryName</td>
                 }
 
-                 @foreach (var product in AvailableLoans)
+                <AuthorizeView>
+                    @foreach (var product in AvailableLoans)
                     {
                         @if (p.Id == product.Id)
                         {
@@ -55,28 +56,27 @@ else
                     {
                         <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
                     }
+                </AuthorizeView>
+                 
             </tr>
         }
     </table>
 }
 
-
-
-
 @code {
-     public int Id { get; set; }
-
+    public int Id { get; set; }
     public List<Product> AvailableLoans { get; set; }
     private bool isAvailable;
     public User CurrentUser { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
-        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        //var userEmail = await localStorage.GetItemAsync<string>("email");
+        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         SearchManager.ProductsChanged += StateHasChanged;
     }
+
     public void Dispose()
     {
         SearchManager.ProductsChanged -= StateHasChanged;
@@ -87,10 +87,10 @@ else
 
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
+
     public async Task ReserveProduct(int productId)
     {
         ReservationManager.AddReservation(productId, CurrentUser.Id);
     }
-
 }
 
