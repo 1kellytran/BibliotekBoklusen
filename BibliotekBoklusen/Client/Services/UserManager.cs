@@ -30,7 +30,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task<List<User>> GetAllUser()
         {
-            var result = await _http.GetFromJsonAsync<List<User>>($"api/user/GetAllUser");
+            var result = await _http.GetFromJsonAsync<List<User>>($"api/user/getallusers");
 
             if (result != null)
             {
@@ -99,6 +99,14 @@ namespace BibliotekBoklusen.Client.Services
             await _http.PutAsJsonAsync($"api/user/{id}", model);
         }
 
-        
+        public async Task<List<User>> GetUsersBySearch(string searchText)
+        {
+          return await _http.GetFromJsonAsync<List<User>>($"api/user/usersbysearch?searchText={searchText}");
+        }
+
+        public async Task<List<User>> GetEmployees()
+        {
+            return await _http.GetFromJsonAsync<List<User>>("api/authenticate");
+        }
     }
 }

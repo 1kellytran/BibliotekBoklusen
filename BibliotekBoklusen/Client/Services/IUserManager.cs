@@ -11,7 +11,10 @@
         Task<string> Register(RegisterDto model);
         Task RegisterAdmin(RegisterDto model);
         Task<User> GetCurrentUser(string userEmail);
-     
+        Task<List<User>> GetUsersBySearch(string searchText);
+        Task<List<User>> GetEmployees();
+
+
 
     }
 }

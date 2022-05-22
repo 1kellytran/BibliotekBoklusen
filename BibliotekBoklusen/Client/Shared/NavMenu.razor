@@ -1,21 +1,35 @@
-﻿
 <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Biblioteket Boklusen</MudNavLink>
     <AuthorizeView Roles="Librarian, Admin">
         <MudNavGroup Title="Admin" Expanded="true">
             <AuthorizeView Context="_context" Roles="Admin">
-                <MudNavLink Href="/admin" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>
-                     <MudNavGroup Title="Personal" Expanded="false">
-                <MudNavLink Href="/createproduct" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Administrera personal</MudNavLink>
-            </MudNavGroup>
+                <MudNavLink Href="/admin" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>
+                <MudNavGroup Title="Personal" Expanded="false">
+                    <MudNavLink Href="/employees" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Redigera personal</MudNavLink>
+                    <MudNavLink Href="/register" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Registrera personal</MudNavLink>
+                </MudNavGroup>
             </AuthorizeView>
             <MudNavGroup Title="Produkter" Expanded="false">
-                <MudNavLink Href="/createproduct" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Lägg till produkter</MudNavLink>
+                <MudNavLink Href="/allproducts" Icon="fas fa-server">Alla produkter</MudNavLink>
+                <MudNavLink Href="/createproduct" Icon="fas fa-server">Lägg till produkter</MudNavLink>
+                <MudNavLink Href="/returnProducts" Icon="fas fa-server">Returnera</MudNavLink>
+                <MudNavGroup Title="Kategorier" Icon="fas fa-cogs" Expanded="false">
+                    <MudNavLink Href="/categories" Icon="fas fa-server">Kategorier</MudNavLink>
+                </MudNavGroup>
             </MudNavGroup>
             <MudNavGroup Title="Seminarium" Expanded="false">
-                <MudNavLink Href="/registerseminar" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Skapa seminarium</MudNavLink>
-                
+                <MudNavLink Href="/seminar" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Seminarium</MudNavLink>
+                <MudNavLink Href="/seminar" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Skapa seminarium</MudNavLink>
             </MudNavGroup>
+        </MudNavGroup>
+    </AuthorizeView>
+
+    <AuthorizeView Roles="Member">
+        <MudNavLink Href="/allproducts" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Produkter</MudNavLink>
+         <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
+        <MudNavGroup Title="Profil" Expanded="false">
+            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
+            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
         </MudNavGroup>
     </AuthorizeView>
     <AuthorizeView>
@@ -23,16 +37,12 @@
             <MudNavGroup Title="Profil" Expanded="false">
                 <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
                 <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
-                
             </MudNavGroup>
-            <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
             <MudNavLink Href="/logout" Icon="@Icons.Filled.Logout">Logga ut</MudNavLink>
-
         </Authorized>
         <NotAuthorized>
             <MudNavLink Href="/login" Icon=@Icons.Filled.Login>Logga in</MudNavLink>
             <MudNavLink Href="/register" Icon=@Icons.Filled.AppRegistration>Registrera</MudNavLink>
-            
         </NotAuthorized>
     </AuthorizeView>
     <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>

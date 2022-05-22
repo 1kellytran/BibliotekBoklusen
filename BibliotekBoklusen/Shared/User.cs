@@ -8,5 +8,7 @@
         public string Email { get; set; } = String.Empty;
         public DateTime Created { get; set; } = DateTime.Now;
         public bool IsActive { get; set; }
+        public bool IsLibrarian { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

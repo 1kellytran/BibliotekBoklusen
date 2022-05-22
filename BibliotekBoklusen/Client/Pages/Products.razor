@@ -31,13 +31,15 @@
                     {
                         <td>@creator.FirstName @creator.LastName</td><br />
                     }
-
-                    @foreach (var product in AvailableLoans)
-                    {
-                        @if (p.Id == product.Id)
+                    <AuthorizeView Roles="Member">
+                        @foreach (var product in AvailableLoans)
                         {
-                            isAvailable = true;
+                            @if (p.Id == product.Id)
+                            {
+                                isAvailable = true;
+                            }
                         }
+
                     }
 
                     @if (isAvailable == true)
@@ -50,6 +52,7 @@
                     }
                     <AuthorizeView Roles="Admin, Librarian">
                         <td><MudButton @onclick="() => EditProduct(p.Id, p)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteProduct(p.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
+
                     </AuthorizeView>
                 </tr>
                 @if (Edit)
