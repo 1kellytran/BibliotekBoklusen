@@ -74,7 +74,12 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<User> GetCurrentUser([FromQuery] string userEmail)
         {
             var currentUser = await _userManager.GetCurrentUser(userEmail);
-            return currentUser;
+            
+            if (currentUser != null)
+            {
+                return currentUser;
+            }
+            return null;
         }
 
         // PUT api/<UserController>/5

@@ -65,14 +65,17 @@ else
 
 @code {
     public int Id { get; set; }
-    public List<Product> AvailableLoans { get; set; }
+    public List<Product> AvailableLoans { get; set; } = new();
     private bool isAvailable;
     public User CurrentUser { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        //var userEmail = await localStorage.GetItemAsync<string>("email");
-        //CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+        if(userEmail != null)
+        {
+        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        }
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         SearchManager.ProductsChanged += StateHasChanged;
     }

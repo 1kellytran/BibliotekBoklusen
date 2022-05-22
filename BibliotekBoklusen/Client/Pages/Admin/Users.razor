@@ -46,15 +46,19 @@
         @foreach (var member in Members)
         {
             <tr>
-                <td>@member.FirstName</td>
-                <td>@member.LastName</td>
-                <td>@member.Email</td>
-                <td>@member.Created.ToString("d")</td>
-                <td>@member.IsActive</td>
-                <td>
-                    <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-                    <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-                </td>
+                @if (@member.Email != "admin@admin.com")
+                {
+                    <td>@member.FirstName</td>
+                    <td>@member.LastName</td>
+                    <td>@member.Email</td>
+                    <td>@member.Created.ToString("d")</td>
+                    <td>@member.IsActive</td>
+                    <td>
+
+                        <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                        <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+                    </td>
+                }
             </tr>
         }
     </tbody>

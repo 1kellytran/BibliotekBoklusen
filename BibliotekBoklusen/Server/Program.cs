@@ -66,6 +66,7 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
 {
     var context = servicepProvider.GetRequiredService<AuthDbContext>();
+    var appdbcontext = servicepProvider.GetRequiredService<AppDbContext>();
     var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
@@ -84,6 +85,11 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
         newUser.Email = "admin@admin.com";
         string password = "admin123";
 
+        User user = new();
+        user.Email = newUser.Email;
+
+        await appdbcontext.Users.AddAsync(user);
+        await appdbcontext.SaveChangesAsync();
         await userManager.CreateAsync(newUser, password);
 
         await userManager.AddToRoleAsync(newUser, "Admin");
