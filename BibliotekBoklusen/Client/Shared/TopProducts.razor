@@ -9,10 +9,10 @@
 		<div class="card-body">
 			<h5 class="card-title"><a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a></h5>
 			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-		@*	@foreach (var creator in p.Creators)
+			@foreach (var creator in p.Creators)
 		{
 			<h6>@creator.FirstName @creator.LastName</h6>
-		}*@
+		}
 		</div>
 	</div>
 	@*<tr>
