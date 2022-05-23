@@ -1,4 +1,6 @@
 ﻿@page "/reports"
+@inject ILoanManager LoanManager
+@inject IUserManager UserManager
 <h3>Reports</h3>
 
 <AuthorizeView Roles="Librarian, Admin">
@@ -22,7 +24,7 @@
 
 @if (ProductsToBeReturned)
 {
-    <NeedToReturn></NeedToReturn>
+   <ActiveLoans/>
 }
 
 @if (WhoLoansAlot)
@@ -36,6 +38,16 @@
 }
 
 @code {
+    public List<User> UserWithActiveLoans { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var loans = await LoanManager.GetAllLoansAsync();
+
+    }
+
+
     bool ProductsToBeReturned;
     bool WhoLoansAlot;
     bool PopularProducts;

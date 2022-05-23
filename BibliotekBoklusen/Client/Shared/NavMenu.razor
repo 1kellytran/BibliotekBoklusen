@@ -5,38 +5,43 @@
             <AuthorizeView Context="_context" Roles="Admin">
                 @*<MudNavLink Href="/admin" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>*@
                 <MudNavGroup Title="Personal" Expanded="false">
-                    <MudNavLink Href="/employees" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Redigera personal</MudNavLink>
-                    <MudNavLink Href="/searchemployee" Icon="fas fa-users" IconColor="Color.Success">Sök personal</MudNavLink>
-                    <MudNavLink Href="/register" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Registrera personal</MudNavLink>
+                    <MudNavLink Href="/employees" Icon="@Icons.Filled.Person" IconColor="Color.Success" Match="NavLinkMatch.Prefix">All personal</MudNavLink>
+                    <MudNavLink Href="/searchemployee" Icon="@Icons.Filled.PersonSearch" IconColor="Color.Success">Sök personal</MudNavLink>
+                    <MudNavLink Href="/register" Icon="@Icons.Filled.PersonAddAlt1" IconColor="Color.Success"Match="NavLinkMatch.Prefix">Registrera personal</MudNavLink>
                 </MudNavGroup>
             </AuthorizeView>
             <MudNavGroup Title="Produkter" Expanded="false">
-                <MudNavLink Href="/allproducts" Icon="fas fa-server">Alla produkter</MudNavLink>
-                <MudNavLink Href="/createproduct" Icon="fas fa-server">Lägg till produkter</MudNavLink>
-                <MudNavLink Href="/returnProducts" Icon="fas fa-server">Returnera</MudNavLink>
-                <MudNavGroup Title="Kategorier" Icon="fas fa-cogs" Expanded="false">
-                    <MudNavLink Href="/categories" Icon="fas fa-server">Kategorier</MudNavLink>
+                <MudNavLink Href="/allproducts" Icon="@Icons.Filled.Subject" IconColor="Color.Success">Alla produkter</MudNavLink>
+                <MudNavLink Href="/createproduct" Icon="@Icons.Filled.PlaylistAdd" IconColor="Color.Success">Lägg till produkter</MudNavLink>
+                <MudNavLink Href="/returnProducts" Icon="@Icons.Filled.KeyboardReturn" IconColor="Color.Success">Returnera</MudNavLink>
+                <MudNavGroup Title="Kategorier" Expanded="false">
+                    <MudNavLink Href="/categories" Icon="@Icons.Filled.Subject" IconColor="Color.Success">Kategorier</MudNavLink>
                 </MudNavGroup>
             </MudNavGroup>
             <MudNavGroup Title="Seminarium" Expanded="false">
-                <MudNavLink Href="/seminar" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Seminarium</MudNavLink>
-                <MudNavLink Href="/seminar" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Skapa seminarium</MudNavLink>
+                <MudNavLink Href="/seminar" Icon="@Icons.Filled.CalendarToday" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Seminarium</MudNavLink>
+                <MudNavLink Href="/seminar" Icon="@Icons.Filled.EditCalendar" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Skapa seminarium</MudNavLink>
             </MudNavGroup>
             <MudNavGroup Title="Medlemmar" Expanded="false">
-                <MudNavLink Href="/members" Icon="fas fa-users" IconColor="Color.Success">Alla medlemmar</MudNavLink>
-                <MudNavLink Href="/searchmember" Icon="fas fa-users" IconColor="Color.Success">Sök medlemmar</MudNavLink>
-                <MudNavLink Href="/register" Icon="fas fa-users" IconColor="Color.Success">Registrera medlem</MudNavLink>
+                <MudNavLink Href="/members" Icon="@Icons.Filled.Person" IconColor="Color.Success">Alla medlemmar</MudNavLink>
+                <MudNavLink Href="/searchmember" Icon="@Icons.Filled.PersonSearch" IconColor="Color.Success">Sök medlemmar</MudNavLink>
+                <MudNavLink Href="/register" Icon="@Icons.Filled.PersonAddAlt1" IconColor="Color.Success">Registrera medlem</MudNavLink>
             </MudNavGroup>
-            <MudNavLink Href="/reports" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Rapporter</MudNavLink>
+            <MudNavGroup Title="Rapporter" Expanded="false">
+                <MudNavLink Icon="@Icons.Filled.InsertChartOutlined" IconColor="Color.Success" Href="/reports" Match="NavLinkMatch.Prefix">Alla Rapporter</MudNavLink>
+                <MudNavLink Href="/topproduct" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Populära produkter</MudNavLink>
+                <MudNavLink Href="/reports" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Flest lån</MudNavLink>
+                <MudNavLink Href="/activeloans" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Aktiva lån</MudNavLink>
+            </MudNavGroup>
         </MudNavGroup>
     </AuthorizeView>
 
     <AuthorizeView Roles="Member">
-        <MudNavLink Href="/allproducts" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Produkter</MudNavLink>
-        <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
+        <MudNavLink Href="/allproducts" Icon="@Icons.Filled.LibraryBooks" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Produkter</MudNavLink>
+        <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
         <MudNavGroup Title="Profil" Expanded="false">
-            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
-            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
+            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
+            <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>
         </MudNavGroup>
     </AuthorizeView>
     <AuthorizeView>
