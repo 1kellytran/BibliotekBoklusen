@@ -1,4 +1,5 @@
 ﻿@inject ILoanManager LoanManager
+@page "/activeloans"
 
 
 <h3>Aktiva lån</h3>
@@ -9,7 +10,7 @@
       <th scope="col">Användare</th>
       <th scope="col">Titel på boken</th>
       <th scope="col">Exemplar Id</th>
-	  <th scope="col">Retuneras:</th>
+	  <th scope="col">Returneras:</th>
     </tr>
   </thead>
 @foreach(var l in Loans)
@@ -23,7 +24,7 @@
       <td>@l.ProductCopy.product.Title</td>
       <td>@l.ProductCopyId</td>
 
-      <td>@l.ReturnDate</td>
+      <td>@l.ReturnDate.ToString("d")</td>
     </tr>
    
   </tbody>
