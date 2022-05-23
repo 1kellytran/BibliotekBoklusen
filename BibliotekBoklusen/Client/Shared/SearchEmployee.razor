@@ -1,11 +1,10 @@
-﻿@inject IUserManager UserManager
-@page "/searchMember"
+﻿@page "/searchEmployee"
+@inject IUserManager UserManager
 
+<MudTextField Class="md-2" @bind-Value="searchText" Label="Standard" Variant="Variant.Text"></MudTextField>
+<MudButton @onclick="SearchForEmployee"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>
 
-    <MudTextField Class="md-2" @bind-Value="searchText" Label="Standard" Variant="Variant.Text"></MudTextField>
-    <MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>
-
-    @if (editUser)
+@if (editUser)
 {
     <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
         <table class="table">
@@ -15,7 +14,7 @@
                     <th scope="col">Efternamn</th>
                     <th scope="col">Email</th>
                     <th scope="col">Medlem sedan</th>
-                    <th scope="col">Aktiv</th>
+                    <th scope="col">Behörig admin</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -25,7 +24,7 @@
                     <td><input @bind="userToUpdate.LastName" /></td>
                     <td>@userToEdit.Email</td>
                     <td>@userToEdit.Created.ToString("d")</td>
-                    <td><input type="checkbox" @bind="userToUpdate.IsActive" /></td>
+                    <td><input type="checkbox" @bind="userToUpdate.IsAdmin" /></td>
                     <td><button type="submit" class="btn btn-primary">Spara</button></td>
                 </tr>
             </tbody>
@@ -33,34 +32,33 @@
     </EditForm>
 }
 
-@if (Members != null || Members.Count != 0)
+@if (Employees != null || Employees.Count != 0)
 {
     <table class="table">
         <thead class="thead-dark">
-            <tr>
-                <th scope="col">Förnamn</th>
-                <th scope="col">Efternamn</th>
-                <th scope="col">Email</th>
-                <th scope="col">Medlem sedan</th>
-                <th scope="col">Aktiv</th>
-                <th scope="col"></th>
-            </tr>
+        <tr>
+            <th scope="col">Förnamn</th>
+            <th scope="col">Efternamn</th>
+            <th scope="col">Email</th>
+            <th scope="col">Medlem sedan</th>
+            <th scope="col">Behörig admin</th>
+            <th scope="col"></th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var member in Members)
+            @foreach (var employee in Employees)
             {
                 <tr>
-                    @if (@member.Email != "admin@admin.com")
+                    @if (@employee.Email != "admin@admin.com")
                     {
-                        <td>@member.FirstName</td>
-                        <td>@member.LastName</td>
-                        <td>@member.Email</td>
-                        <td>@member.Created.ToString("d")</td>
-                        <td>@member.IsActive</td>
+                        <td>@employee.FirstName</td>
+                        <td>@employee.LastName</td>
+                        <td>@employee.Email</td>
+                        <td>@employee.Created.ToString("d")</td>
+                        <td>@employee.IsAdmin</td>
                         <td>
-
-                            <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-                            <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+                            <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                            <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
                         </td>
                     }
                 </tr>
@@ -68,10 +66,10 @@
         </tbody>
     </table>
 }
- <h6 class="validation-message">@message</h6
+<h6 class="validation-message">@message</h6>
 
 @code {
-    private List<User> Members = new List<User>();
+    private List<User> Employees = new List<User>();
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
     User userToEdit = new User();
     int userId;
@@ -80,7 +78,7 @@
     string searchText;
 
 
-    private async Task SearchForMembers()
+    private async Task SearchForEmployee()
     {
         if (searchText != null || searchText != "")
         {
@@ -88,11 +86,11 @@
             if (result == null || result.Count == 0)
             {
                 message = "Inga användare funna";
-                Members = new();
+                Employees = new();
             }
             else
             {
-                Members = result;
+                Employees = result.Where(u => u.IsLibrarian == true || u.IsAdmin == true).ToList();
             }
         }
     }
@@ -111,13 +109,13 @@
     {
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
-        Members = await UserManager.GetAllUser();
+        Employees = await UserManager.GetEmployees();
         message = "Användaren har uppdaterats";
     }
 
     private async Task DeleteUser(int userId)
     {
         await UserManager.DeleteUser(userId);
-        Members = await UserManager.GetAllUser();
+        Employees = await UserManager.GetEmployees();
     }
 }
