@@ -1,12 +1,12 @@
-﻿
-namespace BibliotekBoklusen.Client.Services
+﻿namespace BibliotekBoklusen.Client.Services
 {
     public interface IFineManager
     {
-        Task<string> Addfine(Fine fine);
-        Task DeleteFineAsync(int id);
-        Task<List<Fine>> GetAllFinesAsync();
-        Task<Fine> GetFineByIdAsync(int id);
+        Task<List<Fine>> GetAllFines();
+        Task<Fine> GetFineById(int id);
+        Task<Fine> GetUserFine(int id);
+        Task<string> AddFine(Fine fine);
         Task UpdateFine(Fine fineToUpdate);
+        Task DeleteFine(int id);
     }
 }
