@@ -9,24 +9,28 @@
         <MudText Typo="Typo.h6" Class="px-4">Admin</MudText>
         <MudText Typo="Typo.body2" Class="px-4 mud-text-secondary">Meny</MudText>
         <MudDivider Class="my-2" />
-        <MudNavLink Icon="fas fa-chart-line">Rapporter</MudNavLink>
+        <MudNavLink Href="/reports" Icon="fas fa-chart-line">Rapporter</MudNavLink>
         <MudNavGroup Title="Produkter" Icon="fas fa-cogs" Expanded="false">
             <MudNavLink Href="/allproducts" Icon="fas fa-server">Alla produkter</MudNavLink>
             <MudNavLink Href="/createproduct" Icon="fas fa-server">Lägg till produkter</MudNavLink>
             <MudNavLink Href="/returnproducts" Icon="fas fa-server">Returnera</MudNavLink>
-             <MudNavGroup Title="Kategorier" Icon="fas fa-cogs" Expanded="false">
-                   <MudNavLink Href="/categories" Icon="fas fa-server">Kategorier</MudNavLink>
-                   </MudNavGroup>
+            <MudNavGroup Title="Kategorier" Icon="fas fa-cogs" Expanded="false">
+                <MudNavLink Href="/categories" Icon="fas fa-server">Kategorier</MudNavLink>
+            </MudNavGroup>
         </MudNavGroup>
         <MudNavGroup Title="Seminarium" Icon="fas fa-cogs" Expanded="false">
             <MudNavLink Href="/seminar" Icon="fas fa-receipt">Kommande seminarium</MudNavLink>
             <MudNavLink Href="/seminar" Icon="fas fa-receipt">Lägg till seminarium</MudNavLink>
         </MudNavGroup>
         <MudNavGroup Title="Personal" Icon="fas fa-users" Expanded="false">
-            <MudNavLink Href="/register" Icon="fas fa-users" IconColor="Color.Success">Administrera personal</MudNavLink>
+            <MudNavLink Href="/employees" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Redigera personal</MudNavLink>
+            <MudNavLink Href="/searchemployee" Icon="fas fa-users" IconColor="Color.Success">Sök personal</MudNavLink>
+            <MudNavLink Href="/register" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Registrera personal</MudNavLink>
         </MudNavGroup>
-                <MudNavGroup Title="Medlemmar" Icon="fas fa-users" Expanded="false">
+        <MudNavGroup Title="Medlemmar" Icon="fas fa-users" Expanded="false">
             <MudNavLink Href="/members" Icon="fas fa-users" IconColor="Color.Success">Alla medlemmar</MudNavLink>
+            <MudNavLink Href="/searchmember" Icon="fas fa-users" IconColor="Color.Success">Sök medlemmar</MudNavLink>
+            <MudNavLink Href="/register" Icon="fas fa-users" IconColor="Color.Success">Registrera medlem</MudNavLink>
         </MudNavGroup>
     </MudNavMenu>
 </MudPaper>
