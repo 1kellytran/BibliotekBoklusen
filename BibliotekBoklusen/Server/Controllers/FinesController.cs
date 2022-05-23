@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace BibliotekBoklusen.Server.Controllers
 {
@@ -8,7 +7,6 @@ namespace BibliotekBoklusen.Server.Controllers
     public class FinesController : ControllerBase
     {
         private readonly AppDbContext _context;
-
         public FinesController(AppDbContext context)
         {
             _context = context;
@@ -27,15 +25,28 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Fine>> GetFinesById(int id)
+        public async Task<ActionResult<Fine>> GetFineById(int id)
         {
-            var fine = _context.Fines.FirstOrDefault(s => s.Id == id);
+            var fine = _context.Fines.Where(s => s.Id == id);
 
             if (fine == null)
             {
                 return NotFound("There is no fine with that ID");
             }
             return Ok(fine);
+        }
+
+        [HttpGet("{id}")]
+        [Route("GetUserFine")]
+        public async Task<ActionResult<Fine>> GetUserFine(int id)
+        {
+            var userFine = _context.Fines.Where(u => u.Id == id).ToList();
+
+            if(userFine != null)
+            {
+                return Ok(userFine);
+            }
+            return NotFound("NAJ");
         }
 
         [HttpPost]
@@ -55,6 +66,21 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(fine);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateFine([FromBody] Fine fineToUpdate)
+        {
+            var fine = _context.Fines.FirstOrDefault(x => x.Id == fineToUpdate.Id);
+            if (fine != null)
+            {
+                fine.FineDate = DateTime.Today;
+                fine.FineAmount = fineToUpdate.FineAmount;
+                await _context.SaveChangesAsync();
+
+                return Ok("Fine has been updated");
+            }
+            return NotFound();
+        }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteFine(int id)
         {
@@ -68,26 +94,8 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 _context.Fines.Remove(fine);
                 await _context.SaveChangesAsync();
-
             }
             return Ok("Fine has been deleted");
-        }
-
-        [HttpPut]
-        public async Task<IActionResult> UpdateFine([FromBody] Fine fineToUpdate)
-        {
-
-            var fine = _context.Fines.FirstOrDefault(x => x.Id == fineToUpdate.Id);
-            if (fine != null)
-            {
-                fine.FineDate = DateTime.Today;
-                fine.FineAmount = fineToUpdate.FineAmount;
-                await _context.SaveChangesAsync();
-
-                return Ok("Fine has been updated");
-            }
-            return NotFound();
-
         }
     }
 }

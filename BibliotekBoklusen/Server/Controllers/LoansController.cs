@@ -19,7 +19,6 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Loan>>> GetAllLoans()
         {
-
             var loans = _context.Loans.ToList();
 
             if (loans == null || loans.Count <= 0)
@@ -32,9 +31,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> GetLoansById(int id)
         {
-
             var productUserHas = _loanService.GetLoansById(id);
-
 
             if (productUserHas == null)
             {
@@ -42,8 +39,6 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return Ok(productUserHas);
         }
-
-
 
         [HttpPost("{productId}")]
         public async Task<ActionResult<string>> CreateLoan([FromRoute] int productId, [FromBody] int userId)
@@ -56,12 +51,10 @@ namespace BibliotekBoklusen.Server.Controllers
                 _context.SaveChangesAsync();
                 return Ok("Loan har lagts till");
             }
-
             else
             {
                 return NotFound("Inga exemplar finns tillgängliga av denna boken");
             }
-
         }
 
         [HttpDelete("{id}")]
@@ -77,7 +70,6 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 _context.Loans.Remove(loan);
                 await _context.SaveChangesAsync();
-
             }
             return Ok("Loan has been deleted");
         }
@@ -88,29 +80,21 @@ namespace BibliotekBoklusen.Server.Controllers
            var response= await _loanService.ReturnLoan(productCopyId);
 
             if (response)
-            {
-              
+            {              
                 return Ok("Loan has been updated");
             }
             else
             {
                 return NotFound();
-            }
-            
-
+            }          
         }
 
         [HttpGet ("TopProducts")]
         public async Task<ActionResult<List<Product>>> GetTopProducts()
         {
-
             var result = await _loanService.GetTopProducts();
               
             return Ok(result);
-
         }
-
-
-
     }
 }

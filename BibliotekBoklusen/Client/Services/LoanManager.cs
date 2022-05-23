@@ -16,7 +16,6 @@
             {
                 return null;
             }
-
             return loans;
         }
 
@@ -30,6 +29,7 @@
 
             return loan;
         }
+
         public async Task<List<Loan>> GetLoansByUserId(int userId)
         {
 
