@@ -6,6 +6,7 @@
                 @*<MudNavLink Href="/admin" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>*@
                 <MudNavGroup Title="Personal" Expanded="false">
                     <MudNavLink Href="/employees" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Redigera personal</MudNavLink>
+                    <MudNavLink Href="/searchemployee" Icon="fas fa-users" IconColor="Color.Success">Sök personal</MudNavLink>
                     <MudNavLink Href="/register" Icon="@Icons.Filled.LibraryAdd" Match="NavLinkMatch.Prefix">Registrera personal</MudNavLink>
                 </MudNavGroup>
             </AuthorizeView>
@@ -23,9 +24,10 @@
             </MudNavGroup>
             <MudNavGroup Title="Medlemmar" Expanded="false">
                 <MudNavLink Href="/members" Icon="fas fa-users" IconColor="Color.Success">Alla medlemmar</MudNavLink>
+                <MudNavLink Href="/searchmember" Icon="fas fa-users" IconColor="Color.Success">Sök medlemmar</MudNavLink>
                 <MudNavLink Href="/register" Icon="fas fa-users" IconColor="Color.Success">Registrera medlem</MudNavLink>
             </MudNavGroup>
-                <MudNavLink Href="/reports" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Rapporter</MudNavLink>
+            <MudNavLink Href="/reports" Icon="@Icons.Filled.LibraryBooks" Match="NavLinkMatch.Prefix">Rapporter</MudNavLink>
         </MudNavGroup>
     </AuthorizeView>
 
