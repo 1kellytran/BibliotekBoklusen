@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Controllers
 {
@@ -20,7 +21,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<ActionResult<List<Loan>>> GetAllLoans()
         {
 
-            var loans = _context.Loans.ToList();
+            var loans = _context.Loans.Include(l =>l.User).ToList();
 
             if (loans == null || loans.Count <= 0)
             {

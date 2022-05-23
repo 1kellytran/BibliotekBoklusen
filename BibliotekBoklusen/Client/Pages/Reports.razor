@@ -1,4 +1,6 @@
 ﻿@page "/reports"
+@inject ILoanManager LoanManager
+@inject IUserManager UserManager
 <h3>Reports</h3>
 
 <AuthorizeView Roles="Librarian, Admin">
@@ -36,6 +38,25 @@
 }
 
 @code {
+    public List<User> UserWithActiveLoans { get; set; } = new();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var loans = await LoanManager.GetAllLoansAsync();
+        var users = await UserManager.GetAllUser();
+        
+        //foreach (var loan in loans)
+        //{
+        //    foreach (var user in collection)
+        //    {
+                
+        //    }
+        //}
+
+    }
+
+
     bool ProductsToBeReturned;
     bool WhoLoansAlot;
     bool PopularProducts;
