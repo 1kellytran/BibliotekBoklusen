@@ -2,17 +2,21 @@
 @inject IProductManager DataManager
 @attribute [Authorize]
 
-@if (product != null)
+@if(product != null)
 {
-    <h1>Kaos utan paus</h1>
     <h3>@product.Title</h3>
-}
-
-@*@if(product != null)
+    @foreach(var c in product.Creators)
     {
-    <h3>@product.Product.Title</h3>
-    <button class="btn btn-danger" @onclick="DeleteProduct">Delete</button>
-    }*@
+        <h5>@c.FirstName @c.LastName</h5>
+    }
+    @foreach(var c in product.Category)
+    {
+        <h5>@c.CategoryName</h5>
+    }
+    <AuthorizeView>
+        <button class="btn btn-danger" @onclick="DeleteProduct">Delete</button>
+    </AuthorizeView>    
+}
 
 @code {
     [Parameter]

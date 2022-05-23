@@ -11,7 +11,6 @@
     [Parameter]
     public string? SearchText { get; set; } = null;
 
-
     protected override async Task OnParametersSetAsync()
     {
         if (SearchText != null)
@@ -20,7 +19,6 @@
         }
         else
         {
-            //ändring
             await ProductManager.GetAllProducts();
         }
     }

@@ -1,12 +1,7 @@
 ﻿using BibliotekBoklusen.Server.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BibliotekBoklusen.Server.Controllers
 {
@@ -19,7 +14,6 @@ namespace BibliotekBoklusen.Server.Controllers
         private readonly AppDbContext _context;
         private readonly IUserManager _userManager;
 
-
         public UserController(SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             AppDbContext context,
@@ -30,7 +24,6 @@ namespace BibliotekBoklusen.Server.Controllers
             _roleManager = roleManager;
             _context = context;
             _userManager = userManager;
-
         }
 
         [HttpGet("getallusers")]
@@ -38,7 +31,6 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var result = _context.Users.ToList();
             if (result == null)
-
             {
                 return BadRequest();
             }
@@ -52,12 +44,9 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok(result);
         }
 
-        // get a specific user
-        // GET api/UserController>/id
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-
             var dbUser = _context.Users
                 .Where(x => x.Id == id)
                 .FirstOrDefault();
@@ -66,7 +55,6 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 return dbUser;
             }
-
             return BadRequest();
         }
 
@@ -74,7 +62,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<User> GetCurrentUser([FromQuery] string userEmail)
         {
             var currentUser = await _userManager.GetCurrentUser(userEmail);
-            
+
             if (currentUser != null)
             {
                 return currentUser;
@@ -82,9 +70,7 @@ namespace BibliotekBoklusen.Server.Controllers
             return null;
         }
 
-        // PUT api/<UserController>/5
         [HttpPut("{id}")]
-
         public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model, int id)
         {
             var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
@@ -110,7 +96,6 @@ namespace BibliotekBoklusen.Server.Controllers
                     userDb.IsAdmin = false;
                     await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
                     await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Librarian);
-
                 }
 
                 _context.Update(userDb);
@@ -119,12 +104,9 @@ namespace BibliotekBoklusen.Server.Controllers
                 _signInManager.UserManager.UpdateAsync(authUser);
                 return Ok("Change successful");
             }
-
             return BadRequest();
-
         }
 
-        // PUT : Change password
         [HttpPut("ChangePassword")]
         public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
         {
@@ -141,39 +123,15 @@ namespace BibliotekBoklusen.Server.Controllers
             return BadRequest("User not found");
         }
 
-        //// DELETE api/<UserController>/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteUser([FromRoute]int id)
-        //{
-        //    var userDb =  _context.Users.Where(x => x.Id == id).FirstOrDefault();
-        //    if(userDb != null)
-        //    {
-        //        var user =  _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
-        //        if (user != null)
-        //        {
-        //            await _signInManager.UserManager.DeleteAsync(user);
-        //            _context.Remove(user);
-        //            await _context.SaveChangesAsync();
-        //            return Ok("User Deleted");
-        //        }
-
-        //    }
-
-        //    return BadRequest("User could not be deleted");
-        //}
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             await _userManager.DeleteUserFromDb(id);
 
             return Ok("User has been deleted");
-
         }
 
-
         [HttpPost]
-
         public async Task<IActionResult> ProductLoan(Product productToAdd)
         {
             var email = "bnma@hotmail.com";
@@ -194,7 +152,6 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             return BadRequest("User was not found :(");
         }
-
 
         [HttpGet("usersBySearch")]
         public async Task<List<User>> SearchUsers(string searchText)
