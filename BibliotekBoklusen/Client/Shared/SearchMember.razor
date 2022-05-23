@@ -68,7 +68,7 @@
         </tbody>
     </table>
 }
- <h6 class="validation-message">@message</h6
+ <h6 class="validation-message">@message</h6>
 
 @code {
     private List<User> Members = new List<User>();
@@ -92,7 +92,7 @@
             }
             else
             {
-                Members = result;
+                Members = result.Where(u => u.IsAdmin == false && u.IsLibrarian == false).ToList();
             }
         }
     }
