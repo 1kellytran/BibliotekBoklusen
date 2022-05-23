@@ -9,6 +9,37 @@
 
 <NotAuthorized>
     <h3>Produkter</h3>
+
+    @if (editProduct)
+        {
+            <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
+                <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Titel</th>
+                    <th>Förnamn</th>
+                    <th>Efternamn</th>
+                    <th>Utgåva</th>
+                    <th>Exemplar</th>
+                </tr>
+            </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
+                            @foreach(var c in ProductToUpdate.Creators)
+                            {
+                                <td><input type="text" @bind-value=c.FirstName /></td>
+                                <td><input type="text" @bind-value="c.LastName" /></td>
+                            }                            
+                            <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
+                            <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
+                            <td><button type="submit" class="btn btn-primary">Spara</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </EditForm>
+        }
+
     @if (products != null)
     {
         <table class="table">
@@ -18,7 +49,6 @@
                     <th>Typ</th>
                     <th>Utgåva</th>
                     <th>Skapare</th>
-                    <th>Tillgängliga Ex</th>
                 </tr>
             </thead>
             @foreach (var p in products)
@@ -55,37 +85,7 @@
 
                     </AuthorizeView>
                 </tr>
-                @if (Edit)
-                {
-                    @foreach (var c in p.Creators)
-                    {
-                        <label>Titel</label>
-                        <br />
-                        <input type="text" @bind-value="p.Title" />
-                        <br />
-                        <label>Förnamn</label>
-                        <br />
-                        <input type="text" @bind-value=c.FirstName />
-                        <label>Efternamn</label>
-                        <br />
-                        <input type="text" @bind-value="c.LastName" />
-                        <br />
-                        <label>Dag, datum & tid</label>
-                        <br />
-                        <input type="text" @bind-value="p.Published" />
-                        <br />
-                        <label>Typ:</label>
-                        @*<InputSelect id="type" @bind-Value="p.Type">
-                            <option value="" selected></option>
-                            @foreach (var productType in Enum.GetValues(typeof(ProductType)))
-                            {
-                            <option value="@productType">@productType</option>
-                            }
-                            </InputSelect>*@
-                        <br>
-                        <button class="btn btn-primary" @onclick="() => SaveEditProduct(p.Id, p)">Spara ändringar</button>
-                    }
-                }
+                
                 @if (isAvailable)
                 {
                     isAvailable = false;
@@ -107,7 +107,8 @@
     public User CurrentUser { get; set; } = new();
     private bool isAvailable;
     private bool addCreator;
-    public bool Edit;
+    public bool editProduct;
+    int ProductId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -120,13 +121,15 @@
 
     public async Task EditProduct(int id, Product productToEdit)
     {
-        Edit = true;
+        editProduct = true;
+        ProductId = id;
+        ProductToUpdate = productToEdit;
     }
 
-    public async Task SaveEditProduct(int id, Product productToUpdate)
+    public async Task SaveEditProduct()
     {
-        await ProductManager.UpdateProduct(id, productToUpdate);
-        Edit = false;
+        await ProductManager.UpdateProduct(ProductId, ProductToUpdate);
+        editProduct = false;
     }
 
     public async Task DeleteProduct(int id)
