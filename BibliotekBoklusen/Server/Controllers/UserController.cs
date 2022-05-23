@@ -47,9 +47,10 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var dbUser = _context.Users
+
+            var dbUser = await _context.Users
                 .Where(x => x.Id == id)
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (dbUser != null)
             {
