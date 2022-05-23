@@ -57,7 +57,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
               .Select(x => x.Key) // get id of products
               .ToList(); // execute query and convert it to a list
 
-            var topProducts = _context.Products  // table with products information
+            var topProducts = _context.Products.Include(p =>p.Creators).Include(p =>p.Category)  // table with products information
                 .Where(x => topProductsIDs.Contains(x.Id)).ToList(); // get info of products that their Ids are retrieved in previous query
 
             return topProducts;
