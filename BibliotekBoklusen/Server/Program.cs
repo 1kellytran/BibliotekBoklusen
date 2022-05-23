@@ -89,7 +89,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
         user.Email = newUser.Email;
 
         await appdbcontext.Users.AddAsync(user);
-        await appdbcontext.SaveChangesAsync();
+        appdbcontext.SaveChanges();
         await userManager.CreateAsync(newUser, password);
 
         await userManager.AddToRoleAsync(newUser, "Admin");
