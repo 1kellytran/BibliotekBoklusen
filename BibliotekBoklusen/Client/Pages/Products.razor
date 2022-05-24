@@ -7,6 +7,7 @@
 @inject IProductCopyManager ProductCopyManager
 @inject IReservationManager ReservationManager
 
+
 <NotAuthorized>
     <h3>Produkter</h3>
 
@@ -140,8 +141,10 @@
 
     public async Task LoanProduct(int productId)
     {
-        LoanManager.AddLoan(productId, CurrentUser.Id);
+        await LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
+       
+
     }
 
     public async Task ReserveProduct(int productId)

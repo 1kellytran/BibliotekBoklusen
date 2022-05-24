@@ -38,21 +38,21 @@
 
 @code {
 
-    private string searchWord = "";
     public List<User> Users { get; set; } = new();
-    UpdatedUserDto User = new();
+    UpdatedUserDto user = new();
     private int copyToReturn;
+    private string searchWord = "";
 
     async Task ReturnLoan()
     {
         await LoanManager.ReturnLoanAsync(copyToReturn);
     }
-    async Task EditUser(int userId, User user)
+    async Task EditUser(int userId, User specifiedUser)
     {
-        User.FirstName = user.FirstName;
-        User.LastName = user.LastName;
+        user.FirstName = specifiedUser.FirstName;
+        user.LastName = specifiedUser.LastName;
 
-        await UserManager.UpdateUserinformation(User, userId);
+        await UserManager.UpdateUserinformation(user, userId);
     }
     async Task DeleteUser(int userId)
     {
