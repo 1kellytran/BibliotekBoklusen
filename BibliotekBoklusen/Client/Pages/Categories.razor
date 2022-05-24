@@ -3,26 +3,46 @@
 @inject NavigationManager NavigationManager
 @using BibliotekBoklusen.Client.Pages
 
+<MudButton @onclick="()=>AddCategoryBool()">Lägg till Kategori</MudButton>
+@if (addCategory)
+{
+    <EditForm Model=Category OnValidSubmit=HandleAddCategory>
+        <DataAnnotationsValidator />
 
-<EditForm Model=Category OnValidSubmit=HandleAddCategory>
-    <DataAnnotationsValidator />
+        <div class="form-group">
+            <label for="Title">Kategori namn:</label>
+            <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
+            <ValidationMessage For="@(() => Category.CategoryName)" />
+        </div>
 
-    <div class="form-group">
-        <label for="Title">Kategori namn:</label>
-        <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
-        <ValidationMessage For="@(() => Category.CategoryName)" />
-    </div>
+        <MudButton type="submit" class="btn btn-primary mt-2 mb-2">Lägg till</MudButton>
+    </EditForm> 
+}
 
-    <button type="submit" class="btn btn-primary mt-2">Lägg till</button>
-</EditForm>
+ <div style="color:red">@message</div>
 
-@message
-<br />
+@if (update)
+{
+    <h3>Uppdatera</h3>
+    <EditForm Context="_context" Model="Category2">
+        <table class="table">
+            <thead class="thead-light">
+                <tr>
+                    <th>Kategori</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" @bind-value="Category2.CategoryName" /></td>
+                    <td><MudButton @onclick="()=>UpdateCategory()">Spara</MudButton></td>
+                </tr>
+            </tbody>
+        </table>
+    </EditForm> 
+}
 
-
-
-
-<h3>Kategorier</h3>
+<h3 class="mt-2">Kategorier</h3>
 @if (Categoriess != null)
 {
     <table class="table">
@@ -37,47 +57,26 @@
         <tbody>
             @foreach (var category in Categoriess)
             {
-
                 <AuthorizeView Roles="Admin, Librarian">
                     <tr>
                         <td>@category.CategoryName</td>
-                        <td style="text-align:right"><MudButton @onclick="() => SetId(category.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton></td>
+                        <td style="text-align:right"><MudButton @onclick="() => SetIdToUpdate(category.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton></td>
                         <td style="text-align:right"><MudButton @onclick="() => HandleDeleteCategory(category.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
                     </tr>
-
-
                 </AuthorizeView>
-
             }
         </tbody>
     </table>
 }
-
-<h3>Uppdatera Kategori:</h3>
-<EditForm Context="_context" Model="Category2" OnSubmit="UpdateCategory">
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>Kategori</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" @bind-value="Category2.CategoryName" /></td>
-                <td><button type="submit" class="btn btn-primary">Spara</button></td>
-            </tr>
-        </tbody>
-    </table>
-</EditForm>
-
-@message2
+<br />
 
 @code {
     List<Category> Categoriess { get; set; } = new();
     public Category Category { get; set; } = new();
     public Category Category2 { get; set; } = new();
     string message;
-    string message2;
+    bool update;
+    bool addCategory;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,18 +94,20 @@
             }
         }
         Categoriess = await CategoryManager.GetAllCategoriesAsync();
-
     }
-    async Task SetId(int id)
+
+    async Task SetIdToUpdate(int id)
     {
         Category2 = await CategoryManager.GetCategoryByIdAsync(id);
+        _ = update = true ? (update == false) : (update == true);
     }
+
     async Task UpdateCategory()
     {
-
         await CategoryManager.UpdateCategory(Category2);
         Categoriess = await CategoryManager.GetAllCategoriesAsync();
-
+        _ = update = true ? (update == false) : (update == true);
+        message = $"{Category2.CategoryName} har uppdaterats";
     }
 
     async Task HandleAddCategory()
@@ -118,6 +119,12 @@
             message = $"{Category.CategoryName} finns redan";
 
         Categoriess = await CategoryManager.GetAllCategoriesAsync();
+        addCategory = false;
+    }
+
+    async Task AddCategoryBool()
+    {
+        _ = addCategory = true ? (addCategory == false) : (addCategory == true);
     }
 }
 
