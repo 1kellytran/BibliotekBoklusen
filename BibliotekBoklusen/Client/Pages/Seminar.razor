@@ -3,6 +3,32 @@
 @inject NavigationManager NavigationManager
 
 <h3>Seminarium</h3>
+<AuthorizeView Roles="Librarian, Admin">
+    @if (editSeminar)
+    {
+        <EditForm Context="_context" Model="SeminarToUpdate" OnSubmit="SaveEditSeminar">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Seminarium</th>
+                        <th>Förnamn</th>
+                        <th>Efternamn</th>
+                        <th>Datum & tid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" @bind-value="SeminarToUpdate.Title" /></td>
+                        <td><input type="text" @bind-value="SeminarToUpdate.FirstName" /></td>
+                        <td><input type="text" @bind-value="SeminarToUpdate.LastName" /></td>
+                        <td><input type="text" @bind-value="SeminarToUpdate.DayAndTime" /></td>
+                        <td><button type="submit" class="btn btn-primary">Spara</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </EditForm>
+    }
+</AuthorizeView>
 
 
 @if (AllSeminars == null)
@@ -15,7 +41,7 @@ else if (AllSeminars.Count == 0)
 }
 else
 {
-    <table class="table">
+    <table class="table table-striped">
         <thead class="thead-light">
             <tr>
                 <th>Title</th>
@@ -28,40 +54,15 @@ else
                 </AuthorizeView>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var s in AllSeminars)
-            {
-                <tr>
-                    <td>@s.Title</td>
-                    <td>@s.FirstName</td>
-                    <td>@s.LastName</td>
-                    <td>@s.DayAndTime.ToString()</td>
-                    <AuthorizeView Context="_context" Roles="Librarian, Admin">
-                        <td><MudButton @onclick="() => EditSeminar(s.Id, s)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteSeminar(s.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
-                    </AuthorizeView>
-                </tr>
-                @if (Edit == true)
-                {
-                    <label>Titel</label>
-                    <br />
-                    <input type="text" @bind-value="s.Title" />
-                    <br />
-                    <label>Förnamn</label>
-                    <br />
-                    <input type="text" @bind-value="s.FirstName" />
-                    <br />
-                    <label>Efternamn</label>
-                    <br />
-                    <input type="text" @bind-value="s.LastName" />
-                    <br />
-                    <label>Datum & tid</label>
-                    <br />
-                    <input type="text" @bind-value="s.DayAndTime" />
-                    <br />
-                    <button class="btn btn-primary" @onclick="() => SaveEditSeminar(s.Id, s)">Spara ändringar</button>
-                }
-            }
-        </tbody>
+        @foreach (var s in AllSeminars)
+        {
+            <tr>
+                <a href="/SeminarById/@s.Id" class="table-bordered">@s.Title</a>
+                <td>@s.FirstName</td>
+                <td>@s.LastName</td>
+                <td>@s.DayAndTime</td>
+            </tr>
+        }
     </table>
 }
 <AuthorizeView Context="_context" Roles="Librarian, Admin">
@@ -75,14 +76,17 @@ else
 }
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
     public List<Seminarium>? AllSeminars { get; set; } = new();
     public Seminarium CreateSeminar { get; set; } = new();
-    public Seminarium UpdateSeminar { get; set; } = new();
+    public Seminarium SeminarToUpdate { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     public string message;
-    public bool Edit;
+    public bool editSeminar;
     public bool RegisterSeminar;
     public int SortTitle = 0;
+    int SeminarId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -91,13 +95,15 @@ else
 
     public async Task EditSeminar(int id, Seminarium seminarToUpdate)
     {
-        Edit = true;
+        editSeminar = true;
+        SeminarId = id;
+        SeminarToUpdate = seminarToUpdate;
     }
 
-    public async Task SaveEditSeminar(int id, Seminarium UpdateSeminar)
+    public async Task SaveEditSeminar()
     {
-        await SeminarManager.UpdateSeminar(id, UpdateSeminar);
-        Edit = false;
+        await SeminarManager.UpdateSeminar(SeminarId, SeminarToUpdate);
+        editSeminar = false;
     }
 
     public async Task DeleteSeminar(int id)
@@ -112,14 +118,6 @@ else
         var result = await SeminarManager.CreateSeminar(CreateSeminar);
         _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
     }
-
-    //public async Task RegisterSeminar()
-    //{
-    //    CreateSeminar.DayAndTime = TodaysDate;
-    //    var result = await SeminarManager.CreateSeminar(CreateSeminar);
-    //    _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
-    //    AllSeminars = await SeminarManager.GetAllSeminars();
-    //}
 
     void ShowRegisterSeminar()
     {

@@ -40,7 +40,7 @@
             </EditForm>
         }
 
-    @if (products != null)
+    @if (AllProducts != null)
     {
         <table class="table">
             <thead class="thead-light">
@@ -51,7 +51,7 @@
                     <th>Skapare</th>
                 </tr>
             </thead>
-            @foreach (var p in products)
+            @foreach (var p in AllProducts)
             {
                 <tr>
                     <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
@@ -98,7 +98,7 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<Product>? products { get; set; } = new();
+    public List<Product>? AllProducts { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
     public List<Product> AvailableLoans { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
@@ -116,7 +116,7 @@
         CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();
-        products = await ProductManager.GetAllProducts();
+        AllProducts = await ProductManager.GetAllProducts();
     }
 
     public async Task EditProduct(int id, Product productToEdit)
@@ -135,12 +135,11 @@
     public async Task DeleteProduct(int id)
     {
         await ProductManager.DeleteProduct(id);
-        products = await ProductManager.GetAllProducts();
+        AllProducts = await ProductManager.GetAllProducts();
     }
 
     public async Task LoanProduct(int productId)
     {
-
         LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
     }

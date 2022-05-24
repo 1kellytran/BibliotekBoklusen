@@ -2,14 +2,14 @@
 @inject IProductManager DataManager
 @attribute [Authorize]
 
-@if(product != null)
+@if(Product != null)
 {
-    <h3>@product.Title</h3>
-    @foreach(var c in product.Creators)
+    <h3>@Product.Title</h3>
+    @foreach(var c in Product.Creators)
     {
         <h5>@c.FirstName @c.LastName</h5>
     }
-    @foreach(var c in product.Category)
+    @foreach(var c in Product.Category)
     {
         <h5>@c.CategoryName</h5>
     }
@@ -21,11 +21,11 @@
 @code {
     [Parameter]
     public int Id { get; set; }
-    public Product product { get; set; }
+    public Product Product { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        product = await DataManager.GetProductById(Id);
+        Product = await DataManager.GetProductById(Id);
     }
 
     private void DeleteProduct()

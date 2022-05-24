@@ -129,8 +129,8 @@ namespace BibliotekBoklusen.Server.Controllers
                     else
                         categoryList.Add(category);
                 }
-                productToUpdate.Category = categoryList;
 
+                productToUpdate.Category = categoryList;
                 productToUpdate.Creators = creatorList;
                 product.Title = productToUpdate.Title;
                 product.Creators = productToUpdate.Creators;
@@ -138,7 +138,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 product.Published = productToUpdate.Published;
                 product.Category = productToUpdate.Category;
                 product.NumberOfCopiesOwned = productToUpdate.NumberOfCopiesOwned;
-                //_context.Creators.UpdateRange(product.Creators);
                 _context.Update(product);
                 await _context.SaveChangesAsync();
 
