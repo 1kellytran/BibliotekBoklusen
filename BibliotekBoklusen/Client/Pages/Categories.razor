@@ -22,11 +22,11 @@
 
 
 
-<h3>Ta bort kategorier:</h3>
+<h3>Kategorier</h3>
 @if (Categoriess != null)
 {
     <table class="table">
-        <ColGroup><col style="width: 60px;" /><col /><col style="width: 60%;" /><col style="width: 60px;" /><col /></ColGroup>
+        <ColGroup><col style="width: 70%;" /><col style="width: 10%;" /><col style="width: 10%;" /></ColGroup>
         <thead class="thead-light mb-2">
             <tr>
                 <th>Kategorier</th>
@@ -59,29 +59,17 @@
         <thead class="thead-light">
             <tr>
                 <th>Kategori</th>
-               
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td><input type="text" @bind-value="Category2.CategoryName" /></td>
-                
-                
                 <td><button type="submit" class="btn btn-primary">Spara</button></td>
             </tr>
         </tbody>
     </table>
 </EditForm>
-@*<EditForm Model=Category2>
-    <DataAnnotationsValidator />
 
-    <div class="form-group pb-2">
-        <label for="Title">Kategori namn:</label>
-        <InputText Id="Title" class="form-control" @bind-Value="Category2.CategoryName" />
-        <ValidationMessage For="@(() => Category2.CategoryName)" />
-    </div>
-    <button class="btn btn-danger" @onclick="UpdateCategory">Uppdatera</button>
-</EditForm>*@
 @message2
 
 @code {
