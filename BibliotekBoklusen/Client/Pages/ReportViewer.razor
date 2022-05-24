@@ -1,0 +1,77 @@
+﻿@page "/ReportViewer"
+@inject IJSRuntime js
+@attribute [Authorize]
+<h3>Skriv ut Rapporter</h3>
+
+<MudButton Variant="Variant.Text" Color="Color.Primary"  @onclick= "ShowActiveLoans">Aktiva lån</MudButton>
+
+<MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick= "ShowTopProducts">Populära produkter</MudButton>
+
+<MudButton Variant="Variant.Text" @onclick= "ShowUserWithMostLoans">Lånetagare med flest lån</MudButton>
+
+
+<div class="row">
+	<div class = "col-2">
+		<button class ="btn btn-primary" @onclick= "Print">Skriv ut</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class = "col-12">
+		<div id="PrintDiv" style ="border: 1px solid black; min-height:400px;padding:5px;">
+			@if(html != null)
+			{
+				@html
+
+			}
+
+		</div>
+	</div>
+</div>
+
+@code {
+	public RenderFragment html;
+	public void ShowActiveLoans()
+	{
+		RenderFragment CreateDynamicComponent() => builder =>
+		{
+			builder.OpenComponent(0, typeof(ActiveLoans));
+			builder.CloseComponent();
+
+		};
+
+		html = CreateDynamicComponent();
+
+	}	
+	
+	public void ShowTopProducts()
+	{
+		RenderFragment CreateDynamicComponent() => builder =>
+		{
+			builder.OpenComponent(0, typeof(TopProducts));
+			builder.CloseComponent();
+
+		};
+
+		html = CreateDynamicComponent();
+
+	}
+	
+	public void ShowUserWithMostLoans()
+	{
+		RenderFragment CreateDynamicComponent() => builder =>
+		{
+			builder.OpenComponent(0, typeof(MostUserLoans));
+			builder.CloseComponent();
+
+		};
+
+		html = CreateDynamicComponent();
+
+	}
+
+	public async Task Print()
+	{
+		js.InvokeVoidAsync("Print");
+	}
+}
