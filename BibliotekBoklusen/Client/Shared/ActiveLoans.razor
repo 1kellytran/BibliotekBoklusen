@@ -12,11 +12,12 @@
             <th scope="col">Returneras:</th>
         </tr>
     </thead>
+
     @foreach (var l in Loans)
     {
         <tbody>
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">@(currentCount++)</th>
                 <td>@l.User.Email</td>
                 <td>@l.ProductCopy.product.Title</td>
                 <td>@l.ProductCopyId</td>
@@ -24,21 +25,29 @@
             </tr>
         </tbody>
     }
+    
 </table>
 
 @code {
     private List<Loan> Loans { get; set; } = new List<Loan>();
-    
+     private int currentCount = 1;
+      
+
     protected override async Task OnInitializedAsync()
     {
+      
         var result = await LoanManager.GetAllLoansAsync();
         if (result != null)
         {
+            
             foreach (var activeLoan in result)
             {
+               
                 if (activeLoan.isReturned == false)
                 {
                     Loans.Add(activeLoan);
+                  
+
                 }
             }         
         }
