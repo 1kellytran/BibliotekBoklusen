@@ -1,11 +1,135 @@
 ﻿@page "/categories"
 @inject ICategoryManager CategoryManager
+@inject NavigationManager NavigationManager
+@using BibliotekBoklusen.Client.Pages
 
-<h3>Kategorier</h3>
+
+<EditForm Model=Category OnValidSubmit=HandleAddCategory>
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="Title">Kategori namn:</label>
+        <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
+        <ValidationMessage For="@(() => Category.CategoryName)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Lägg till</button>
+</EditForm>
+
+@message
+<br />
 
 
-<AddDeleteCategory/>
+
+
+<h3>Ta bort kategorier:</h3>
+@if (Categoriess != null)
+{
+    <table class="table">
+        <ColGroup><col style="width: 60px;" /><col /><col style="width: 60%;" /><col style="width: 60px;" /><col /></ColGroup>
+        <thead class="thead-light mb-2">
+            <tr>
+                <th>Kategorier</th>
+                <th style="text-align:right">Ändra</th>
+                <th style="text-align:right">Ta bort</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var category in Categoriess)
+            {
+
+                <AuthorizeView Roles="Admin, Librarian">
+                    <tr>
+                        <td>@category.CategoryName</td>
+                        <td style="text-align:right"><MudButton @onclick="() => SetId(category.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton></td>
+                        <td style="text-align:right"><MudButton @onclick="() => HandleDeleteCategory(category.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
+                    </tr>
+
+
+                </AuthorizeView>
+
+            }
+        </tbody>
+    </table>
+}
+
+<h3>Uppdatera Kategori:</h3>
+<EditForm Context="_context" Model="Category2" OnSubmit="UpdateCategory">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>Kategori</th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" @bind-value="Category2.CategoryName" /></td>
+                
+                
+                <td><button type="submit" class="btn btn-primary">Spara</button></td>
+            </tr>
+        </tbody>
+    </table>
+</EditForm>
+@*<EditForm Model=Category2>
+    <DataAnnotationsValidator />
+
+    <div class="form-group pb-2">
+        <label for="Title">Kategori namn:</label>
+        <InputText Id="Title" class="form-control" @bind-Value="Category2.CategoryName" />
+        <ValidationMessage For="@(() => Category2.CategoryName)" />
+    </div>
+    <button class="btn btn-danger" @onclick="UpdateCategory">Uppdatera</button>
+</EditForm>*@
+@message2
 
 @code {
+    List<Category> Categoriess { get; set; } = new();
+    public Category Category { get; set; } = new();
+    public Category Category2 { get; set; } = new();
+    string message;
+    string message2;
 
+    protected override async Task OnInitializedAsync()
+    {
+        Categoriess = await CategoryManager.GetAllCategoriesAsync();
+    }
+
+    async Task HandleDeleteCategory(int id)
+    {
+        await CategoryManager.DeleteCategoryAsync(id);
+        foreach (var category in Categoriess)
+        {
+            if (category.Id == id)
+            {
+                message = $"{category.CategoryName} har tagits bort";
+            }
+        }
+        Categoriess = await CategoryManager.GetAllCategoriesAsync();
+
+    }
+    async Task SetId(int id)
+    {
+        Category2 = await CategoryManager.GetCategoryByIdAsync(id);
+    }
+    async Task UpdateCategory()
+    {
+
+        await CategoryManager.UpdateCategory(Category2);
+        Categoriess = await CategoryManager.GetAllCategoriesAsync();
+
+    }
+
+    async Task HandleAddCategory()
+    {
+        var result = await CategoryManager.AddCategory(Category);
+        if (result != null)
+            message = $"{Category.CategoryName} har lagts till";
+        else
+            message = $"{Category.CategoryName} finns redan";
+
+        Categoriess = await CategoryManager.GetAllCategoriesAsync();
+    }
 }
+
