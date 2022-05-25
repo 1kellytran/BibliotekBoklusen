@@ -5,34 +5,29 @@
 <h3>Populära böcker/Mest utlånade böcker</h3>
 
 
-@foreach (var p in products)
+@foreach (var p in Products)
 {
-	<div class="card" style="width: 18rem;">
-		<img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Fairy_Tales_%28Boston_Public_Library%29.jpg" alt="Hej jag är en bild">
-		<div class="card-body">
-			<h5 class="card-title"><a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a></h5>
-			<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-			@foreach (var creator in p.Creators)
-		{
-			<h6>@creator.FirstName @creator.LastName</h6>
-		}
-		</div>
-	</div>
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Fairy_Tales_%28Boston_Public_Library%29.jpg" alt="Hej jag är en bild">
+        <div class="card-body">
+            <h5 class="card-title"><a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a></h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            @foreach (var creator in p.Creators)
+            {
+                <h6>@creator.FirstName @creator.LastName</h6>
+            }
+        </div>
+    </div>
 
 }
 
 
 @code {
-	public List<Product> products { get; set; } = new List<Product>();
+    public List<Product> Products { get; set; } = new List<Product>();
 
-	protected override async Task OnInitializedAsync()
-	{
-
-
-		products = await LoanManager.GetTopProducts();
-	}
-
-
-
+    protected override async Task OnInitializedAsync()
+    {
+        Products = await LoanManager.GetTopProducts();
+    }
 
 }

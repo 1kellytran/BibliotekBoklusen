@@ -5,7 +5,6 @@
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
-@inject IReservationManager ReservationManager
 @implements IDisposable
 
 @if (SearchManager.Products == null || SearchManager.Products.Count == 0)
@@ -54,7 +53,7 @@ else
                     }
                     else
                     {
-                        <td><a class="btn" @onclick="()=> ReserveProduct(p.Id)">Reservera</a></td>
+                        <td><a class="btn">Reservera</a></td>
                     }
                 </AuthorizeView>
                  
@@ -90,9 +89,5 @@ else
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
 
-    public async Task ReserveProduct(int productId)
-    {
-        ReservationManager.AddReservation(productId, CurrentUser.Id);
-    }
 }
 

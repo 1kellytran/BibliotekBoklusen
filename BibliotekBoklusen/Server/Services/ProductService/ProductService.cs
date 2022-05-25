@@ -52,7 +52,6 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                         p.Creators.Any(cr => cr.LastName.ToLower().Contains(searchText.ToLower())|| 
                         p.Category.Any(c => c.CategoryName.ToLower().Contains(searchText.ToLower()))))
                         ).ToListAsync();
-            
         }
 
         public async Task CreateProductCopies(Product product)
@@ -69,8 +68,6 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             }
             
         }
-
-       
 
     }
 }

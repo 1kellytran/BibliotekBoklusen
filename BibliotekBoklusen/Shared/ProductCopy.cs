@@ -10,7 +10,7 @@ namespace BibliotekBoklusen.Shared
 {
     public class ProductCopy
     {
-       
+
         public int Id { get; set; }
 
         public int CopyId { get; set; }
@@ -22,7 +22,7 @@ namespace BibliotekBoklusen.Shared
 
         public bool IsLoaned { get; set; }
 
-        
+
 
     }
 }

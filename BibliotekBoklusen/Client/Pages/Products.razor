@@ -5,7 +5,7 @@
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
-@inject IReservationManager ReservationManager
+
 
 
 <NotAuthorized>
@@ -143,11 +143,6 @@
     {
         await LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
-    }
-
-    public async Task ReserveProduct(int productId)
-    {
-        ReservationManager.AddReservation(productId, CurrentUser.Id);
     }
 
     void AddCreator()

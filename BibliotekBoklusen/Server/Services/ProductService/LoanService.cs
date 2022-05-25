@@ -12,24 +12,23 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         public LoanService(AppDbContext context)
         {
             _context = context;
-
         }
-        public ProductCopy productCopy { get; set; }
+        public ProductCopy ProductCopy { get; set; }
 
         public async Task<Loan> CreateLoan(int productId, int userId)
         {
             var prodcop = _context.productCopies.Where(pc => pc.ProductId == productId && pc.IsLoaned == false).ToList();
-            productCopy = prodcop.FirstOrDefault(pc => pc.ProductId == productId);
+            ProductCopy = prodcop.FirstOrDefault(pc => pc.ProductId == productId);
 
-            if (productCopy != null)
+            if (ProductCopy != null)
             {
-                productCopy.IsLoaned = true;
+                ProductCopy.IsLoaned = true;
                 
-                _context.productCopies.Update(productCopy);
+                _context.productCopies.Update(ProductCopy);
                 _context.SaveChanges();
 
                 Loan loan = new();
-                loan.ProductCopyId = productCopy.Id;
+                loan.ProductCopyId = ProductCopy.Id;
                 loan.UserId = userId;
                 return loan;
             }
