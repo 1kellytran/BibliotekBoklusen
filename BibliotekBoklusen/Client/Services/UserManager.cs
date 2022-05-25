@@ -41,7 +41,6 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task<User> GetUser(int id)
         {
-            //($"api/user/{id}")
             var result = await _http.GetFromJsonAsync<User>($"api/user/{id}");
 
             if (result != null)
@@ -51,14 +50,10 @@ namespace BibliotekBoklusen.Client.Services
             return null;
         }
 
-
         public async Task<User> GetCurrentUser(string userEmail)
         {
-            //($"api/user/{id}")
             var result = await _http.GetFromJsonAsync<User>($"api/user/currentuser?userEmail={userEmail}");
             return result;
-
-
         }
 
         public async Task<string> Login(LoginDto model)

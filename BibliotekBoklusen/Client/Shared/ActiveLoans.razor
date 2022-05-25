@@ -25,31 +25,27 @@
             </tr>
         </tbody>
     }
-    
+
 </table>
 
 @code {
+
     private List<Loan> Loans { get; set; } = new List<Loan>();
-     private int currentCount = 1;
-      
+    private int currentCount = 1;
 
     protected override async Task OnInitializedAsync()
     {
-      
         var result = await LoanManager.GetAllLoansAsync();
+
         if (result != null)
         {
-            
             foreach (var activeLoan in result)
             {
-               
                 if (activeLoan.isReturned == false)
                 {
                     Loans.Add(activeLoan);
-                  
-
                 }
-            }         
+            }
         }
     }
 }

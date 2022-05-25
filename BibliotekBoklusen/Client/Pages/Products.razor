@@ -109,7 +109,7 @@
     private bool isAvailable;
     private bool addCreator;
     public bool editProduct;
-    int ProductId;
+    int productId;
 
     protected override async Task OnInitializedAsync()
     {
@@ -123,13 +123,13 @@
     public async Task EditProduct(int id, Product productToEdit)
     {
         editProduct = true;
-        ProductId = id;
+        productId = id;
         ProductToUpdate = productToEdit;
     }
 
     public async Task SaveEditProduct()
     {
-        await ProductManager.UpdateProduct(ProductId, ProductToUpdate);
+        await ProductManager.UpdateProduct(productId, ProductToUpdate);
         editProduct = false;
     }
 
@@ -143,8 +143,6 @@
     {
         await LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
-       
-
     }
 
     public async Task ReserveProduct(int productId)

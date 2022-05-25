@@ -8,6 +8,7 @@
         {
             _httpClient = httpClient;
         }
+
         public async Task<List<Creator>> GetAllCreatorsAsync()
         {
             var creators = await _httpClient.GetFromJsonAsync<List<Creator>>("api/creators");
@@ -37,6 +38,7 @@
             await _httpClient.PutAsJsonAsync($"api/creators/{creatorToUpdate.Id}", creatorToUpdate);
 
         }
+
         public async Task DeleteCreatorAsync(int id)
         {
             await _httpClient.DeleteAsync($"api/creators/{id}");

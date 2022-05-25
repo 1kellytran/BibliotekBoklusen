@@ -6,8 +6,8 @@
 @inject IProductManager ProductManager
 
 
-<h3 class="mb-2">Mina lån</h3>
-<h2>Aktuella lån:</h2>
+<h2 class="mb-2">Mina lån</h2>
+<h3>Aktuella lån:</h3>
 
 <table class="table mb-5">
     <thead class="thead-light">
@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var currentLoan in currentLoans)
+        @foreach (var currentLoan in CurrentLoans)
         {
             <tr>
                 <td>@currentLoan.Title</td>
@@ -33,7 +33,7 @@
         }
     </tbody>
 </table>
-<h2>Återlämnade lån</h2>
+<h3>Återlämnade lån</h3>
 <table class="table mb-5">
     <thead class="thead-light">
         <tr>
@@ -44,7 +44,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var previousLoan in previousLoans)
+        @foreach (var previousLoan in PreviousLoans)
         {
             <tr>
                 <td>@previousLoan.Title</td>
@@ -60,28 +60,28 @@
 </table>
 
 @code {
-    public User user { get; set; }
-    public List<Loan> allUserLoans { get; set; } = new();
-    public List<Product> previousLoans { get; set; } = new();
-    public List<Product> currentLoans { get; set; } = new();
+    public User User { get; set; }
+    public List<Loan> AllUserLoans { get; set; } = new();
+    public List<Product> PreviousLoans { get; set; } = new();
+    public List<Product> CurrentLoans { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await localStorage.GetItemAsync<string>("email");
-        user = await UserManager.GetCurrentUser(userEmail);
-        allUserLoans = await LoanManager.GetLoansByUserId(user.Id);
+        User = await UserManager.GetCurrentUser(userEmail);
+        AllUserLoans = await LoanManager.GetLoansByUserId(User.Id);
 
 
-        foreach (var loan in allUserLoans)
+        foreach (var loan in AllUserLoans)
         {
             var product= await ProductManager.GetProductById(loan.ProductCopy.ProductId);
             if (loan.isReturned)
             {
-                previousLoans.Add(product);
+                PreviousLoans.Add(product);
             }
             else
             {
-                currentLoans.Add(product);
+                CurrentLoans.Add(product);
             }
 
         }

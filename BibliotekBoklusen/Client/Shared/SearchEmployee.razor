@@ -32,7 +32,7 @@
     </EditForm>
 }
 
-@if (Employees != null || Employees.Count != 0)
+@if (employees != null || employees.Count != 0)
 {
     <table class="table">
         <thead class="thead-dark">
@@ -46,7 +46,7 @@
         </tr>
         </thead>
         <tbody>
-            @foreach (var employee in Employees)
+            @foreach (var employee in employees)
             {
                 <tr>
                     @if (@employee.Email != "admin@admin.com")
@@ -69,7 +69,7 @@
 <h6 class="validation-message">@message</h6>
 
 @code {
-    private List<User> Employees = new List<User>();
+    private List<User> employees = new List<User>();
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
     User userToEdit = new User();
     int userId;
@@ -86,11 +86,11 @@
             if (result == null || result.Count == 0)
             {
                 message = "Inga användare funna";
-                Employees = new();
+                employees = new();
             }
             else
             {
-                Employees = result.Where(u => u.IsLibrarian == true || u.IsAdmin == true).ToList();
+                employees = result.Where(u => u.IsLibrarian == true || u.IsAdmin == true).ToList();
             }
         }
     }
@@ -109,13 +109,13 @@
     {
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
-        Employees = await UserManager.GetEmployees();
+        employees = await UserManager.GetEmployees();
         message = "Användaren har uppdaterats";
     }
 
     private async Task DeleteUser(int userId)
     {
         await UserManager.DeleteUser(userId);
-        Employees = await UserManager.GetEmployees();
+        employees = await UserManager.GetEmployees();
     }
 }

@@ -23,14 +23,11 @@
 
         public async Task GetAllProducts()
         {
-
            var result = await _httpClient.GetFromJsonAsync<ServiceResponse<List<Product>>>("api/product");
 
             Products = result.Data;
 
             ProductsChanged.Invoke();
-
-
         }
 
         public async Task<List<string>> GetProductSearchSuggestions(string searchText)
@@ -42,7 +39,6 @@
 
         public async Task SearchProducts(string searchText)
         {
-
             var result = await _httpClient
                  .GetFromJsonAsync<ServiceResponse<List<Product>>>($"api/products/search/{searchText}");
             if (result != null && result.Data != null)
@@ -55,7 +51,6 @@
         }
         public async Task<List<User>> SearchMember(string searchText)
         {
-
             var result = await _httpClient
                  .GetFromJsonAsync<ServiceResponse<List<User>>>($"api/user/users?searchText={searchText}");
             if (result != null && result.Data != null)
@@ -64,8 +59,6 @@
                 return Users;
             }
             return null;
-            //if (Products.Count == 0) Message = "No users found.";
-            //ProductsChanged?.Invoke();
         }
     }
 }

@@ -33,7 +33,7 @@
     </EditForm>
 }
 
-@if (Members != null || Members.Count != 0)
+@if (members != null || members.Count != 0)
 {
     <table class="table">
         <thead class="thead-dark">
@@ -47,7 +47,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var member in Members)
+            @foreach (var member in members)
             {
                 <tr>
                     @if (@member.Email != "admin@admin.com")
@@ -71,7 +71,7 @@
  <h6 class="validation-message">@message</h6>
 
 @code {
-    private List<User> Members = new List<User>();
+    private List<User> members = new List<User>();
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
     User userToEdit = new User();
     int userId;
@@ -88,11 +88,11 @@
             if (result == null || result.Count == 0)
             {
                 message = "Inga användare funna";
-                Members = new();
+                members = new();
             }
             else
             {
-                Members = result.Where(u => u.IsAdmin == false && u.IsLibrarian == false).ToList();
+                members = result.Where(u => u.IsAdmin == false && u.IsLibrarian == false).ToList();
             }
         }
     }
@@ -111,13 +111,13 @@
     {
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
-        Members = await UserManager.GetAllUser();
+        members = await UserManager.GetAllUser();
         message = "Användaren har uppdaterats";
     }
 
     private async Task DeleteUser(int userId)
     {
         await UserManager.DeleteUser(userId);
-        Members = await UserManager.GetAllUser();
+        members = await UserManager.GetAllUser();
     }
 }

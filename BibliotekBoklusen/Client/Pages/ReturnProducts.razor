@@ -12,8 +12,9 @@
 </div>
 
 @code {
-        private int copyToReturn;
-      async Task ReturnLoan()
+    private int copyToReturn;
+
+    async Task ReturnLoan()
     {
         await LoanManager.ReturnLoanAsync(copyToReturn);
     }

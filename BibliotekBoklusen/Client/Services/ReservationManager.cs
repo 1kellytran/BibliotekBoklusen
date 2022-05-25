@@ -46,6 +46,7 @@
             await _httpClient.PutAsJsonAsync($"api/reservations/{reservationToUpdate.Id}", reservationToUpdate);
 
         }
+
         public async Task DeleteReservationAsync(int id)
         {
             await _httpClient.DeleteAsync($"api/reservations/{id}");
