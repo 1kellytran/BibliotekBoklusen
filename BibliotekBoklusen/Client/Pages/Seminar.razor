@@ -12,7 +12,8 @@
                         <th>Seminarium</th>
                         <th>Förnamn</th>
                         <th>Efternamn</th>
-                        <th>Datum & tid</th>
+                        <th>Dag & datum</th>
+                        <th>Tid</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,14 +48,13 @@ else
         </ToolBarContent>
         <HeaderContent>
             <MudTh>Seminarium</MudTh>
-            <MudTh>Förnamn</MudTh>
-            <MudTh>Förnamn</MudTh>
-            <MudTh>Dag & tid</MudTh>
+            <MudTh>Föreläsare</MudTh>
+            <MudTh>Dag & datum</MudTh>
+            <MudTh>Tid</MudTh>
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Seminarium">@context.Title</MudTd>
-            <MudTd DataLabel="Förnamn">@context.FirstName</MudTd>
-            <MudTd DataLabel="Förnamn">@context.LastName</MudTd>
+            <MudTd DataLabel="Seminarium"><a href="SeminarById/@context.Id"></a>@context.Title</MudTd>
+            <MudTd DataLabel="Föreläsare">@context.FirstName @context.LastName</MudTd>
             <MudTd DataLabel="Position">@context.DayAndTime</MudTd>
             <AuthorizeView Context="_context" Roles="Librarian, Admin">
                 <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
@@ -85,13 +85,12 @@ else
     public Seminarium CreateSeminar { get; set; } = new();
     public Seminarium SeminarToUpdate { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-    public string message;
-    public bool editSeminar;
-    public bool registerSeminar;
-    public int sortTitle = 0;
-    int seminarId;
-    private bool hover = true;
     private string searchString1 = "";
+    private bool registerSeminar;
+    private bool hover = true;
+    private bool editSeminar;
+    private string message;
+    private int seminarId;
 
     protected override async Task OnInitializedAsync()
     {
