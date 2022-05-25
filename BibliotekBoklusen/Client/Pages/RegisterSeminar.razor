@@ -30,7 +30,11 @@
         </EditForm>
     </div>
 </div>
-<h6 style="color:forestgreen">@message</h6>
+
+@if(message != null)
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
 
 @code {
     public List<Seminarium> AllSeminars { get; set; }

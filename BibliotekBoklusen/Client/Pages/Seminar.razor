@@ -2,7 +2,6 @@
 @inject ISeminarManager SeminarManager
 @inject NavigationManager NavigationManager
 
-<h3>Seminarium</h3>
 <AuthorizeView Roles="Librarian, Admin">
     @if (editSeminar)
     {
@@ -30,7 +29,6 @@
     }
 </AuthorizeView>
 
-
 @if (AllSeminars == null)
 {
     <h4>Laddar...</h4>
@@ -41,36 +39,41 @@ else if (AllSeminars.Count == 0)
 }
 else
 {
-    <table class="table table-striped">
-        <thead class="thead-light">
-            <tr>
-                <th>Title</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Datum & tid</th>
-                <AuthorizeView Context="_context" Roles="Librarian, Admin">
-                    <th></th>
-                    <th></th>
-                </AuthorizeView>
-            </tr>
-        </thead>
-        @foreach (var s in AllSeminars)
-        {
-            <tr>
-                <a href="/SeminarById/@s.Id" class="table-bordered">@s.Title</a>
-                <td>@s.FirstName</td>
-                <td>@s.LastName</td>
-                <td>@s.DayAndTime</td>
-            </tr>
-        }
-    </table>
+    <MudTable Items="@AllSeminars" Hover="@hover" Filter="new Func<Seminarium,bool>(FilterFunc1)" @bind-SelectedItem="SeminarToUpdate">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Seminarium</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Seminarium</MudTh>
+            <MudTh>Förnamn</MudTh>
+            <MudTh>Förnamn</MudTh>
+            <MudTh>Dag & tid</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Seminarium">@context.Title</MudTd>
+            <MudTd DataLabel="Förnamn">@context.FirstName</MudTd>
+            <MudTd DataLabel="Förnamn">@context.LastName</MudTd>
+            <MudTd DataLabel="Position">@context.DayAndTime</MudTd>
+            <AuthorizeView Context="_context" Roles="Librarian, Admin">
+                <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
+                    <MudButton @onclick="() => EditSeminar(context.Id, context)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                    <MudButton @onclick="() => DeleteSeminar(context.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+                </MudTd>                
+            </AuthorizeView>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
 }
 <AuthorizeView Context="_context" Roles="Librarian, Admin">
     <button class="btn btn-success" @onclick="() => ShowRegisterSeminar()">Registrera seminarium</button>
 </AuthorizeView>
 <br />
 
-@if (RegisterSeminar)
+@if (registerSeminar)
 {
     <RegisterSeminar></RegisterSeminar>
 }
@@ -84,9 +87,11 @@ else
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     public string message;
     public bool editSeminar;
-    public bool RegisterSeminar;
-    public int SortTitle = 0;
-    int SeminarId;
+    public bool registerSeminar;
+    public int sortTitle = 0;
+    int seminarId;
+    private bool hover = true;
+    private string searchString1 = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -96,13 +101,13 @@ else
     public async Task EditSeminar(int id, Seminarium seminarToUpdate)
     {
         editSeminar = true;
-        SeminarId = id;
+        seminarId = id;
         SeminarToUpdate = seminarToUpdate;
     }
 
     public async Task SaveEditSeminar()
     {
-        await SeminarManager.UpdateSeminar(SeminarId, SeminarToUpdate);
+        await SeminarManager.UpdateSeminar(seminarId, SeminarToUpdate);
         editSeminar = false;
     }
 
@@ -121,6 +126,21 @@ else
 
     void ShowRegisterSeminar()
     {
-        _ = !RegisterSeminar ? RegisterSeminar = true : RegisterSeminar = false;
+        _ = !registerSeminar ? registerSeminar = true : registerSeminar = false;
+    }
+
+    private bool FilterFunc1(Seminarium seminar) => FilterFunc(seminar, searchString1);
+
+    private bool FilterFunc(Seminarium seminar, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (seminar.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if (seminar.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{seminar.Title} {seminar.FirstName} {seminar.LastName}".Contains(searchString))
+            return true;
+        return false;
     }
 }
