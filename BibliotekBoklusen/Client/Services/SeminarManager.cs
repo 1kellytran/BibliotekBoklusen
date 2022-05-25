@@ -10,8 +10,8 @@
 
         public async Task<List<Seminarium>> GetAllSeminars()
         {
-            List<Seminarium> seminars = new();
-            seminars = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminars");
+            
+            var seminars = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminars");
 
             return seminars;
         }

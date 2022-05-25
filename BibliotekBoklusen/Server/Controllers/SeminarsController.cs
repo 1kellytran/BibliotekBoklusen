@@ -20,7 +20,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             var seminar = _context.Seminariums.ToList();
 
-            if (seminar == null || seminar.Count == 0)
+            if (seminar == null)
             {
                 return NotFound("There are no seminars");
             }

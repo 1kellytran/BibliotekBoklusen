@@ -27,7 +27,7 @@ namespace BibliotekBoklusen.Server.Controllers
                     .OrderBy(l =>l.ReturnDate)
                     .ToListAsync();
 
-            if (loans == null || loans.Count <= 0)
+            if (loans == null)
             {
                 return NotFound("There are no loans");
             }
