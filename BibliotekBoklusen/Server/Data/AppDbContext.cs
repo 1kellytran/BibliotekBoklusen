@@ -15,8 +15,6 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<Seminarium> Seminariums { get; set; }
         public DbSet<Loan> Loans { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<ReservationStatus> ReservationStatuses { get; set; }
         public DbSet<ProductCopy> productCopies { get; set; }
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
