@@ -1,5 +1,6 @@
 ﻿@inject ILoanManager LoanManager
 @page "/topproduct"
+
 <h3>Populära böcker/Mest utlånade böcker</h3>
 
 
@@ -16,22 +17,9 @@
 		}
 		</div>
 	</div>
-	@*<tr>
-		<a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
-		<td>@p.Type</td>
-		<td>@p.Published.ToString("yyyy/MM/dd")</td>
-		@foreach (var creator in p.Creators)
-		{
-			<td>@creator.FirstName @creator.LastName</td>
-		}
-		@foreach (var category in p.Category)
-		{
-			<td>@category.CategoryName</td>
-		}
 
-
-	</tr>*@
 }
+
 
 @code {
 	public List<Product> products { get; set; } = new List<Product>();
@@ -42,6 +30,8 @@
 
 		products = await LoanManager.GetTopProducts();
 	}
+
+
 
 
 }
