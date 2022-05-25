@@ -81,7 +81,7 @@ else
 @code {
     [Parameter]
     public int Id { get; set; }
-    public List<Seminarium>? AllSeminars { get; set; } = new();
+    public List<Seminarium> AllSeminars { get; set; } = new();
     public Seminarium CreateSeminar { get; set; } = new();
     public Seminarium SeminarToUpdate { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;

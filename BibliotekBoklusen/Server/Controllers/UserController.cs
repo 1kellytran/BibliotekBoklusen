@@ -131,28 +131,6 @@ namespace BibliotekBoklusen.Server.Controllers
             return Ok("User has been deleted");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> ProductLoan(Product productToAdd)
-        {
-            var email = "bnma@hotmail.com";
-            var user = _signInManager.UserManager.Users.FirstOrDefault(p => p.Email == email);
-            if (user != null)
-            {
-                var dbUser = _context.Users.FirstOrDefault(u => u.Email == email);
-                Reservation reservationModel = new()
-                {
-                    Product = productToAdd,
-                    User = dbUser,
-                };
-                var result = _context.Reservations.Add(reservationModel);
-                if (result != null)
-                {
-                    return Ok("Product has been added!!");
-                }
-            }
-            return BadRequest("User was not found :(");
-        }
-
         [HttpGet("usersBySearch")]
         public async Task<List<User>> SearchUsers(string searchText)
         {
