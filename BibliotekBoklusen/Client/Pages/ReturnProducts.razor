@@ -2,20 +2,53 @@
 @inject ILoanManager LoanManager
 
 <h3>Returna Produkter</h3>
+<MudCard>
+    <MudCardContent>
+        <MudNumericField Label="Skriv in exemplarId som ska återlämnas" @bind-Value ="copyToReturn"
+                         For="@(() => copyToReturn)" HelperText="Minimum värde är 1."></MudNumericField>
+                         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ReturnLoan">Retunera</MudButton>
+                            @* <MudButton @onclick="ReturnLoan">ok</MudButton>*@
+                             @if(message != null)
+        {
+            <MudAlert Severity="Severity.Success">@message</MudAlert>
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">@message1</MudAlert>
+        }
 
-<div>
+            
+       
+
+
+
+    </MudCardContent>
+</MudCard>
+@*<div>
     <label>Skriv in exemplarId som ska återlämnas</label>
     <br />
     <input type="number" @bind-value="copyToReturn" />
     <br />
     <button @onclick="ReturnLoan" type="submit">Ok</button>
-</div>
+</div>*@
 
 @code {
     private int copyToReturn;
+    private string message;
+    private string message1;
 
     async Task ReturnLoan()
     {
-        await LoanManager.ReturnLoanAsync(copyToReturn);
+        if(copyToReturn != null)
+        {
+            await LoanManager.ReturnLoanAsync(copyToReturn);
+            message = "Produkt inlämnad";
+        }
+        else
+        {
+            message1 = "Finns inget med detta exeplarID";
+        }
+
+       
     }
 }
