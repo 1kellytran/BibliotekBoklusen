@@ -6,7 +6,7 @@ namespace BibliotekBoklusen.Client.Services
         Task<string> AddLoan(int productId, int userId);
         Task<List<Loan>> GetAllLoansAsync();
         Task<Loan> GetLoanByIdAsync(int id);
-        Task ReturnLoanAsync(int id);
+        Task<bool> ReturnLoanAsync(int id);
         Task UpdateLoan(Loan loanToUpdate);
         Task<List<Loan>> GetLoansByUserId(int userId);
 

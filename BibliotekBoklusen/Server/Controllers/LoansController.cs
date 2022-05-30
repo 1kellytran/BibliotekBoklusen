@@ -83,9 +83,11 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut]
         public async Task<IActionResult> ReturnLoan([FromBody] int productCopyId)
         {
+            
+
            var response= await _loanService.ReturnLoan(productCopyId);
 
-            if (response)
+            if (response == true)
             {              
                 return Ok("Loan has been updated");
             }
