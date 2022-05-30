@@ -9,10 +9,8 @@
         }
 
         public async Task<List<Seminarium>> GetAllSeminars()
-        {
-            
+        {            
             var seminars = await _httpClient.GetFromJsonAsync<List<Seminarium>>("api/seminars");
-
             return seminars;
         }
 
