@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibliotekBoklusen.Client", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibliotekBoklusen.Shared", "BibliotekBoklusen\Shared\BibliotekBoklusen.Shared.csproj", "{780AB44D-DA7B-47A9-9D7D-7FA09C632602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BibliotekBoklusen.Test", "TestBoklusen\BibliotekBoklusen.Test.csproj", "{F0F8BEB5-1648-4463-87F4-DF069A07729B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BibliotekBoklusen.Test", "TestBoklusen\BibliotekBoklusen.Test.csproj", "{F0F8BEB5-1648-4463-87F4-DF069A07729B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

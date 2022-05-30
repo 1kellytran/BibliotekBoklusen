@@ -1,6 +1,5 @@
 ﻿@inject ISeminarManager SeminarManager
-
-<h3>RegisterSeminar</h3>
+@page "/registerseminar"
 
 <div class="card">
     <div class="card-body">
@@ -34,7 +33,7 @@
             </div>
             <div>
                 <br />
-                <button type="submit" class="btn btn-primary">Lägg till</button>
+                <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => AddSeminar()">Registrera seminarium</MudButton>
             </div>
         </EditForm>
     </div>
