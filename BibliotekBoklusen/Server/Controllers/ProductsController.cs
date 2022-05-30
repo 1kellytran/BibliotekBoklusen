@@ -13,6 +13,10 @@ namespace BibliotekBoklusen.Server.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IProductService _productService;
+        public ProductsController()
+        {
+
+        }
 
         public ProductsController(AppDbContext context, IProductService productService)
         {
