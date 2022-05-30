@@ -21,10 +21,10 @@
             return await _httpClient.GetFromJsonAsync<Seminarium>($"api/seminars/{id}");
         }
 
-        public async Task<string> CreateSeminar(Seminarium seminar)
+        public async Task<string> CreateSeminar(Seminarium seminarToAdd)
         {
-            var result = _httpClient.PostAsJsonAsync<Seminarium>("api/seminars", seminar);
-            var message = result.IsCompletedSuccessfully ? $"Seminariet \"{seminar.Title}\" har lagts till" : null;
+            var result = await _httpClient.PostAsJsonAsync<Seminarium>("api/seminars", seminarToAdd);
+            var message = result.IsSuccessStatusCode ? $"Seminariet \"{seminarToAdd.Title}\" har lagts till" : "Gick ej att lägga till seminarium";
             return message;
         }
 

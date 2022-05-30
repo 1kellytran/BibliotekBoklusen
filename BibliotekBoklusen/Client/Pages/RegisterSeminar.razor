@@ -6,22 +6,31 @@
     <div class="card-body">
         <h5 class="card-title">Registrera nytt seminarium</h5>
         <EditForm Model="CreateSeminar" OnSubmit="AddSeminar">
-
+            <DataAnnotationsValidator/>
             <div class="form-group">
                 <label for="title">Titel</label>
                 <InputText Id="title" class="form-control" @bind-Value="CreateSeminar.Title" />
+                <ValidationMessage For="@(() => CreateSeminar.Title)" />
             </div>
             <div class="form-group">
                 <label for="firstname">Föreläsarens förnamn</label>
                 <InputText Id="firstname" class="form-control" @bind-Value="CreateSeminar.FirstName" />
+                <ValidationMessage For="@(() => CreateSeminar.FirstName)" />
             </div>
             <div class="form-group">
                 <label for="lastname">Föreläsarens efternamn</label>
                 <InputText Id="lastname" class="form-control" @bind-Value="CreateSeminar.LastName" />
+                <ValidationMessage For="@(() => CreateSeminar.LastName)" />
             </div>
             <div class="form-group">
-                <label for="dayandtime">Dag, datum & tid</label>
-                <InputDate min = "TodaysDate" Id="dayandtime" class="form-control" @bind-Value="TodaysDate" />
+                <label for="dayandtime">Datum</label>
+                <InputDate min="TodaysDate" Id="dayandtime" class="form-control" @bind-Value="TodaysDate" />
+                <ValidationMessage For="@(() => CreateSeminar.DayAndTime)" />
+            </div>
+            <div class="form-group">
+                <label for="dayandtime">Tid</label>
+                <input type="time" min="08:00" max="21:00" Id="dayandtime" class="form-control" @bind-value="CreateSeminar.DayAndTime"/>
+                <ValidationMessage For="@(() => CreateSeminar.DayAndTime)" />
             </div>
             <div>
                 <br />
@@ -31,22 +40,32 @@
     </div>
 </div>
 
-@if(message != null)
+@if(message == $"\"{CreateSeminar.Title}\" har lagts till")
 {
     <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if(message == "Ett fel har uppstått. Har du fyllt i allt korrekt?")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
 }
 
 @code {
     public List<Seminarium> AllSeminars { get; set; }
     public Seminarium CreateSeminar { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-    public string message;
+    public string message = "";
 
     public async Task AddSeminar()
     {
         CreateSeminar.DayAndTime = TodaysDate;
         var result = await SeminarManager.CreateSeminar(CreateSeminar);
-        _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
-        AllSeminars = await SeminarManager.GetAllSeminars();
+        if(result == $"Seminariet \"{CreateSeminar.Title}\" har lagts till")
+        {
+            message = $"\"{CreateSeminar.Title}\" har lagts till";
+        }
+        else if(result == "Gick ej att lägga till seminarium")
+        {
+            message = "Ett fel har uppstått. Har du fyllt i allt korrekt?";
+        }
     }
 }

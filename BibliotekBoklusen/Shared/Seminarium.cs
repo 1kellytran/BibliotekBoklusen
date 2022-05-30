@@ -6,11 +6,11 @@ namespace BibliotekBoklusen.Shared
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string Title { get; set; } = String.Empty;
+        public string Title { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string FirstName { get; set; } = String.Empty;
+        public string FirstName { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string LastName { get; set; } = String.Empty;
+        public string LastName { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
         public DateTime DayAndTime { get; set; }
     }

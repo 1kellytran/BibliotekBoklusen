@@ -3,42 +3,38 @@
 
 <h3>Returnera Produkter</h3>
 <MudCard>
-	<MudCardContent>
-		<MudNumericField Label="Skriv in exemplarId som ska återlämnas" @bind-Value="copyToReturn"
-						 For="@(() => copyToReturn)" HelperText="Minimum värde är 1."></MudNumericField>
-		<MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ReturnLoan">Returnera</MudButton>
-	
-		if (message == "Produkt inlämnad")
-		{
-		<MudAlert Severity="Severity.Success">@message</MudAlert>
-		}
-		else if( message =="Finns inget med detta exeplarID")
-		{
-		<MudAlert Severity="Severity.Error" Variant="Variant.Outlined">@message</MudAlert>
+    <MudCardContent>
+        <MudNumericField Label="Vilket exemplar ska återlämnas?" @bind-Value="copyToReturn"
+            For="@(() => copyToReturn)" HelperText="Minimum värde är 1."></MudNumericField>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ReturnLoan">Returnera</MudButton>
 
-		}
+        @if (message == "Produkt inlämnad")
+        {
+            <MudAlert Severity="Severity.Success">@message</MudAlert>
+        }
+        else if (message == "Finns inget med detta exeplarID")
+        {
+            <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">@message</MudAlert>
 
-	</MudCardContent>
+        }
+
+    </MudCardContent>
 </MudCard>
 
-
 @code {
-	private int copyToReturn;
-	private string message = "";
+    private int copyToReturn;
+    private string message = "";
 
-
-	async Task ReturnLoan()
-	{
-		var result = await LoanManager.ReturnLoanAsync(copyToReturn);
-		if (result)
-		{
-			message = "Produkt inlämnad";
-		}
-		else
-		{
-			message = "Finns inget med detta exeplarID";
-		}
-
-
-	}
+    async Task ReturnLoan()
+    {
+        var result = await LoanManager.ReturnLoanAsync(copyToReturn);
+        if (result)
+        {
+            message = "Produkt inlämnad";
+        }
+        else
+        {
+            message = "Finns inget med detta exeplarID";
+        }
+    }
 }

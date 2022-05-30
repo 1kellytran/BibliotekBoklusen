@@ -49,7 +49,7 @@ namespace BibliotekBoklusen.Server.Controllers
 
                 return Ok("Seminar has been added");
             }
-            return BadRequest("Could not add. Did you forget to fill in something?");
+            return BadRequest("Could not add");
         }
 
         [HttpPut("{id}")]

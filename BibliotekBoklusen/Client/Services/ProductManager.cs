@@ -1,11 +1,8 @@
-﻿using System.Net.Http.Json;
-
-namespace BibliotekBoklusen.Client.Services
+﻿namespace BibliotekBoklusen.Client.Services
 {
     public class ProductManager : IProductManager
     {
         private readonly HttpClient _httpClient;
-
         public ProductManager(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -13,13 +10,11 @@ namespace BibliotekBoklusen.Client.Services
 
         public event Action ProductsChanged;
 
-        public async Task <List<Product>> GetAllProducts()
-
+        public async Task<List<Product>> GetAllProducts()
         {
             List<Product> products = new();
 
             products = await _httpClient.GetFromJsonAsync<List<Product>>("api/products");
-
             return products;
         }
 
@@ -57,6 +52,6 @@ namespace BibliotekBoklusen.Client.Services
             new string("E-bok"),
             new string("Ljudbok")
         };
-    }    
+    }
 }
 
