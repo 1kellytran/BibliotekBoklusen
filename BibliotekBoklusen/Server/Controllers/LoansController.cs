@@ -23,9 +23,9 @@ namespace BibliotekBoklusen.Server.Controllers
             var loans = await _context.Loans
                 .Include(l => l.User)
                 .Include(l => l.ProductCopy)
-                    .ThenInclude(pc => pc.product)
-                    .OrderBy(l =>l.ReturnDate)
-                    .ToListAsync();
+                .ThenInclude(pc => pc.product)
+                .OrderBy(l => l.ReturnDate)
+                .ToListAsync();
 
             if (loans == null)
             {
@@ -59,7 +59,7 @@ namespace BibliotekBoklusen.Server.Controllers
             }
             else
             {
-                return NotFound("Inga exemplar finns tillgängliga av denna boken");
+                return NotFound("Inga exemplar finns tillgänglig av denna bok");
             }
         }
 
@@ -83,25 +83,22 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut]
         public async Task<IActionResult> ReturnLoan([FromBody] int productCopyId)
         {
-            
-
-           var response= await _loanService.ReturnLoan(productCopyId);
+            var response = await _loanService.ReturnLoan(productCopyId);
 
             if (response == true)
-            {              
+            {
                 return Ok("Loan has been updated");
             }
             else
             {
                 return NotFound();
-            }          
+            }
         }
 
-        [HttpGet ("TopProducts")]
+        [HttpGet("TopProducts")]
         public async Task<ActionResult<List<Product>>> GetTopProducts()
         {
             var result = await _loanService.GetTopProducts();
-              
             return Ok(result);
         }
     }

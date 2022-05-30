@@ -1,14 +1,10 @@
-﻿using BibliotekBoklusen.Client.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Services.ProductService
 {
     public class LoanService : ILoanService
     {
         private readonly AppDbContext _context;
-
         public LoanService(AppDbContext context)
         {
             _context = context;
@@ -23,7 +19,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             if (ProductCopy != null)
             {
                 ProductCopy.IsLoaned = true;
-                
+
                 _context.productCopies.Update(ProductCopy);
                 _context.SaveChanges();
 
@@ -32,31 +28,27 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                 loan.UserId = userId;
                 return loan;
             }
-            else
-            {
-                return null;
-            }
-            
+            return null;
         }
+
         public async Task<List<Loan>> GetLoansById(int userId)
         {
             List<Product> products = new();
             var productCopies = _context.Loans.Include(p => p.ProductCopy).ThenInclude(p => p.product).Where(pc => pc.UserId == userId).ToList();
             return productCopies;
-            
         }
 
         public async Task<List<Product>> GetTopProducts()
         {
             var topProductsIDs = _context.Loans // table with a row for each loan of a product
-              .Include(p => p.ProductCopy).ThenInclude(p => p.product.Creators)
-              .GroupBy(p => p.ProductCopy.ProductId) //group all rows with same product id together
-              .OrderByDescending(g => g.Count()) // move products with highest loan to the top
-              .Take(5) // take top 5
-              .Select(x => x.Key) // get id of products
-              .ToList(); // execute query and convert it to a list
+                .Include(p => p.ProductCopy).ThenInclude(p => p.product.Creators)
+                .GroupBy(p => p.ProductCopy.ProductId) //group all rows with same product id together
+                .OrderByDescending(g => g.Count()) // move products with highest loan to the top
+                .Take(5) // take top 5
+                .Select(x => x.Key) // get id of products
+                .ToList(); // execute query and convert it to a list
 
-            var topProducts = _context.Products.Include(p =>p.Creators).Include(p =>p.Category)  // table with products information
+            var topProducts = _context.Products.Include(p => p.Creators).Include(p => p.Category)  // table with products information
                 .Where(x => topProductsIDs.Contains(x.Id)).ToList(); // get info of products that their Ids are retrieved in previous query
 
             return topProducts;
@@ -70,11 +62,12 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             var loans = _context.Loans.ToList();
             foreach (var loan in loans)
             {
-                if (loan.ProductCopyId == productCopyId && loan.isReturned==false)
+                if (loan.ProductCopyId == productCopyId && loan.isReturned == false)
                 {
-                    loanToUpdate=loan;
+                    loanToUpdate = loan;
                 }
             }
+
             if (personLoans != null && personLoans.IsLoaned == true)
             {
                 loanToUpdate.isReturned = true;
@@ -84,11 +77,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                 _context.SaveChanges();
                 return true;
             }
-            else return false;
-
-
-
+            return false;
         }
-
     }
 }
