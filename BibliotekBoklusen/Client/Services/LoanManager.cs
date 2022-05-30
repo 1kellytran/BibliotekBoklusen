@@ -54,14 +54,21 @@
             await _httpClient.PutAsJsonAsync($"api/loans/{loanToUpdate.Id}", loanToUpdate);
 
         }
-        public async Task ReturnLoanAsync(int id)
+        public async Task<bool> ReturnLoanAsync(int id)
         {
-            await _httpClient.PutAsJsonAsync($"api/loans", id);
+            
+           var response = await _httpClient.PutAsJsonAsync($"api/loans", id);
+            if(response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<List<Product>> GetTopProducts()
         {
             var result = await _httpClient.GetFromJsonAsync<List<Product>>("api/Loans/TopProducts");
+
 
             return result;
         }

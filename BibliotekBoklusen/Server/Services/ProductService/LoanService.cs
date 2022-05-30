@@ -75,7 +75,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                     loanToUpdate=loan;
                 }
             }
-            if (personLoans != null)
+            if (personLoans != null && personLoans.IsLoaned == true)
             {
                 loanToUpdate.isReturned = true;
                 _context.Loans.Update(loanToUpdate);
