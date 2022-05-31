@@ -3,7 +3,6 @@
     <AuthorizeView Roles="Librarian, Admin">
         <MudNavGroup Title="Admin" Expanded="true">
             <AuthorizeView Context="_context" Roles="Admin">
-                @*<MudNavLink Href="/admin" Match="NavLinkMatch.Prefix">Administrering</MudNavLink>*@
                 <MudNavGroup Title="Personal" Expanded="false">
                     <MudNavLink Href="/employees" Icon="@Icons.Filled.Person" IconColor="Color.Success" Match="NavLinkMatch.Prefix">All personal</MudNavLink>
                     <MudNavLink Href="/searchemployee" Icon="@Icons.Filled.PersonSearch" IconColor="Color.Success">Sök personal</MudNavLink>
@@ -28,7 +27,6 @@
                 <MudNavLink Href="/register" Icon="@Icons.Filled.PersonAddAlt1" IconColor="Color.Success">Registrera medlem</MudNavLink>
             </MudNavGroup>
             <MudNavGroup Title="Rapporter" Expanded="false">
-                <MudNavLink Icon="@Icons.Filled.InsertChartOutlined" IconColor="Color.Success" Href="/reports" Match="NavLinkMatch.Prefix">Alla Rapporter</MudNavLink>
                 <MudNavLink Href="/topproduct" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Populära produkter</MudNavLink>
                 <MudNavLink Href="/MostUserLoans" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Flest lån</MudNavLink>
                 <MudNavLink Href="/activeloans" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Aktiva lån</MudNavLink>
@@ -39,7 +37,7 @@
 
     <AuthorizeView Roles="Member">
         <MudNavLink Href="/allproducts" Icon="@Icons.Filled.LibraryBooks" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Produkter</MudNavLink>
-        <MudNavLink Href="/Reports" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
+        <MudNavLink Href="/topproduct" Icon="@Icons.Filled.ShowChart" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Populära böcker</MudNavLink>
         <MudNavGroup Title="Profil" Expanded="false">
             <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
             <MudNavLink Href="/myprofile" Icon="@Icons.Filled.ArtTrack" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Mina lån</MudNavLink>

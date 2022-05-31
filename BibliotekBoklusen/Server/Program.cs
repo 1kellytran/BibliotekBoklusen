@@ -72,6 +72,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
 
 
     context.Database.Migrate();
+    appdbcontext.Database.Migrate();
 
     if (!context.Users.Any())
     {
@@ -87,6 +88,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
 
         User user = new();
         user.Email = newUser.Email;
+        user.IsAdmin = true;
 
         await appdbcontext.Users.AddAsync(user);
         await appdbcontext.SaveChangesAsync();

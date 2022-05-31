@@ -6,95 +6,133 @@
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
 
-
-
-<NotAuthorized>
-    <h3>Produkter</h3>
-
+<AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
-        {
-            <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
-                <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Titel</th>
-                    <th>Förnamn</th>
-                    <th>Efternamn</th>
-                    <th>Utgåva</th>
-                    <th>Exemplar</th>
-                </tr>
-            </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
-                            @foreach(var c in ProductToUpdate.Creators)
-                            {
-                                <td><input type="text" @bind-value=c.FirstName /></td>
-                                <td><input type="text" @bind-value="c.LastName" /></td>
-                            }                            
-                            <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
-                            <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
-                            <td><button type="submit" class="btn btn-primary">Spara</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </EditForm>
-        }
-
-    @if (AllProducts != null)
     {
-        <table class="table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Titel</th>
-                    <th>Typ</th>
-                    <th>Utgåva</th>
-                    <th>Skapare</th>
-                </tr>
-            </thead>
-            @foreach (var p in AllProducts)
+        <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Titel</th>
+                        <th>Förnamn</th>
+                        <th>Efternamn</th>
+                        <th>Utgåva</th>
+                        <th>Exemplar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
+                        @foreach (var c in ProductToUpdate.Creators)
+                        {
+                            <td><input type="text" @bind-value=c.FirstName /></td>
+                            <td><input type="text" @bind-value="c.LastName" /></td>
+                        }
+                        <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
+                        <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
+           <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
+                    </tr>
+                </tbody>
+            </table>
+        </EditForm>
+    }
+</AuthorizeView>
+
+@if (AllProducts == null)
+{
+    <h4>Laddar...</h4>
+}
+else if (AllProducts.Count == 0)
+{
+    <h4>Inga produkter för tillfället</h4>
+}
+else
+{
+    <MudTable Context="product" Items="@AllProducts" Hover="@hover" Filter="new Func<Product,bool>(FilterFunc1)">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Produkter</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Titel</MudTh>
+            <MudTh>Skapare</MudTh>
+            <MudTh>Utgiven</MudTh>
+            <MudTh>Genre</MudTh>
+            <MudTh>Typ</MudTh>
+            <AuthorizeView Roles="Admin, Librarian">
+                <MudTh>Antal exemplar</MudTh>
+            </AuthorizeView>
+
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Titel"><a href="ProductById/@product.Id">@product.Title</a></MudTd>
+            @foreach (var creator in @product.Creators)
             {
-                <tr>
-                    <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
-                    <td>@p.Type</td>
-                    <td>@p.Published.ToString("yyyy")</td>
-                    @foreach (var creator in p.Creators)
-                    {
-                        <td>@creator.FirstName @creator.LastName</td>
-                        <br />
-                    }
-                    <AuthorizeView Roles="Member">
-                        @foreach (var product in AvailableLoans)
-                        {
-                            @if (p.Id == product.Id)
-                            {
-                                isAvailable = true;
-                            }
-                        }
-
-                        @if (isAvailable == true)
-                        {
-                            <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                        }
-                        else
-                        {
-                            <td><a class="btn" >Ej tillgänglig</a></td>
-                        }
-                    </AuthorizeView>
-                    <AuthorizeView Roles="Admin, Librarian">
-                        <td><MudButton @onclick="() => EditProduct(p.Id, p)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton><MudButton @onclick="() => DeleteProduct(p.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
-
-                    </AuthorizeView>
-                </tr>
-                
-                @if (isAvailable)
+            <MudTd DataLabel="Skapare">
+                @creator.FirstName @creator.LastName
+            </MudTd>
+            }
+        <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy/MM/dd")</MudTd>
+        @if (product.Category.Count > 1)
+            {
+            <MudTd DataLabel="Genre">
+                m.fl
+            </MudTd>
+            }
+            else
+            {
+            @foreach (var category in @product.Category)
                 {
-                    isAvailable = false;
+                <MudTd DataLabel="Genre">
+                    @category.CategoryName
+                </MudTd>
                 }
             }
-        </table>
-    }
-</NotAuthorized>
+        <MudTd DataLabel="Typ">@product.Type</MudTd>
+
+        <AuthorizeView Roles="Admin, Librarian">
+            <MudTd>@product.NumberOfCopiesOwned</MudTd>
+        </AuthorizeView>
+        <AuthorizeView Roles="Member">
+            @if (AvailableLoans.Count == 0)
+                {
+                <MudTd>
+                <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                </MudTd>
+                }
+                else if (!AvailableLoans.Any(l => l.Id == product.Id))
+                {
+                <MudTd>
+                       <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                </MudTd>
+                }
+                else
+                {
+                @foreach (var availableProduct in AvailableLoans)
+                    {
+                    @if (availableProduct.Id == product.Id)
+                        {
+                        <MudTd>
+                            <MudButton @onclick="() => LoanProduct(product.Id)">Låna</MudButton>
+                        </MudTd>
+                        }
+                    }
+                }
+        </AuthorizeView>
+        <AuthorizeView Context="_context" Roles="Librarian, Admin">
+            <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
+                <MudButton @onclick="() => EditProduct(product.Id, product)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                <MudButton @onclick="() => DeleteProduct(product.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+            </MudTd>
+        </AuthorizeView>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+}
 
 @code {
     [Parameter]
@@ -106,7 +144,8 @@
     public Product ProductToUpdate { get; set; } = new();
     public Creator Creator { get; set; } = new();
     public User CurrentUser { get; set; } = new();
-    private bool isAvailable;
+    private string searchString1 = "";
+    private bool hover = true;
     private bool addCreator;
     public bool editProduct;
     int productId;
@@ -148,5 +187,28 @@
     void AddCreator()
     {
         _ = addCreator = true ? (addCreator == false) : (addCreator == true);
+    }
+
+    private bool FilterFunc1(Product product) => FilterFunc(product, searchString1);
+
+    private bool FilterFunc(Product product, string searchString)
+    {
+        if (string.IsNullOrWhiteSpace(searchString))
+            return true;
+        if (product.Title.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{product.Type}".Contains(searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
+        foreach (var category in product.Category)
+        {
+            if (category.CategoryName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        foreach (var creator in product.Creators)
+        {
+            if (creator.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase) || creator.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+        return false;
     }
 }
