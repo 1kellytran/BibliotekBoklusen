@@ -2,39 +2,33 @@
 @inject ILocalStorageService localStorage;
 @inject IUserManager UserManager
 
-
-
-<h3 class="mb-3">Updatera uppgifter</h3>
+<h3 class="mb-3">Uppdatera uppgifter</h3>
 
 <EditForm Model="updatedUser" OnSubmit="SubmitUser">
-		<div class="mb-3">
-			<label for="firstname">First Name</label>
-			<InputText id="firstname" @bind-Value="updatedUser.FirstName" class="form-control" />
-		</div>
-		<div class="mb-3">
-			<label for="lastname">Last Name</label>
-			<InputText id="lastname" @bind-Value="updatedUser.LastName" class="form-control" />
-		</div>
-
-		<button type="submit" class="btn btn-primary">Save</button>
-	</EditForm>
+    <div class="mb-3">
+        <label for="firstname">Förnamn</label>
+        <InputText id="firstname" @bind-Value="updatedUser.FirstName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label for="lastname">Efternamn</label>
+        <InputText id="lastname" @bind-Value="updatedUser.LastName" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Spara</button>
+</EditForm>
 
 @code {
-	User user = new User();
+    User user = new User();
+    UpdatedUserDto updatedUser = new UpdatedUserDto();
 
-	UpdatedUserDto updatedUser = new UpdatedUserDto();
+    protected override async Task OnInitializedAsync()
+    {
+        var userEmail = await localStorage.GetItemAsync<string>("email");
+        user = await UserManager.GetCurrentUser(userEmail);
+    }
 
-	protected override async Task OnInitializedAsync()
-	{
-		var userEmail = await localStorage.GetItemAsync<string>("email");
-
-		user = await UserManager.GetCurrentUser(userEmail);
-	}
-	private async Task SubmitUser()
-	{
-		
-		updatedUser.IsActive = user.IsActive;
-		await UserManager.UpdateUserinformation(updatedUser, user.Id);
-
-	}
+    private async Task SubmitUser()
+    {
+        updatedUser.IsActive = user.IsActive;
+        await UserManager.UpdateUserinformation(updatedUser, user.Id);
+    }
 }

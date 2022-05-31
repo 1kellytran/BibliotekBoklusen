@@ -122,7 +122,7 @@ else
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        DialogService.Show<ConfirmDelete>("Delete", parameters, options);
+        DialogService.Show<DeleteSeminar>("Delete", parameters, options);
         
         AllSeminars = await SeminarManager.GetAllSeminars();
     }
