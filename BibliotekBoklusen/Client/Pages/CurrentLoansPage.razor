@@ -5,8 +5,6 @@
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
 
-
-<h2 class="mb-2">Mina lån</h2>
 <h3>Aktuella lån:</h3>
 
 <table class="table mb-5">
@@ -71,7 +69,6 @@
         User = await UserManager.GetCurrentUser(userEmail);
         AllUserLoans = await LoanManager.GetLoansByUserId(User.Id);
 
-
         foreach (var loan in AllUserLoans)
         {
             var product= await ProductManager.GetProductById(loan.ProductCopy.ProductId);
@@ -83,10 +80,6 @@
             {
                 CurrentLoans.Add(product);
             }
-
         }
-
     }
-
-
 }
