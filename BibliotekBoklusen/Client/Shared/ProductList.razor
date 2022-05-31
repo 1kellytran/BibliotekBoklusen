@@ -36,12 +36,16 @@ else
         </HeaderContent>
         <RowTemplate>
             <MudTd DataLabel="Titel"><a href="ProductById/@product.Id">@product.Title</a></MudTd>
-            @foreach (var creator in @product.Creators)
+            @if (@product.Creators != null)
             {
-            <MudTd DataLabel="Skapare">
-                @creator.FirstName @creator.LastName
-            </MudTd>
+            @foreach (var creator in @product.Creators)
+                {
+                <MudTd DataLabel="Skapare">
+                    @creator.FirstName @creator.LastName
+                </MudTd>
+                }
             }
+
         <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy/MM/dd")</MudTd>
         @if (product.Category.Count > 1)
             {
@@ -66,13 +70,13 @@ else
             @if (AvailableLoans.Count == 0)
                 {
                 <MudTd>
-                <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
                 </MudTd>
                 }
                 else if (!AvailableLoans.Any(l => l.Id == product.Id))
                 {
                 <MudTd>
-                       <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
                 </MudTd>
                 }
                 else
@@ -105,9 +109,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await localStorage.GetItemAsync<string>("email");
-        if(userEmail != null)
+        if (userEmail != null)
         {
-        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+            CurrentUser = await UserManager.GetCurrentUser(userEmail);
         }
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         SearchManager.ProductsChanged += StateHasChanged;
@@ -118,7 +122,7 @@ else
         SearchManager.ProductsChanged -= StateHasChanged;
     }
 
-     public async Task LoanProduct(int productId)
+    public async Task LoanProduct(int productId)
     {
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
