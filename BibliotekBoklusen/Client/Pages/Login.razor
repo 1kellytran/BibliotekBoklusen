@@ -24,7 +24,10 @@
     </div>
 </div>
 
-<h5 class="validation-message">@message</h5>
+@if(message != "You have been signed in " && message != null)
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
 
 @code {
     private LoginDto user = new LoginDto();
@@ -34,10 +37,14 @@
     {
         message = await UserManager.Login(user);
 
-        if (String.IsNullOrEmpty(message))
+        if (message == "You have been signed in")
         {
             await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/myprofile");
+        }
+        else
+        {
+            message = "Ogiltig e-mail eller lösenord. Ange rätt e-mail och/eller lösenord och försök igen.";
         }
     }
 }

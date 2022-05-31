@@ -55,7 +55,14 @@
                         <td>@employee.LastName</td>
                         <td>@employee.Email</td>
                         <td>@employee.Created.ToString("d")</td>
-                        <td>@employee.IsAdmin</td>
+                        @if (employee.IsAdmin)
+                        {
+                            <td>Ja</td>
+                        }
+                        else
+                        {
+                            <td>Nej</td>
+                        }                        
                         <td>
                             <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
                             <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
