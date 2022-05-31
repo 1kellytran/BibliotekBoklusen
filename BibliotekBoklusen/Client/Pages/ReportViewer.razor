@@ -1,14 +1,15 @@
 ﻿@page "/ReportViewer"
 @inject IJSRuntime js
-@attribute [Authorize]
 <h3>Skriv ut Rapporter</h3>
 
-<MudButton Variant="Variant.Text" Color="Color.Primary"  @onclick= "ShowActiveLoans">Aktiva lån</MudButton>
 
 <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick= "ShowTopProducts">Populära produkter</MudButton>
 
-<MudButton Variant="Variant.Text" @onclick= "ShowUserWithMostLoans">Lånetagare med flest lån</MudButton>
+<AuthorizeView Roles="Admin, Librarian">
+<MudButton Variant="Variant.Text" Color="Color.Primary"  @onclick= "ShowActiveLoans">Aktiva lån</MudButton>
 
+<MudButton Variant="Variant.Text" @onclick= "ShowUserWithMostLoans">Lånetagare med flest lån</MudButton>
+</AuthorizeView>
 
 <div class="row">
 	<div class = "col-2">
@@ -72,6 +73,6 @@
 
 	public async Task Print()
 	{
-		js.InvokeVoidAsync("Print");
+		await js.InvokeVoidAsync("Print");
 	}
 }

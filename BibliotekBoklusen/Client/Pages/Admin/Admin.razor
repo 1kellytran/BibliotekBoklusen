@@ -38,26 +38,5 @@
 
 @code {
 
-    public List<User> Users { get; set; } = new();
-    UpdatedUserDto user = new();
-    private int copyToReturn;
-    private string searchWord = "";
-
-    async Task ReturnLoan()
-    {
-        await LoanManager.ReturnLoanAsync(copyToReturn);
-    }
-    async Task EditUser(int userId, User specifiedUser)
-    {
-        user.FirstName = specifiedUser.FirstName;
-        user.LastName = specifiedUser.LastName;
-
-        await UserManager.UpdateUserinformation(user, userId);
-    }
-    async Task DeleteUser(int userId)
-    {
-        await UserManager.DeleteUser(userId);
-        Users = await SearchManager.SearchMember(searchWord);
-    }
 
 }
