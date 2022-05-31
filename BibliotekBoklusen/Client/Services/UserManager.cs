@@ -67,10 +67,10 @@ namespace BibliotekBoklusen.Client.Services
                 {
                     await _localStorageService.SetItemAsync("authToken", token);
                     await _localStorageService.SetItemAsync("email", model.Email);
-                    return null;
+                    return "You have been signed in";
                 }
             }
-            return await result.Content.ReadAsStringAsync();
+            return null;
         }
 
         public async Task<string> Register(RegisterDto model)
@@ -79,7 +79,7 @@ namespace BibliotekBoklusen.Client.Services
 
             if (result.IsSuccessStatusCode)
             {
-                return null;
+                return "User has been registered";
             }
             return await result.Content.ReadAsStringAsync();
         }
