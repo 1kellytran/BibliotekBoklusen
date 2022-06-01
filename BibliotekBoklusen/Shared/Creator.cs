@@ -7,10 +7,10 @@ namespace BibliotekBoklusen.Shared
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Firstname is required")]
+        [Required(ErrorMessage = "Obligatoriskt fält")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Lastname is required")]
+        [Required(ErrorMessage = "Obligatoriskt fält")]
         public string LastName { get; set; }
         public List<Product>? Products { get; set; }
 

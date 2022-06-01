@@ -3,7 +3,7 @@
 @inject ICategoryManager CategoryManager
 
 <MudCard>
-    <MudForm Model=Product>
+    <MudForm Model=Product @ref="@form">
         <MudCardHeader>
             <h5>Lägg till produkt</h5>
         </MudCardHeader>
@@ -11,92 +11,63 @@
             <MudTextField @bind-Value="Product.Title"
                           For="@(() => Product.Title)"
                           Immediate="true"
-                          Label="Titel"
-                          Variant="Variant.Outlined" />
-            <MudCardContent>
-                <MudCardContent Class="pa-0">
-                    <MudTable Items="@Product.Creators">
-                        <HeaderContent>
-                            <MudTh>Förnamn</MudTh>
-                            <MudTh>Efternamn</MudTh>
-                        </HeaderContent>
-                        <RowTemplate>
-                            <MudTd Datalabel="Firstname">
-                                <MudForm Model="@context.FirstName">
-                                    <MudTextField @bind-Value="Creator.FirstName"
-                                                  For="@(() => Creator.FirstName)"
-                                                  Immediate="true"
-                                                  Label="Förnamn"
-                                                  Variant="Variant.Outlined" />
-                                </MudForm>
-                            </MudTd>
-                            <MudTd Datalabel="Lastname">
-                                <MudForm Model="@context.LastName">
-                                    <MudTextField @bind-Value="Creator.LastName"
-                                                  For="@(() => Creator.LastName)"
-                                                  Immediate="true"
-                                                  Label="Efternamn"
-                                                  Variant="Variant.Outlined" />
-                                </MudForm>
-                            </MudTd>
-                        </RowTemplate>
-                    </MudTable>
+                          Label="Titel" />
+        </MudCardContent>
 
-                </MudCardContent>
-            </MudCardContent>
+        <MudTable Items="@Product.Creators">
+            <HeaderContent>
+                <MudTh>Skaparens förnamn</MudTh>
+                <MudTh>Skaparens efternamn</MudTh>
+            </HeaderContent>
 
+            <RowTemplate>
 
-
-            @*          <MudTextField @bind-Value="Creator.LastName"
-                For="@(() => Creator.LastName)"
-                Immediate="true"
-                Label="Efternamn"
-                Variant="Variant.Outlined" />*@
+                <MudTd Datalabel="FirstName">
+                    <MudForm Model="@context">
+                        <MudTextField @bind-Value="context.FirstName"
+                                      For="@(() => context.FirstName)"
+                                      Label="Förnamn" />
+                    </MudForm>
+                </MudTd>
+                <MudTd Datalabel="LastName">
+                    <MudForm Model="@context">
+                        <MudTextField @bind-Value="context.LastName"
+                                      For="@(() => context.LastName)"
+                                      Label="Efternamn" />
+                    </MudForm>
+                </MudTd>
+            </RowTemplate>
+        </MudTable>
+        <MudCardContent>
 
             <MudTextField @bind-Value="Product.Published"
                           For="@(() => Product.Published)"
                           Immediate="true"
-                          Label="Publicerad"
-                          Variant="Variant.Outlined" />
+                          Label="Publicerad" />
 
             <MudTextField @bind-Value="Product.NumberOfCopiesOwned"
                           For="@(() => Product.NumberOfCopiesOwned)"
                           Immediate="true"
-                          Label="Antal exemplar"
-                          Variant="Variant.Outlined" />
+                          Label="Antal exemplar" />
 
-            <MudSelect T="ProductType" Label="Typ" @bind-Value="Product.Type" Placeholder="Välj typ" Variant="Variant.Outlined" AnchorOrigin="Origin.BottomCenter">
+            <MudSelect T="ProductType" Label="Typ" @bind-Value="Product.Type" Placeholder="Välj typ" AnchorOrigin="Origin.BottomCenter">
                 <MudSelectItem T="ProductType" Value="@ProductType.Bok">@ProductType.Bok.ToString()</MudSelectItem>
                 <MudSelectItem T="ProductType" Value="@ProductType.Ebok">@ProductType.Ebok.ToString()</MudSelectItem>
                 <MudSelectItem T="ProductType" Value="@ProductType.Film">@ProductType.Film.ToString()</MudSelectItem>
                 <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
             </MudSelect>
+
+
         </MudCardContent>
-        <MudCardActions>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="RegisterProduct">Skicka</MudButton>
-        </MudCardActions>
     </MudForm>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="RegisterProduct">Skicka</MudButton>
+    </MudCardActions>
 </MudCard>
-@*
 
-    <div class="form-group">
-    <label>Genre:</label>
-    <br />
-    @if (Categories != null || Categories.Count <= 0)
-    {
-    @foreach (var Item in Categories)
-    {
-    <div class="form-group">
-    <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
-    <label for="@Item.CategoryName"> @Item.CategoryName</label>
-    </div>
-    }
-    }
-    </div>
-    <button type="submit" class="btn btn-primary">Spara</button>
-
-
-    <EditForm Model=Product OnValidSubmit=RegisterProduct>
+@*<h3>Skapa produkt</h3>
+    <div>
+    <EditForm Model="Product" OnValidSubmit=RegisterProduct>
     <DataAnnotationsValidator />
 
     <div class="form-group col-4">
@@ -144,41 +115,39 @@
     <label for="NumberOfCopies ">Antal Kopior:</label>
     <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
     <ValidationMessage For="@(() => Product.Published)" />
-    </div>*@
-
-
-@*</EditForm>*@
-
-
-<br />
-<h4 class="validation-message">@message</h4>
-
-@if (addedProducts.Count != 0)
-{
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>Titel</th>
-                <th>Typ</th>
-                <th>Utgåva</th>
-                <th>Skapare</th>
-            </tr>
-        </thead>
-        @foreach (var product in addedProducts)
-        {
-            <tr>
-                <a href="/ProductById/@product.Id" class="table-bordered">@product.Title</a>
-                <td>@product.Type</td>
-                <td>@product.Published.ToString("yyyy")</td>
-                @foreach (var creator in product.Creators)
-                {
-                    <td>@creator.FirstName @creator.LastName</td>
-                    <br />
-                }
-            </tr>
-        }
-    </table>
-}
+    </div>
+    <div class="form-group">
+    <div class="selectdiv">
+    <label>Typ:</label>
+    <InputSelect id="type" @bind-Value="Product.Type">
+    <option value="" selected></option>
+    @foreach (var productType in Enum.GetValues(typeof(ProductType)))
+    {
+    <option value="@productType">@productType</option>
+    }
+    </InputSelect>
+    </div>
+    </div>
+    <div class="form-group">
+    <label>Genre:</label>
+    <br />
+    @if (Categories != null || Categories.Count <= 0)
+    {
+    @foreach (var Item in Categories)
+    {
+    <div class="form-group">
+    <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
+    <label for="@Item.CategoryName"> @Item.CategoryName</label>
+    </div>
+    }
+    }
+    </div>
+    <button type="submit" class="btn btn-primary">Spara</button>
+    </EditForm>
+    </div>
+    <br />
+    <h4 class="validation-message">@message</h4>
+*@
 
 
 @code {
@@ -190,10 +159,11 @@
     static List<Product> addedProducts = new();
     string message;
     bool addCreator;
-
+    MudForm form;
     protected override async Task OnInitializedAsync()
     {
         Categories = await CategoryManager.GetAllCategoriesAsync();
+        Product.Creators.Add(new Creator { });
     }
 
     public async Task RegisterProduct()
