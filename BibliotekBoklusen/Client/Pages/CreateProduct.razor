@@ -1,128 +1,128 @@
 ﻿@page "/createproduct"
-@inject IProductManager DataManager
+@inject IProductManager ProductManager
 @inject ICategoryManager CategoryManager
 
-<h3>Skapa produkt</h3>
-<div>
-    <EditForm Model="Product" OnValidSubmit=RegisterProduct>
-        <DataAnnotationsValidator />
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm Model=Product>
+                <MudCardHeader>
+                    <h5>Produktdetaljer</h5>
+                </MudCardHeader>
 
-        <div class="form-group col-4">
-            <label for="Title">Titel:</label>
-            <InputText Id="Title" class="form-control" @bind-Value="Product.Title" />
-            <ValidationMessage For="@(() => Product.Title)" />
-        </div>
+                <MudCardContent Class="pa-0">
+                    <MudTable Items="@Product.Creators" Elevation="0" Breakpoint="Breakpoint.Sm">
+                        <RowTemplate>
+                            <MudTd Datalabel="FirstName">
+                                <MudForm Model="@context">
+                                    <MudTextField @bind-Value="context.FirstName"
+                                                  For="@(() => context.FirstName)"
+                                                  Label="Skaparens förnamn" />
+                                </MudForm>
+                            </MudTd>
+                            <MudTd Datalabel="LastName">
+                                <MudForm Model="@context">
+                                    <MudTextField @bind-Value="context.LastName"
+                                                  For="@(() => context.LastName)"
+                                                  Label="Skaparens efternamn" />
+                                </MudForm>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCardContent>
+                <MudCardContent>
 
-        <div class="row">
-            <label for="lastname">Skapare:</label>
-            <div class="col-4">
-                <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
-                <ValidationMessage For="@(() => Creator.FirstName)" />
-            </div>
+                    <MudTextField @bind-Value="Product.Title"
+                                  For="@(() => Product.Title)"
+                                  Label="Titel" />
 
-            <div class="col-4">
-                <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
-                <ValidationMessage For="@(() => Creator.LastName)" />
-            </div>
-            <div class="col-4 align-content-end">
-                <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
-            </div>
-        </div>
-        @if (addCreator)
-        {
-            <div class="row">
-                <div class="col-4">
-                    <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
-                    <ValidationMessage For="@(() => Creator.FirstName)" />
-                </div>
 
-                <div class="col-4">
-                    <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
-                    <ValidationMessage For="@(() => Creator.LastName)" />
-                </div>
-            </div>
-        }
+                    <MudTextField @bind-Value="Product.Published"
+                                  For="@(() => Product.Published)"
+                                  Label="Publicerad" />
 
-        <div class="form-group col-2">
-            <label for="published ">Utgiven:</label>
-            <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
-            <ValidationMessage For="@(() => Product.Published)" />
-        </div>
-        <div class="form-group col-2">
-            <label for="NumberOfCopies ">Antal Kopior:</label>
-            <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="Product.NumberOfCopiesOwned" />
-            <ValidationMessage For="@(() => Product.Published)" />
-        </div>
-        <div class="form-group">
-            <div class="selectdiv">
-                <label>Typ:</label>
-                <InputSelect id="type" @bind-Value="Product.Type">
-                    <option value="" selected></option>
-                    @foreach (var productType in Enum.GetValues(typeof(ProductType)))
+                    <MudTextField @bind-Value="Product.NumberOfCopiesOwned"
+                                  For="@(() => Product.NumberOfCopiesOwned)"
+                                  Label="Antal exemplar" />
+
+                    <MudSelect T="ProductType" Label="Typ" @bind-Value="Product.Type" Placeholder="Välj typ" AnchorOrigin="Origin.BottomCenter">
+                        <MudSelectItem T="ProductType" Value="@ProductType.Bok">@ProductType.Bok.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Ebok">@ProductType.Ebok.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Film">@ProductType.Film.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
+                    </MudSelect>
+
+                    @foreach (var category in Categories)
                     {
-                        <option value="@productType">@productType</option>
+                        <MudCheckBox @bind-Checked="category.isChecked">@category.CategoryName</MudCheckBox>
                     }
-                </InputSelect>
-            </div>
-        </div>
-        <div class="form-group">
-            <label>Genre:</label>
-            <br />
-            @if (Categories != null || Categories.Count <= 0)
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="RegisterProduct">Skicka</MudButton>
+                </MudCardActions>
+
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" sm="5">
+        <MudPaper Class="pa-4 mud-height-full">
+            <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
+ @foreach(var product in addedProducts)
             {
-                @foreach (var Item in Categories)
-                {
-                    <div class="form-group">
-                        <input type="checkbox" id="@Item.CategoryName" @bind="Item.isChecked">
-                        <label for="@Item.CategoryName"> @Item.CategoryName</label>
-                    </div>
-                }
+            <MudText Color="Color.Success">@product.Title</MudText>
+                
             }
-        </div>
-        <button type="submit" class="btn btn-primary">Spara</button>
-    </EditForm>
-</div>
-<br />
-<h4 class="validation-message">@message</h4>
+       
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+
 
 
 @code {
-    public Creator Creator { get; set; } = new();
     public Product Product { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-    public List<Product> Products { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
+    static List<Product> addedProducts = new();
+    bool success;
     string message;
-    bool addCreator;
 
     protected override async Task OnInitializedAsync()
     {
         Categories = await CategoryManager.GetAllCategoriesAsync();
+        SetProductStartValue();
     }
 
     public async Task RegisterProduct()
     {
         SetProductValues();
-        var result = await DataManager.CreateProduct(Product);
-        _ = result == null ? (message = "") : (message = result);
+
+        var result = await ProductManager.CreateProduct(Product);
+        if (result == null)
+        {
+            message = "";
+        }
+        else
+        {
+            addedProducts.Add(Product);
+            message = result;
+        }
         ClearForm();
-    }    
+    }
 
     void SetProductValues()
     {
-        if (Creator != null)
-        {
-            Product.Published = TodaysDate;
-            Product.Creators.Add(Creator);
-            Product.Category.AddRange(Categories.Where(x => x.isChecked));
-            Products.Add(Product);
-        }
+
+        Product.Published = TodaysDate;
+        Product.Category.AddRange(Categories.Where(x => x.isChecked));
+
     }
 
     void ClearForm()
     {
-        Product = new Product();
-        Creator = new Creator();
+        SetProductStartValue();
         foreach (var category in Categories)
         {
             category.isChecked = false;
@@ -131,6 +131,13 @@
 
     void AddCreator()
     {
-        _ = addCreator = true ? (addCreator == false) : (addCreator == true);
+        Product.Creators.Add(new Creator { });
+    }
+
+    void SetProductStartValue()
+    {
+        Product = new Product();
+        Product.Creators.Add(new Creator { });
+        Product.Published = TodaysDate;
     }
 }

@@ -45,13 +45,6 @@
             throw new NotImplementedException();
         }
 
-        public IList<string> Types => new List<string>
-        {
-            new string("Film"),
-            new string("Bok"),
-            new string("E-bok"),
-            new string("Ljudbok")
-        };
     }
 }
 

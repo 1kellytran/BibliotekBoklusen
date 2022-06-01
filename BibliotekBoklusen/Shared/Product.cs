@@ -5,11 +5,10 @@ namespace BibliotekBoklusen.Shared
 {
     public enum ProductType
     {
-        Bok = 1,
-        [Display(Name = "E-bok")]
-        Ebok = 2,
-        Ljudbok = 3,
-        Film = 4
+        Bok,
+        Ebok,
+        Ljudbok,
+        Film
     }
     public class Product
     {
@@ -22,6 +21,7 @@ namespace BibliotekBoklusen.Shared
         [Required(ErrorMessage = "Obligatorisk fält")]
         [Column(TypeName = "datetime2")]
         public DateTime Published { get; set; }
+
         public ProductType Type { get; set; }
 
         public int NumberOfCopiesOwned { get; set; }
