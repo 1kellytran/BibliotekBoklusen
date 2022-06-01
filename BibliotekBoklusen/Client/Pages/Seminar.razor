@@ -1,6 +1,7 @@
 ﻿@page "/seminar"
 @inject ISeminarManager SeminarManager
 @inject NavigationManager NavigationManager
+@inject IDialogService DialogService
 
 <AuthorizeView Roles="Librarian, Admin">
     @if (editSeminar)
@@ -55,12 +56,13 @@ else
         <RowTemplate>
             <MudTd DataLabel="Seminarium"><a href="SeminarById/@context.Id"></a>@context.Title</MudTd>
             <MudTd DataLabel="Föreläsare">@context.FirstName @context.LastName</MudTd>
-            <MudTd DataLabel="Position">@context.DayAndTime</MudTd>
+            <MudTd DataLabel="Datum">@context.DayAndTime.DayOfWeek @context.DayAndTime.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Datum">@context.DayAndTime.ToString("HH:mm")</MudTd>
             <AuthorizeView Context="_context" Roles="Librarian, Admin">
                 <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
                     <MudButton @onclick="() => EditSeminar(context.Id, context)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
                     <MudButton @onclick="() => DeleteSeminar(context.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-                </MudTd>                
+                </MudTd>
             </AuthorizeView>
         </RowTemplate>
         <PagerContent>
@@ -68,9 +70,9 @@ else
         </PagerContent>
     </MudTable>
 }
-<AuthorizeView Context="_context" Roles="Librarian, Admin">
+@*<AuthorizeView Context="_context" Roles="Librarian, Admin">
     <button class="btn btn-success" @onclick="() => ShowRegisterSeminar()">Registrera seminarium</button>
-</AuthorizeView>
+    </AuthorizeView>*@
 <br />
 
 @if (registerSeminar)
@@ -112,7 +114,16 @@ else
 
     public async Task DeleteSeminar(int id)
     {
-        await SeminarManager.DeleteSeminar(id);
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill radera seminariet? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Radera");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        DialogService.Show<DeleteSeminar>("Delete", parameters, options);
+        
         AllSeminars = await SeminarManager.GetAllSeminars();
     }
 

@@ -2,75 +2,153 @@
 @inject NavigationManager NavigationManager
 @inject IUserManager UserManager
 @inject ILocalStorageService LocalStorage
-<h5 class="validation-message">@message</h5>
+@using System.Text.RegularExpressions
+@using System.ComponentModel.DataAnnotations
 
-<div class="card">
+@*<div class="card">
     <div class="card-body">
-        <h5 class="card-title">Registrera</h5>
-        <EditForm Model="registerUser" OnValidSubmit="HandleRegistration">
-            <DataAnnotationsValidator />
-
-            <div class="form-group">
-                <label for="firstname">Förnamn</label>
-                <InputText Id="firstname" class="form-control" @bind-Value="registerUser.FirstName" />
-                <ValidationMessage For="@(() => registerUser.FirstName)" />
-            </div>
-            <div class="form-group">
-                <label for="lastname">Efternamn</label>
-                <InputText Id="lastname" class="form-control" @bind-Value="registerUser.LastName" />
-                <ValidationMessage For="@(() => registerUser.LastName)" />
-            </div>
-            <div class="form-group">
-                <label for="email">Email address</label>
-                <InputText Id="email" class="form-control" @bind-Value="registerUser.Email" />
-                <ValidationMessage For="@(() => registerUser.Email)" />
-            </div>
-            <div class="form-group">
-                <label for="password">Lösenord</label>
-                <InputText Id="password" type="password" class="form-control" @bind-Value="registerUser.Password" />
-                <ValidationMessage For="@(() => registerUser.Password)" />
-            </div>
-            <div class="form-group">
-                <label for="password">Bekräfta lösenord</label>
-                <InputText Id="confirmPassword" type="password" class="form-control" @bind-Value="registerUser.ConfirmPassword" />
-                <ValidationMessage For="@(() => registerUser.ConfirmPassword)" />
-            </div>
-            <AuthorizeView Context="_context" Roles=Admin>
-                <div class="form-group">
-                    <label for="librarian">Behörig bibliotekarie</label>
-                    <InputCheckbox id="librarian" @bind-Value="registerUser.IsLibrarian"></InputCheckbox>
-                </div>
-            </AuthorizeView>
-            <div>
-                <button type="submit" class="btn btn-primary">Registrera</button>
-            </div>
-
-        </EditForm>
-
+    <h5 class="card-title">Registrera</h5>
+    <EditForm Model="registerUser" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+    <label for="firstname">Förnamn</label>
+    <InputText Id="firstname" class="form-control" @bind-Value="registerUser.FirstName" />
+    <ValidationMessage For="@(() => registerUser.FirstName)" />
     </div>
-</div>
+    <div class="form-group">
+    <label for="lastname">Efternamn</label>
+    <InputText Id="lastname" class="form-control" @bind-Value="registerUser.LastName" />
+    <ValidationMessage For="@(() => registerUser.LastName)" />
+    </div>
+    <div class="form-group">
+    <label for="email">Email address</label>
+    <InputText Id="email" class="form-control" @bind-Value="registerUser.Email" />
+    <ValidationMessage For="@(() => registerUser.Email)" />
+    </div>
+    <div class="form-group">
+    <label for="password">Lösenord</label>
+    <InputText Id="password" type="password" class="form-control" @bind-Value="registerUser.Password" />
+    <ValidationMessage For="@(() => registerUser.Password)" />
+    </div>
+    <div class="form-group">
+    <label for="password">Bekräfta lösenord</label>
+    <InputText Id="confirmPassword" type="password" class="form-control" @bind-Value="registerUser.ConfirmPassword" />
+    <ValidationMessage For="@(() => registerUser.ConfirmPassword)" />
+    </div>
+    <AuthorizeView Context="_context" Roles=Admin>
+    <div class="form-group">
+    <label for="librarian">Behörig bibliotekarie</label>
+    <InputCheckbox id="librarian" @bind-Value="registerUser.IsLibrarian"></InputCheckbox>
+    </div>
+    </AuthorizeView>
+    <div>
+    <button type="submit" class="btn btn-primary">Registrera</button>
+    </div>
+    </EditForm>
+    </div>
+    </div>*@
+
+<MudGrid>
+    <MudItem xs="12" sm="7">
+        <MudPaper Class="pa-4">
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+                <MudTextField T="string" Label="Förnamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.FirstName" />
+                <MudTextField T="string" Label="Efternamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.LastName" />
+                <MudTextField T="string" Label="E-mail" Required="true" RequiredError="Obligatorisk fält"
+                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "E-mailen finns redan"})" @bind-Value="registerUser.Email" />
+                <MudTextField T="string" Label="Lösenord" HelperText="Använd ett starkt lösenord" @ref="pwField1"
+                              InputType="InputType.Password"
+                              Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
+                              RequiredError="Obligatorisk fält" @bind-Value="registerUser.Password" />
+                <MudTextField T="string"
+                              Label="Lösenord" HelperText="Upprepa lösenordet" InputType="InputType.Password"
+                              Validation="@(new Func<string, string>(PasswordMatch))" @bind-Value="registerUser.ConfirmPassword" />
+                <div class="d-flex align-center justify-space-between mt-6">
+                    <AuthorizeView Context="_context" Roles=Admin>
+                        <div class="form-group">
+                            <label for="librarian">Behörig bibliotekarie</label>
+                            <MudCheckBox T="bool" Required="false" Class="ml-n2" @bind-Checked="registerUser.IsLibrarian" />
+                        </div>
+                    </AuthorizeView>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" @onclick="() => HandleRegistration()">Registrera</MudButton>
+                </div>
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@if (message == $"{registerUser.FirstName} tillagd")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if (message == $"Bibliotekarie {registerUser.FirstName} tillagd")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if (message == $"Det finns redan en användare registrerad på mejladressen {registerUser.Email}")
+{
+    <MudAlert Severity="Severity.Warning">@message</MudAlert>
+}
+
 
 @code {
     private RegisterDto registerUser = new RegisterDto();
-    string message;
+    string[] errors = { };
+    bool success;
+    string message = "";
+    MudTextField<string> pwField1;
+    MudForm form;
 
     public async Task HandleRegistration()
     {
         message = await UserManager.Register(registerUser);
-        if (String.IsNullOrEmpty(message))
+        if (message == "User has been registered")
         {
             if (!await LocalStorage.ContainKeyAsync("authToken"))
             {
                 NavigationManager.NavigateTo("/login");
+                message = $"{registerUser.FirstName} tillagd";
             }
             else if (registerUser.IsLibrarian)
             {
-                message = "Bibliotekarie tillagd";
+                message = $"Bibliotekarie {registerUser.FirstName} tillagd";
             }
             else
             {
-                message = "Användare tillagd";
+                message = $"{registerUser.FirstName} tillagd";
             }
         }
+        else if (message == "User already exists.")
+        {
+            message = $"Det finns redan en användare registrerad på mejladressen {registerUser.Email}";
+        }
+        else
+        {
+            message = "Ett fel uppstod. Har du fyllt i alla uppgifter korrekt?";
+        }
+    }
+
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return "Lösenord är ett krav!";
+            yield break;
+        }
+        if (pw.Length < 6)
+            yield return "Lösenordet måste vara minst 6 tecken";
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return "Lösenordet måste innehålla minst en stor bokstav";
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return "Lösenordet måste innehålla minst en liten bokstav";
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return "Lösenordet måste innehålla minst en siffra";
+    }
+
+    private string PasswordMatch(string arg)
+    {
+        if (pwField1.Value != arg)
+            return "Lösenordet matchar inte";
+        return null;
     }
 }

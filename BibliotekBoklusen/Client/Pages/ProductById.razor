@@ -1,35 +1,89 @@
 ﻿@page "/productbyid/{Id:int}"
+@inject ILocalStorageService LocalStorage
+@inject IProductCopyManager ProductCopyManager
 @inject IProductManager DataManager
-@attribute [Authorize]
+@inject IUserManager UserManager
+@inject ILoanManager LoanManager
 
-@if(Product != null)
+@if (Product != null)
 {
-    <h3>@Product.Title</h3>
-    @foreach(var c in Product.Creators)
-    {
-        <h5>@c.FirstName @c.LastName</h5>
-    }
-    @foreach(var c in Product.Category)
-    {
-        <h5>@c.CategoryName</h5>
-    }
-    <AuthorizeView>
-        <button class="btn btn-danger" @onclick="DeleteProduct">Delete</button>
-    </AuthorizeView>    
+    <MudCard Outlined="true">
+        <MudCardContent>
+            <MudText Typo="Typo.h6">@Product.Title</MudText>
+            @foreach(var c in Product.Creators)
+            {
+                <MudText Typo="Typo.body1">@c.FirstName @c.LastName</MudText>
+            }
+            <MudText Typo="Typo.body2">
+                This text is supposed to be a brief summary about the product to peak your interest
+                or to tell you more about the product if you knew nothing to begin with. Insert random sentence here.
+                And here is some more text to fill out space, which is Fredrik´s favourite. Forcing yet another random sentence in there... 
+                Am I long enought to look like a proper description? This is either a book, e-book, audio book or movie. Alright, The End.
+            </MudText>
+        </MudCardContent>
+        <AuthorizeView Roles="Librarian, Admin">
+            <MudCardActions>
+                <MudButton Variant="Variant.Text" @onclick="DeleteProduct">Radera</MudButton>
+            </MudCardActions>
+        </AuthorizeView>
+        <AuthorizeView Roles="Member">
+            <MudCardActions>
+                @if (AvailableLoans.Count == 0)
+                {
+                    <MudTd>
+                        <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    </MudTd>
+                }
+                else if (!AvailableLoans.Any(l => l.Id == Product.Id))
+                {
+                    <MudTd>
+                        <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    </MudTd>
+                }
+                else
+                {
+                    @foreach (var availableProduct in AvailableLoans)
+                    {
+                        @if (availableProduct.Id == Product.Id)
+                        {
+                            <MudTd>
+                                <MudButton @onclick="LoanProduct">Låna</MudButton>
+                            </MudTd>
+                        }
+                    }
+                }
+            </MudCardActions>
+        </AuthorizeView>
+    </MudCard>
 }
 
 @code {
     [Parameter]
     public int Id { get; set; }
     public Product Product { get; set; }
+    public User CurrentUser { get; set; } = new();
+    public List<Product> AvailableLoans { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         Product = await DataManager.GetProductById(Id);
+        AvailableLoans = await ProductCopyManager.GetAllLoans();
+
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
+        if (userEmail != null)
+        {
+            CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        }
     }
 
     private void DeleteProduct()
     {
         DataManager.DeleteProduct(Id);
+    }
+
+    private async Task LoanProduct()
+    {
+        await LoanManager.AddLoan(Product.Id, CurrentUser.Id);
+        AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 }

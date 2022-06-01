@@ -4,17 +4,23 @@
 @inject ISearchManager SearchManager
 @inject IProductManager ProductManager
 
-<ProductList />
+<Search />
+@if (showSearchResult)
+{
+    <ProductList />
+}
 
 @code {
 
     [Parameter]
     public string? SearchText { get; set; } = null;
+    bool showSearchResult;
 
     protected override async Task OnParametersSetAsync()
     {
         if (SearchText != null)
         {
+            showSearchResult = true;
             await SearchManager.SearchProducts(SearchText);
         }
         else

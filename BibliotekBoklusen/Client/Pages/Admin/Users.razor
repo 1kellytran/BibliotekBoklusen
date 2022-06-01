@@ -1,5 +1,6 @@
 ﻿@inject IUserManager UserManager
 @page "/members"
+
 <div>
     <h6 class="validation-message">@message</h6>
 </div>
@@ -46,15 +47,21 @@
         @foreach (var member in Members)
         {
             <tr>
-                @if (@member.Email != "admin@admin.com")
+                @if (!member.IsAdmin && !member.IsLibrarian)
                 {
                     <td>@member.FirstName</td>
                     <td>@member.LastName</td>
                     <td>@member.Email</td>
                     <td>@member.Created.ToString("d")</td>
-                    <td>@member.IsActive</td>
+                    @if (member.IsActive)
+                    {
+                        <td>Ja</td>
+                    }
+                    else
+                    {
+                        <td>Nej</td>
+                    }
                     <td>
-
                         <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
                         <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
                     </td>
@@ -63,7 +70,6 @@
         }
     </tbody>
 </table>
-
 
 @code {
     private List<User> Members = new List<User>();
@@ -102,5 +108,4 @@
         await UserManager.DeleteUser(userId);
         Members = await UserManager.GetAllUser();
     }
-
 }

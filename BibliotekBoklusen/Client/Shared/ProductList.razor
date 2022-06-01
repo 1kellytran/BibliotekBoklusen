@@ -7,60 +7,98 @@
 @inject IProductCopyManager ProductCopyManager
 @implements IDisposable
 
-@if (SearchManager.Products == null || SearchManager.Products.Count == 0)
+
+@if (SearchManager.Products == null)
 {
+    <h4>Laddar...</h4>
+}
+else if (SearchManager.Products.Count == 0)
+{
+    <h4>Inga produkter funna</h4>
 }
 else
 {
-    <h3>Produkter</h3>
+    <MudTable Context="product" Items="@SearchManager.Products">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Produkter</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Titel</MudTh>
+            <MudTh>Skapare</MudTh>
+            <MudTh>Utgiven</MudTh>
+            <MudTh>Genre</MudTh>
+            <MudTh>Typ</MudTh>
+            <AuthorizeView Roles="Admin, Librarian">
+                <MudTh>Antal exemplar</MudTh>
+            </AuthorizeView>
 
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>Titel</th>
-                <th>Typ</th>
-                <th>Utgåva</th>
-                <th>Skapare</th>
-                <th>Genre</th>
-            </tr>
-        </thead>
-        @foreach (var p in SearchManager.Products)
-        {
-            <tr>
-                <a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a>
-                <td>@p.Type</td>
-                <td>@p.Published.ToString("yyyy/MM/dd")</td>
-                @foreach (var creator in p.Creators)
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Titel"><a href="ProductById/@product.Id">@product.Title</a></MudTd>
+            @if (@product.Creators != null)
+            {
+            @foreach (var creator in @product.Creators)
                 {
-                    <td>@creator.FirstName @creator.LastName</td>
+                <MudTd DataLabel="Skapare">
+                    @creator.FirstName @creator.LastName
+                </MudTd>
                 }
-                @foreach (var category in p.Category)
-                {
-                    <td>@category.CategoryName</td>
-                }
+            }
 
-                <AuthorizeView>
-                    @foreach (var product in AvailableLoans)
+        <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy/MM/dd")</MudTd>
+        @if (product.Category.Count > 1)
+            {
+            <MudTd DataLabel="Genre">
+                m.fl
+            </MudTd>
+            }
+            else
+            {
+            @foreach (var category in @product.Category)
+                {
+                <MudTd DataLabel="Genre">
+                    @category.CategoryName
+                </MudTd>
+                }
+            }
+        <MudTd DataLabel="Typ">@product.Type</MudTd>
+        <AuthorizeView Roles="Admin, Librarian">
+            <MudTd>@product.NumberOfCopiesOwned</MudTd>
+        </AuthorizeView>
+        <AuthorizeView>
+            @if (AvailableLoans.Count == 0)
+                {
+                <MudTd>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                </MudTd>
+                }
+                else if (!AvailableLoans.Any(l => l.Id == product.Id))
+                {
+                <MudTd>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                </MudTd>
+                }
+                else
+                {
+                @foreach (var availableProduct in AvailableLoans)
                     {
-                        @if (p.Id == product.Id)
+                    @if (availableProduct.Id == product.Id)
                         {
-                            isAvailable = true;
+                        <MudTd>
+                            <MudButton @onclick="() => LoanProduct(product.Id)">Låna</MudButton>
+                        </MudTd>
                         }
                     }
-                    @if (isAvailable == true)
-                    {
-                        <td><a class="btn" @onclick="() => LoanProduct(p.Id)">Låna</a></td>
-                    }
-                    else
-                    {
-                        <td><a class="btn">Reservera</a></td>
-                    }
-                </AuthorizeView>
-                 
-            </tr>
-        }
-    </table>
+                }
+        </AuthorizeView>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 }
+
 
 @code {
     public int Id { get; set; }
@@ -71,9 +109,9 @@ else
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await localStorage.GetItemAsync<string>("email");
-        if(userEmail != null)
+        if (userEmail != null)
         {
-        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+            CurrentUser = await UserManager.GetCurrentUser(userEmail);
         }
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         SearchManager.ProductsChanged += StateHasChanged;
@@ -84,7 +122,7 @@ else
         SearchManager.ProductsChanged -= StateHasChanged;
     }
 
-     public async Task LoanProduct(int productId)
+    public async Task LoanProduct(int productId)
     {
         LoanManager.AddLoan(productId, CurrentUser.Id);
     }
