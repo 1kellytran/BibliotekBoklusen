@@ -30,7 +30,9 @@
                         }
                         <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
                         <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
+
            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
+
                     </tr>
                 </tbody>
             </table>
@@ -99,12 +101,15 @@ else
             @if (AvailableLoans.Count == 0)
                 {
                 <MudTd>
+
                 <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+
                 </MudTd>
                 }
                 else if (!AvailableLoans.Any(l => l.Id == product.Id))
                 {
                 <MudTd>
+
                        <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
                 </MudTd>
                 }
