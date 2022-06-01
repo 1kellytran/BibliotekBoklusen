@@ -68,12 +68,12 @@
     <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4 mud-height-full">
             <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
- @foreach(var product in addedProducts)
+            @foreach (var product in addedProducts)
             {
-            <MudText Color="Color.Success">@product.Title</MudText>
-                
+                <MudText Color="Color.Success">@product.Title</MudText>
+
             }
-       
+
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -86,7 +86,6 @@
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     public List<Category> Categories { get; set; } = new();
     static List<Product> addedProducts = new();
-    bool success;
     string message;
 
     protected override async Task OnInitializedAsync()
@@ -98,7 +97,6 @@
     public async Task RegisterProduct()
     {
         SetProductValues();
-
         var result = await ProductManager.CreateProduct(Product);
         if (result == null)
         {
@@ -114,10 +112,7 @@
 
     void SetProductValues()
     {
-
-        Product.Published = TodaysDate;
         Product.Category.AddRange(Categories.Where(x => x.isChecked));
-
     }
 
     void ClearForm()
