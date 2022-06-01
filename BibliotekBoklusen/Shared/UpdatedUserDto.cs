@@ -7,5 +7,6 @@
 
         public bool IsActive { get; set; }
         public bool IsAdmin { get; set; }
+        public bool IsLibrarian { get; set; }
     }
 }

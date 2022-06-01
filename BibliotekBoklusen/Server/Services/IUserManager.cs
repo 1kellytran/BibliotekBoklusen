@@ -5,10 +5,16 @@ namespace BibliotekBoklusen.Server.Services
 {
     public interface IUserManager
     {
+
+        Task<List<User>> GetAllUser();
+        Task<User> GetUser(int id);
         Task<User> GetCurrentUser(string userEmail);
-        Task<ServiceResponse<List<User>>> SearchForMembers(string searchText);
-        Task DeleteUserFromDb(int userId);
+        Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto model, int id);
+        Task<ServiceResponse<string>> ChangePassword(PasswordDto editPassword);
+        Task<ServiceResponse<string>> DeleteUserFromDb(int id);
         Task DeleteUserFromAuthDbContext(string email);
         Task<List<User>> GetEmployees();
+        Task<List<User>> SearchUsers(string searchText);
+
     }
 }
