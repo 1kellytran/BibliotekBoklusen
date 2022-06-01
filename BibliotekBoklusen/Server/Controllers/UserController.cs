@@ -9,132 +9,88 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly AppDbContext _context;
         private readonly IUserManager _userManager;
 
-        public UserController(SignInManager<ApplicationUser> signInManager,
-            RoleManager<IdentityRole> roleManager,
-            AppDbContext context,
-            IUserManager userManager
-            )
+        public UserController(IUserManager userManager)
         {
-            _signInManager = signInManager;
-            _roleManager = roleManager;
-            _context = context;
             _userManager = userManager;
         }
 
         [HttpGet("getallusers")]
-        public ActionResult<List<User>> GetAllUser()
+        public async Task<ActionResult<List<User>>> GetAllUser()
         {
-            var result = _context.Users.ToList();
-            if (result == null)
+            var result = await _userManager.GetAllUser();
+            if (result != null)
             {
-                return BadRequest();
+                return Ok(result);
             }
-            return Ok(result);
-        }
-
-        [HttpGet("users")]
-        public async Task<ActionResult<ServiceResponse<List<User>>>> SearchForMembers([FromQuery] string searchText)
-        {
-            var result = await _userManager.SearchForMembers(searchText);
-            return Ok(result);
+            return BadRequest();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var dbUser = await _context.Users
-                .Where(x => x.Id == id)
-                .FirstOrDefaultAsync();
-
-            if (dbUser != null)
-            {
-                return dbUser;
-            }
-            return BadRequest();
-        }
-
-        [HttpGet("currentuser")]
-        public async Task<User> GetCurrentUser([FromQuery] string userEmail)
-        {
-            var currentUser = await _userManager.GetCurrentUser(userEmail);
-
-            if (currentUser != null)
-            {
-                return currentUser;
-            }
-            return null;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUserInformation([FromBody] UpdatedUserDto model, int id)
-        {
-            var userDb = _context.Users.Where(x => x.Id == id).FirstOrDefault();
-            var authUser = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == userDb.Email);
-
-            if (userDb != null && authUser != null)
-            {
-                authUser.FirstName = model.FirstName;
-                authUser.LastName = model.LastName;
-
-                userDb.FirstName = model.FirstName;
-                userDb.LastName = model.LastName;
-                userDb.IsActive = model.IsActive;
-
-                if (model.IsAdmin)
-                {
-                    userDb.IsAdmin = true;
-                    await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
-                    await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Admin);
-                }
-                else
-                {
-                    userDb.IsAdmin = false;
-                    await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
-                    await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Librarian);
-                }
-
-                _context.Update(userDb);
-                await _context.SaveChangesAsync();
-
-                _signInManager.UserManager.UpdateAsync(authUser);
-                return Ok("Change successful");
-            }
-            return BadRequest();
-        }
-
-        [HttpPut("ChangePassword")]
-        public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
-        {
-            var user = _signInManager.UserManager.Users.FirstOrDefault(u => u.Email == editPassword.Email);
+            var user = _userManager.GetUser(id);
 
             if (user != null)
             {
-                var result = await _signInManager.UserManager.ChangePasswordAsync(user, editPassword.OldPassword, editPassword.NewPassword);
-                if (result.Succeeded)
-                {
-                    return Ok();
-                }
+                return Ok(user);
             }
-            return BadRequest("User not found");
+            return NotFound();
+        }
+
+        [HttpGet("currentuser")]
+        public async Task<ActionResult<User>> GetCurrentUser([FromQuery] string userEmail)
+        {
+            var currentUser = await _userManager.GetCurrentUser(userEmail);
+            if (currentUser != null)
+            {
+                return Ok(currentUser);
+            }
+            return NotFound();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<ServiceResponse<User>>> UpdateUser([FromBody] UpdatedUserDto model, int id)
+        {
+            var result = await _userManager.UpdateUser(model, id);
+
+            return Ok(result);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            await _userManager.DeleteUserFromDb(id);
+            var result = await _userManager.DeleteUserFromDb(id);
+            if (result != null)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
 
-            return Ok("User has been deleted");
+        [HttpPut("ChangePassword")]
+        public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
+        {
+
+            var result = await _userManager.ChangePassword(editPassword);
+            if (result != null)
+            {
+                return Ok();
+            }
+            return NotFound();
         }
 
         [HttpGet("usersBySearch")]
-        public async Task<List<User>> SearchUsers(string searchText)
+        public async Task<ActionResult<List<User>>> SearchUsers(string searchText)
         {
-            return await _context.Users.Where(u => u.FirstName.ToLower().Contains(searchText.ToLower()) || u.LastName.ToLower().Contains(searchText.ToLower())).ToListAsync();
+            var result = await _userManager.SearchUsers(searchText);
+            if (result != null)
+            { 
+                return Ok(result);
+            }
+            return NotFound();
+
         }
     }
 }
