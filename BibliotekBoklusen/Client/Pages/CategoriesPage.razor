@@ -6,7 +6,7 @@
 <MudButton @onclick="()=>AddCategoryBool()">Lägg till Kategori</MudButton>
 @if (addCategory)
 {
-    <EditForm Model=Category OnValidSubmit=HandleAddCategory>
+    <EditForm Model=Category>
         <DataAnnotationsValidator />
 
         <div class="form-group">
@@ -15,7 +15,7 @@
             <ValidationMessage For="@(() => Category.CategoryName)" />
         </div>
 
-        <MudButton type="submit" class="btn btn-primary mt-2 mb-2">Lägg till</MudButton>
+        <MudButton type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Lägg till</MudButton>
     </EditForm> 
 }
 
