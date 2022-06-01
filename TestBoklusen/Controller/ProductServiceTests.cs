@@ -42,7 +42,7 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void Index_ActionExecutes_Returnssomething() //ofärdig
+        public void Index_ActionExecutes_ReturningCorrectObject() //ofärdig
         {
             _mockRepo.Setup(repo => repo.GetProductById(1))
                 .ReturnsAsync(new Product() { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() });
@@ -50,10 +50,12 @@ namespace BibliotekBoklusen.Test.Controller
             var viewResult = Assert.IsType<Task<ActionResult<Product>>>(result);
             var actionResult = Assert.IsType<ActionResult<Product>>(viewResult.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var product = Assert.IsType<Product>(objectResult.Value);
-            
+            var taskProduct = Assert.IsType<Task<Product>>(objectResult.Value);
+            var product = Assert.IsType<Product>(taskProduct.Result);
 
-            //Assert.Equal(result.Id, employees.Id);
+            Assert.Equal(1, product.Id);
+            Assert.Equal("Pippi", product.Title);
+            Assert.Equal(2, product.NumberOfCopiesOwned);
         }
 
 
