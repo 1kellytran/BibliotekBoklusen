@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using BibliotekBoklusen.Server.Models;
+using BibliotekBoklusen.Shared.DataModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Data
 {
@@ -8,7 +10,6 @@ namespace BibliotekBoklusen.Server.Data
         {
 
         }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<Creator> Creators { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -19,7 +20,6 @@ namespace BibliotekBoklusen.Server.Data
        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ProductCopy>().HasKey(p => new { p.Id, p.ProductId });
 
 
             modelBuilder.Entity<Category>()
@@ -31,6 +31,9 @@ namespace BibliotekBoklusen.Server.Data
                 new Category() { Id = 6, CategoryName = "Historia" },
                 new Category() { Id = 7, CategoryName = "Fantasy & SciFi" },
                 new Category() { Id = 8, CategoryName = "Fakta" });
+
+            modelBuilder.Entity<User>()
+                .HasData(new User() { Email = "admin@admin.com", Created = DateTime.Now, IsAdmin = true});
 
         }
     }
