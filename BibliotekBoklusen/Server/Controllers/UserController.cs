@@ -1,8 +1,4 @@
-﻿using BibliotekBoklusen.Server.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.AspNetCore.Mvc;
 namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -10,7 +6,6 @@ namespace BibliotekBoklusen.Server.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserManager _userManager;
-
         public UserController(IUserManager userManager)
         {
             _userManager = userManager;
