@@ -9,10 +9,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AuthDb
+namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20220602091119_InitialCreate")]
+    [Migration("20220602111505_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

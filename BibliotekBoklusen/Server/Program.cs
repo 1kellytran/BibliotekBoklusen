@@ -70,7 +70,6 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
     var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-
     context.Database.Migrate();
     appdbcontext.Database.Migrate();
 
@@ -96,9 +95,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
 
         await userManager.AddToRoleAsync(newUser, "Admin");
     }
-
 }
-
 
 var app = builder.Build();
 app.UseSwaggerUI();

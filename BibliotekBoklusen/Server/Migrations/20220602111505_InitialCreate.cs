@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AuthDb
+namespace BibliotekBoklusen.Server.Migrations
 {
     public partial class InitialCreate : Migration
     {
