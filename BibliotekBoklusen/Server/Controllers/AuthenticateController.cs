@@ -2,6 +2,7 @@
 using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -41,7 +42,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto request)
         {
-            var user = await _signInManager.UserManager.FindByEmailAsync(request.Email);
+            var user =  await _signInManager.UserManager.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user != null)
             {
                 var result = await _signInManager.UserManager.CheckPasswordAsync(user, request.Password);
