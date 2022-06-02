@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -10,7 +11,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             _userService = userService;
         }
-
+        [Authorize]
         [HttpGet("getallusers")]
         public async Task<ActionResult<List<User>>> GetAllUser()
         {

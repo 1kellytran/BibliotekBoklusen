@@ -39,6 +39,9 @@ namespace BibliotekBoklusen.Server.Services
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
         }
+       
+        
+        
         public async Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto user, int id)
         {
             var dbUser = _context.Users.Where(x => x.Id == id).FirstOrDefault();
