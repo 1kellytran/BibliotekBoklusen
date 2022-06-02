@@ -28,19 +28,16 @@
                         if (item.UserId ==user.Id)
                         {
                             <td>@item.LoansCount</td>
-                        }
-                        
+                        }                        
                     }
-
                 </tr>
             }
         </tbody>
     </table>
 
 @code {
-
     public List<User> TopUsers { get; set; } = new();
-    public List<LoansByUserDTO> LoansByUser { get; set; } = new();
+    public List<LoansByUser> LoansByUser { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -57,7 +54,7 @@
 
         for (int index = 0; index < count.Count && index <= 9; index++)
         {
-            LoansByUserDTO lbu = new();
+            LoansByUser lbu = new();
             lbu.UserId = (int)count[index].userId;
             lbu.LoansCount = (int)count[index].loansCount;
             LoansByUser.Add(lbu);

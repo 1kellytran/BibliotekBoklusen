@@ -1,24 +1,21 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http.Json;
-
-namespace BibliotekBoklusen.Client.Services
+﻿namespace BibliotekBoklusen.Client.Services
 {
     public class UserManager : IUserManager
     {
         private readonly HttpClient _http;
         private readonly ILocalStorageService _localStorageService;
-
         public UserManager(HttpClient http, ILocalStorageService localStorageService)
         {
             _http = http;
             _localStorageService = localStorageService;
         }
+
         public async Task<string> ChangePassword(PasswordDto editPassword)
         {
             var result = await _http.PutAsJsonAsync($"api/user/ChangePassword", editPassword);
             if (result.IsSuccessStatusCode)
             {
-                return "Lösenordet har ändrats";
+                return "Ditt lösenord har ändrats";
             }
             return "Försök igen";
         }
@@ -72,7 +69,7 @@ namespace BibliotekBoklusen.Client.Services
             }
             return null;
         }
-
+        
         public async Task<string> Register(RegisterDto model)
         {
             var result = await _http.PostAsJsonAsync("api/authenticate/register", model);

@@ -17,8 +17,6 @@ namespace BibliotekBoklusen.Shared
         public ProductCopy? ProductCopy { get; set; }
         public bool isReturned { get; set; }
         public DateTime LoanDate { get; set; } = DateTime.Now;
-        public DateTime ReturnDate { get; set; }=DateTime.Now.AddDays(14);
-
-        
+        public DateTime ReturnDate { get; set; } = DateTime.Now.AddDays(21);
     }
 }
