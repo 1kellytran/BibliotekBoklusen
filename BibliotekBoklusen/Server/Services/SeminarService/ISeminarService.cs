@@ -1,6 +1,6 @@
 ﻿namespace BibliotekBoklusen.Server.Services.SeminarService
 {
-    public interface ISeminarManager
+    public interface ISeminarService
     {
         Task<List<Seminarium>> GetAllSeminars();
         Task<Seminarium> GetSeminarById(int id);

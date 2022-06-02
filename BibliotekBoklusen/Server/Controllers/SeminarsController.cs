@@ -6,17 +6,17 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class SeminarsController : ControllerBase
     {
-        private readonly ISeminarManager _seminarManager;
+        private readonly ISeminarService _serviceService;
 
-        public SeminarsController(ISeminarManager seminarManager)
+        public SeminarsController(ISeminarService seminarService)
         {
-            _seminarManager = seminarManager;
+            _serviceService = seminarService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Seminarium>>> GetAllSeminars()
         {
-            var seminar = _seminarManager.GetAllSeminars();
+            var seminar = _serviceService.GetAllSeminars();
 
             if (seminar == null)
             {
@@ -28,7 +28,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Seminarium>> GetSeminarById(int id)
         {
-            var seminar = _seminarManager.GetSeminarById(id);
+            var seminar = _serviceService.GetSeminarById(id);
 
             if (seminar == null)
             {
@@ -42,7 +42,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             if(seminarToAdd != null)
             {
-                _seminarManager.CreateSeminar(seminarToAdd);
+                _serviceService.CreateSeminar(seminarToAdd);
 
                 return Ok("Seminar has been added");
             }
@@ -52,7 +52,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
         {
-            var seminar = _seminarManager.UpdateSeminar(id, seminarToUpdate);
+            var seminar = _serviceService.UpdateSeminar(id, seminarToUpdate);
 
             if(seminar != null)
             {
@@ -64,7 +64,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSeminar(int id)
         {
-            var seminar = _seminarManager.DeleteSeminar(id);
+            var seminar = _serviceService.DeleteSeminar(id);
 
             if(seminar != null)
             {
