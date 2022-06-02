@@ -6,7 +6,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
     {
         Task<List<Product>> GetAllProducts();
         Task<Product> GetProductById(int id);
-        Task<string> CreateProduct(Product productToAdd);
+        Task<ActionResult<string>> CreateProduct(Product productToAdd);
         Task<string> UpdateProduct(int id, Product productToUpdate);
         Task<string> DeleteProduct(int id);
         Task<ServiceResponse<List<Product>>> SearchProducts(string searchText);

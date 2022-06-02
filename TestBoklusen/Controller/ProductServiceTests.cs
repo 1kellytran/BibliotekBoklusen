@@ -16,13 +16,6 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void GetAllProducts_ActionExecutes_ReturnsTaskForGetAllProducts()
-        {
-            var result = _controller.GetAllProducts();
-            Assert.IsType<Task<ActionResult<List<Product>>>>(result);
-        }
-
-        [Fact]
         public void GetAllProducts_ActionExecutes_ReturnsExactNumberOfProducts()
         {
              _mockRepo.Setup(repo => repo.GetAllProducts()).ReturnsAsync(new List<Product> { new Product(), new Product() });
@@ -37,7 +30,7 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void Index_ActionExecutes_ReturningCorrectObject() //ofärdig
+        public void GetProduct_ActionExecutes_ReturningCorrectObject()
         {
             _mockRepo.Setup(repo => repo.GetProductById(1))
                 .ReturnsAsync(new Product() { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() });
@@ -53,7 +46,40 @@ namespace BibliotekBoklusen.Test.Controller
             Assert.Equal(2, product.NumberOfCopiesOwned);
         }
 
+        [Fact]
+        public void Create_ActionExecutes_ReturnsViewForCreate()
+        {
 
+
+
+            var product = new Product { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() };
+            _mockRepo.Setup(repo => repo.CreateProduct(product));
+
+            var result = _controller.CreateProduct(product);
+            var taskResult = Assert.IsType<Task<ActionResult>>(result);
+            var actionResult = Assert.IsType<OkObjectResult>(taskResult.Result);
+            var objectResult = Assert.IsType<string>(actionResult.Value);
+
+
+            //Assert.Equal(employee.AccountNumber, testEmployee.AccountNumber);
+            //Assert.Equal(employee.Age, testEmployee.Age);
+        }
+
+        [Fact]
+        public void Delete_ActionExecutes_ReturnString()
+        {
+            var product = new Product { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() };
+            var koaz =_controller.DeleteProduct(1);
+            var kaozResult = Assert.IsType<Task<ActionResult<string>>>(koaz);
+            var content = Assert.IsType<ActionResult<string>>(kaozResult.Result);
+            var kaozContent = Assert.IsType<OkObjectResult>(content.Result);
+            var natten = Assert.IsType<string>(kaozContent.Value);
+
+
+
+
+
+        }
 
 
 

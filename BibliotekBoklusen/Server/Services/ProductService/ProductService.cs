@@ -35,7 +35,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             return product;
         }
 
-        public async Task<string> CreateProduct(Product productToAdd)
+        public async Task<ActionResult<string>> CreateProduct(Product productToAdd)
         {
             // Kollar om produkten redan finns i db genom titel och typ.
             var productExists = _context.Products.FirstOrDefault(p => p.Title.ToLower() == productToAdd.Title.ToLower() && p.Type == productToAdd.Type);
@@ -146,6 +146,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                 product.Type = new();
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
+                
             }
 
             var list = _context.productCopies.Where(p => p.ProductId == id).ToList();

@@ -41,7 +41,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
+        public async Task<ActionResult> CreateProduct([FromBody] Product productToAdd)
         {
             var response = await _productService.CreateProduct(productToAdd);
             return Ok(response);
@@ -55,7 +55,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<ActionResult<string>> DeleteProduct(int id)
         {
             var response = await _productService.DeleteProduct(id);
             return Ok(response);
