@@ -3,13 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibliotekBoklusen.Shared
 {
-    public enum ProductType
-    {
-        Bok,
-        Ebok,
-        Ljudbok,
-        Film
-    }
     public class Product
     {
         [Key]
