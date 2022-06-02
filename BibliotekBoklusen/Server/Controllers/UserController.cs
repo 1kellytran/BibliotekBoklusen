@@ -34,7 +34,7 @@ namespace BibliotekBoklusen.Server.Controllers
             return NotFound();
         }
 
-        [HttpGet("currentuser")]
+        [HttpGet("GetUserByEmail")]
         public async Task<ActionResult<User>> GetCurrentUser([FromQuery] string userEmail)
         {
             var currentUser = await _userService.GetCurrentUser(userEmail);

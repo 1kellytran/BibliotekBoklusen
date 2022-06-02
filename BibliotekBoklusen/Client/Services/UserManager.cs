@@ -52,7 +52,7 @@ namespace BibliotekBoklusen.Client.Services
 
         public async Task<User> GetCurrentUser(string userEmail)
         {
-            var result = await _http.GetFromJsonAsync<User>($"api/user/currentuser?userEmail={userEmail}");
+            var result = await _http.GetFromJsonAsync<User>($"api/user/GetUserByEmail?userEmail={userEmail}");
             return result;
         }
 
