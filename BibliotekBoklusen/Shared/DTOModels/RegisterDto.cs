@@ -21,9 +21,10 @@ namespace BibliotekBoklusen.Shared
         [Display(Name = "Lösenord")]
         public string? Password { get; set; }
 
+        [Required(ErrorMessage = "Obligatorisk fält")]
         [DataType(DataType.Password)]
         [Display(Name = "Bekräfta lösenord")]
-        [Compare("Password", ErrorMessage = "Lösenorden stämmer inte överrens")]
+        [Compare("Password", ErrorMessage = "Lösenordet matchar inte")]
         public string ConfirmPassword { get; set; }
         public bool IsLibrarian { get; set; }
     }
