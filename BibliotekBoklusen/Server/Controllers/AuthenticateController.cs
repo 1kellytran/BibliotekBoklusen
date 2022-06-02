@@ -15,13 +15,13 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class AuthenticateController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _appDbContext;
 
-        public AuthenticateController(IUserManager userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
+        public AuthenticateController(IUserService userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration, AppDbContext appDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;

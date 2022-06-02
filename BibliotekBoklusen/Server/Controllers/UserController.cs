@@ -9,9 +9,9 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserManager _userManager;
+        private readonly IUserService _userManager;
 
-        public UserController(IUserManager userManager)
+        public UserController(IUserService userManager)
         {
             _userManager = userManager;
         }
