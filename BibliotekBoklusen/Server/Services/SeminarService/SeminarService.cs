@@ -1,9 +1,9 @@
 ﻿namespace BibliotekBoklusen.Server.Services.SeminarService
 {
-    public class SeminarManager : ISeminarManager
+    public class SeminarService : ISeminarService
     {
         private readonly AppDbContext _context;
-        public SeminarManager(AppDbContext context)
+        public SeminarService(AppDbContext context)
         {
             _context = context;
         }
