@@ -3,13 +3,12 @@
 @inject ICategoryManager CategoryManager
 
 <MudGrid>
-    <MudItem xs="12" sm="7">
+    <MudItem xs="10" sm="6">
         <MudPaper Class="pa-4">
             <MudForm Model=Product>
                 <MudCardHeader>
                     <h5>Produktdetaljer</h5>
                 </MudCardHeader>
-
                 <MudCardContent Class="pa-0">
                     <MudTable Items="@Product.Creators" Elevation="0" Breakpoint="Breakpoint.Sm">
                         <RowTemplate>
@@ -30,6 +29,9 @@
                         </RowTemplate>
                     </MudTable>
                 </MudCardContent>
+                <MudCardActions>
+                    <MudButton Class="ml-auto" @onclick="AddCreator">Lägg till extra skapare</MudButton>
+                </MudCardActions>
                 <MudCardContent>
 
                     <MudTextField @bind-Value="Product.Title"
@@ -52,6 +54,8 @@
                         <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
                     </MudSelect>
 
+                <MudText Typo="Typo.subtitle2">Välj genre:</MudText>
+
                     @foreach (var category in Categories)
                     {
                         <MudCheckBox @bind-Checked="category.isChecked">@category.CategoryName</MudCheckBox>
@@ -67,13 +71,17 @@
     </MudItem>
     <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4 mud-height-full">
-            <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
-            @foreach (var product in addedProducts)
-            {
-                <MudText Color="Color.Success">@product.Title</MudText>
+                <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
+            <MudCardContent>
+                @foreach (var product in addedProducts)
+                {
+                    <MudText Color="Color.Success">@product.Title</MudText>
 
-            }
-
+                }
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="ClearAddedList">Nollställ lista</MudButton>
+            </MudCardActions>
         </MudPaper>
     </MudItem>
 </MudGrid>
@@ -134,5 +142,10 @@
         Product = new Product();
         Product.Creators.Add(new Creator { });
         Product.Published = TodaysDate;
+    }
+
+    void ClearAddedList()
+    {
+        addedProducts = new();
     }
 }
