@@ -1,24 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+﻿using BibliotekBoklusen.Server.Services.SeminarService;
+using Microsoft.AspNetCore.Mvc;
 namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SeminarsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ISeminarService _serviceService;
 
-        public SeminarsController(AppDbContext context)
+        public SeminarsController(ISeminarService seminarService)
         {
-            _context = context;
+            _serviceService = seminarService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Seminarium>>> GetAllSeminars()
         {
-            var seminar = _context.Seminariums.ToList();
+            var seminar = _serviceService.GetAllSeminars();
 
             if (seminar == null)
             {
@@ -30,7 +28,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Seminarium>> GetSeminarById(int id)
         {
-            var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
+            var seminar = _serviceService.GetSeminarById(id);
 
             if (seminar == null)
             {
@@ -44,8 +42,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             if(seminarToAdd != null)
             {
-                _context.Seminariums.Add(seminarToAdd);
-                await _context.SaveChangesAsync();
+                _serviceService.CreateSeminar(seminarToAdd);
 
                 return Ok("Seminar has been added");
             }
@@ -55,16 +52,10 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
         {
-            var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
+            var seminar = _serviceService.UpdateSeminar(id, seminarToUpdate);
 
             if(seminar != null)
             {
-                seminar.Title = seminarToUpdate.Title;
-                seminar.FirstName = seminarToUpdate.FirstName;
-                seminar.LastName = seminarToUpdate.LastName;
-                seminar.DayAndTime = seminarToUpdate.DayAndTime;
-
-                await _context.SaveChangesAsync();
                 return Ok("Seminar has been updated");
             }
             return NotFound("There is no seminar with that ID");            
@@ -73,14 +64,10 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSeminar(int id)
         {
-            var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
+            var seminar = _serviceService.DeleteSeminar(id);
 
             if(seminar != null)
             {
-                _context.Seminariums.Remove(seminar);
-
-                await _context.SaveChangesAsync();
-
                 return Ok("Seminar has been deleted");
             }
             return NotFound("There is no seminar with that ID");

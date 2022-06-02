@@ -1,25 +1,20 @@
-﻿using BibliotekBoklusen.Server.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
+﻿using Microsoft.AspNetCore.Mvc;
 namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserService _userManager;
-
-        public UserController(IUserService userManager)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
-            _userManager = userManager;
+            _userService = userService;
         }
 
         [HttpGet("getallusers")]
         public async Task<ActionResult<List<User>>> GetAllUser()
         {
-            var result = await _userManager.GetAllUser();
+            var result = await _userService.GetAllUser();
             if (result != null)
             {
                 return Ok(result);
@@ -30,7 +25,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = _userManager.GetUser(id);
+            var user = _userService.GetUser(id);
 
             if (user != null)
             {
@@ -42,7 +37,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("currentuser")]
         public async Task<ActionResult<User>> GetCurrentUser([FromQuery] string userEmail)
         {
-            var currentUser = await _userManager.GetCurrentUser(userEmail);
+            var currentUser = await _userService.GetCurrentUser(userEmail);
             if (currentUser != null)
             {
                 return Ok(currentUser);
@@ -53,7 +48,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<ServiceResponse<User>>> UpdateUser([FromBody] UpdatedUserDto model, int id)
         {
-            var result = await _userManager.UpdateUser(model, id);
+            var result = await _userService.UpdateUser(model, id);
 
             return Ok(result);
         }
@@ -61,7 +56,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
-            var result = await _userManager.DeleteUserFromDb(id);
+            var result = await _userService.DeleteUserFromDb(id);
             if (result != null)
             {
                 return Ok();
@@ -73,7 +68,7 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<ActionResult> ChangePassword([FromBody] PasswordDto editPassword)
         {
 
-            var result = await _userManager.ChangePassword(editPassword);
+            var result = await _userService.ChangePassword(editPassword);
             if (result != null)
             {
                 return Ok();
@@ -84,7 +79,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("usersBySearch")]
         public async Task<ActionResult<List<User>>> SearchUsers(string searchText)
         {
-            var result = await _userManager.SearchUsers(searchText);
+            var result = await _userService.SearchUsers(searchText);
             if (result != null)
             { 
                 return Ok(result);
