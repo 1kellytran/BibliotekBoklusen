@@ -46,7 +46,79 @@ namespace BibliotekBoklusen.Test.Controller
 
         }
 
+        [Fact]
+        public void GetUser_ActionExecutes_ShouldReturnCorrectObject()
+        {
+            _mockRepo.Setup(repo => repo.GetUser(1))
+                .ReturnsAsync(new User() { Id = 1});
+            var result = _controller.GetUser(1);
+            var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
+            var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var taskUser = Assert.IsType<Task<User>>(objectResult.Value);
+            var User = Assert.IsType<User>(taskUser.Result);
+
+            Assert.Equal(1, User.Id);
+
+        }
+
+        [Fact]
+        public void GetCurrentUser_ShouldReturnUserById()
+        {
+            _mockRepo.Setup(repo => repo.GetCurrentUser("Test@hotmail.com"))
+                .ReturnsAsync(new User() { Email = "Test@hotmail.com" });
+            var result = _controller.GetCurrentUser("Test@hotmail.com");
+            var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
+            var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
+            var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
+            var User = Assert.IsType<User>(objectResult.Value);
 
 
+            Assert.Equal("Test@hotmail.com", User.Email);
+
+        }
+
+
+        //[Fact]
+        //public async Task UpdateUser_ShouldUpdateUser()
+        //{
+        //    //Arrange
+        //    var updateUser = new UpdatedUserDto();
+        //    updateUser.IsLibrarian = true;
+        //    updateUser.FirstName = "Test";
+        //    updateUser.LastName = "lol";
+        //    _mockRepo.Setup(x => x.)
+
+
+
+
+        //}
+
+    //[Fact]
+    //public async Task UpdateUser_ShouldUpdateUser()
+    //{
+    //        //Arrange
+    //        UpdatedUserDto user = new();
+    //        _mockRepo.Setup(repo => repo.UpdateUser(user, 1)).Returns(new User() { FirstName = "bla", LastName = "tia", IsLibrarian = true, Id=1 }  ); 
+    
+        //{
+        //    updateUser.IsLibrarian = true;
+        //    updateUser.FirstName = "Test";
+        //    updateUser.LastName = "lol";
+        //};
+        ////Act
+        //await _mockRepo.Object.UpdateStudent(studData);
+        ////Assert
+        //studentService.Verify(x => x.UpdateStudent(It.IsAny<StudentEntity>()), Times.Once);
+        //Assert.Equal(studentEntity.FirstName, studData.FirstName);
+        //Assert.Equal(studentEntity.LastName, studData.LastName);
+        //Assert.Equal(studentEntity.DOB, studData.DOB);
+        //Assert.Equal(studentEntity.Email, studData.Email);
     }
+
+    ////Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto model, int id);
+
+
+
 }
+
