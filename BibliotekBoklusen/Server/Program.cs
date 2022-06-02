@@ -59,7 +59,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 });
 
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 
 
@@ -74,7 +74,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
     context.Database.Migrate();
     appdbcontext.Database.Migrate();
 
-    if (!context.Users.Any())
+    if (!context.Users.Any() || !appdbcontext.Users.Any())
     {
         IdentityRole adminRole = new();
         adminRole.Name = "Admin";

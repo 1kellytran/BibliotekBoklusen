@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace BibliotekBoklusen.Server.Services
 {
-    public interface IUserManager
+    public interface IUserService
     {
 
         Task<List<User>> GetAllUser();

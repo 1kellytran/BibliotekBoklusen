@@ -1,19 +1,16 @@
 ﻿using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+
 
 namespace BibliotekBoklusen.Server.Services
 {
-    public class UserManager : IUserManager
+    public class UserService : IUserService
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly AppDbContext _context;
 
-        public UserManager(SignInManager<ApplicationUser> signInManager, AppDbContext context)
+        public UserService(SignInManager<ApplicationUser> signInManager, AppDbContext context)
         {
             _signInManager = signInManager;
             _context = context;

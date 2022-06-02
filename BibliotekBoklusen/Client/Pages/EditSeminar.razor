@@ -4,7 +4,6 @@
 
 <h3>Ändra seminariuminformation för: "@SeminarToUpdate.Title"</h3>
 <EditForm Model="SeminarToUpdate" OnSubmit="HandleSeminar">
-    @*<DataAnnotationsValidator>*@
         <div class="form-group col-4">
             <label for="Title">Titel:</label>
             <InputText Id="Title" class="form-control" @bind-Value="SeminarToUpdate.Title" />
@@ -25,7 +24,6 @@
             <InputDate Id="DayAndTime" class="form-control" @bind-Value="SeminarToUpdate.DayAndTime" />
             <ValidationMessage For="@(() => SeminarToUpdate.DayAndTime)" />
         </div>
-    @*</DataAnnotationsValidator>*@
     <button type="submit" class="btn btn-primary">Spara ändringar</button>
 </EditForm>
 
