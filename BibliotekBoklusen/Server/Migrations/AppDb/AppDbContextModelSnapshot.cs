@@ -34,9 +34,6 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("isChecked")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -45,50 +42,42 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                         new
                         {
                             Id = 1,
-                            CategoryName = "Deckare",
-                            isChecked = false
+                            CategoryName = "Deckare"
                         },
                         new
                         {
                             Id = 2,
-                            CategoryName = "Feelgood",
-                            isChecked = false
+                            CategoryName = "Feelgood"
                         },
                         new
                         {
                             Id = 3,
-                            CategoryName = "Biografi",
-                            isChecked = false
+                            CategoryName = "Biografi"
                         },
                         new
                         {
                             Id = 4,
-                            CategoryName = "Spänning",
-                            isChecked = false
+                            CategoryName = "Spänning"
                         },
                         new
                         {
                             Id = 5,
-                            CategoryName = "Romaner",
-                            isChecked = false
+                            CategoryName = "Romaner"
                         },
                         new
                         {
                             Id = 6,
-                            CategoryName = "Historia",
-                            isChecked = false
+                            CategoryName = "Historia"
                         },
                         new
                         {
                             Id = 7,
-                            CategoryName = "Fantasy & SciFi",
-                            isChecked = false
+                            CategoryName = "Fantasy & SciFi"
                         },
                         new
                         {
                             Id = 8,
-                            CategoryName = "Fakta",
-                            isChecked = false
+                            CategoryName = "Fakta"
                         });
                 });
 
@@ -258,6 +247,19 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756),
+                            Email = "admin@admin.com",
+                            FirstName = "",
+                            IsActive = false,
+                            IsAdmin = true,
+                            IsLibrarian = false,
+                            LastName = ""
+                        });
                 });
 
             modelBuilder.Entity("CategoryProduct", b =>

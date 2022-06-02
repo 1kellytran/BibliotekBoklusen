@@ -65,36 +65,36 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 
 using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
 {
-    var context = servicepProvider.GetRequiredService<AuthDbContext>();
-    var appdbcontext = servicepProvider.GetRequiredService<AppDbContext>();
-    var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    //var context = servicepProvider.GetRequiredService<AuthDbContext>();
+    //var appdbcontext = servicepProvider.GetRequiredService<AppDbContext>();
+    //var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
+    //var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    context.Database.Migrate();
-    appdbcontext.Database.Migrate();
+    //context.Database.Migrate();
+    //appdbcontext.Database.Migrate();
 
-    if (!context.Users.Any() || !appdbcontext.Users.Any())
-    {
-        IdentityRole adminRole = new();
-        adminRole.Name = "Admin";
+    //if (!context.Users.Any() || !appdbcontext.Users.Any())
+    //{
+    //    IdentityRole adminRole = new();
+    //    adminRole.Name = "Admin";
 
-        await roleManager.CreateAsync(adminRole);
+    //    await roleManager.CreateAsync(adminRole);
 
-        ApplicationUser newUser = new();
-        newUser.UserName = "admin";
-        newUser.Email = "admin@admin.com";
-        string password = "admin123";
+    //    ApplicationUser newUser = new();
+    //    newUser.UserName = "admin";
+    //    newUser.Email = "admin@admin.com";
+    //    string password = "admin123";
 
-        User user = new();
-        user.Email = newUser.Email;
-        user.IsAdmin = true;
+    //    User user = new();
+    //    user.Email = newUser.Email;
+    //    user.IsAdmin = true;
 
-        await appdbcontext.Users.AddAsync(user);
-        await appdbcontext.SaveChangesAsync();
-        await userManager.CreateAsync(newUser, password);
+    //    await appdbcontext.Users.AddAsync(user);
+    //    await appdbcontext.SaveChangesAsync();
+    //    await userManager.CreateAsync(newUser, password);
 
-        await userManager.AddToRoleAsync(newUser, "Admin");
-    }
+    //    await userManager.AddToRoleAsync(newUser, "Admin");
+    //}
 }
 
 var app = builder.Build();

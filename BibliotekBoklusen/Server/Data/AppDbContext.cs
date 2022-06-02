@@ -17,7 +17,7 @@ namespace BibliotekBoklusen.Server.Data
         public DbSet<Loan> Loans { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<ProductCopy> productCopies { get; set; }
-       
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -33,7 +33,7 @@ namespace BibliotekBoklusen.Server.Data
                 new Category() { Id = 8, CategoryName = "Fakta" });
 
             modelBuilder.Entity<User>()
-                .HasData(new User() { Email = "admin@admin.com", Created = DateTime.Now, IsAdmin = true});
+                .HasData(new User() { Id = 1, Email = "admin@admin.com", Created = DateTime.Now, IsAdmin = true });
 
         }
     }

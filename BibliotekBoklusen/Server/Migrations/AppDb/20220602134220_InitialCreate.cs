@@ -15,8 +15,7 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    isChecked = table.Column<bool>(type: "bit", nullable: false)
+                    CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -186,18 +185,23 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
 
             migrationBuilder.InsertData(
                 table: "Categories",
-                columns: new[] { "Id", "CategoryName", "isChecked" },
+                columns: new[] { "Id", "CategoryName" },
                 values: new object[,]
                 {
-                    { 1, "Deckare", false },
-                    { 2, "Feelgood", false },
-                    { 3, "Biografi", false },
-                    { 4, "Spänning", false },
-                    { 5, "Romaner", false },
-                    { 6, "Historia", false },
-                    { 7, "Fantasy & SciFi", false },
-                    { 8, "Fakta", false }
+                    { 1, "Deckare" },
+                    { 2, "Feelgood" },
+                    { 3, "Biografi" },
+                    { 4, "Spänning" },
+                    { 5, "Romaner" },
+                    { 6, "Historia" },
+                    { 7, "Fantasy & SciFi" },
+                    { 8, "Fakta" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Created", "Email", "FirstName", "IsActive", "IsAdmin", "IsLibrarian", "LastName" },
+                values: new object[] { 1, new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756), "admin@admin.com", "", false, true, false, "" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",
