@@ -1,5 +1,4 @@
-﻿
-namespace BibliotekBoklusen.Client.Services
+﻿namespace BibliotekBoklusen.Client.Services
 {
     public interface ISeminarManager
     {

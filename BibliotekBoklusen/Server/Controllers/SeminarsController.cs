@@ -1,22 +1,23 @@
 ﻿using BibliotekBoklusen.Server.Services.SeminarService;
 using Microsoft.AspNetCore.Mvc;
+
 namespace BibliotekBoklusen.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class SeminarsController : ControllerBase
     {
-        private readonly ISeminarService _serviceService;
+        private readonly ISeminarService _seminarService;
 
         public SeminarsController(ISeminarService seminarService)
         {
-            _serviceService = seminarService;
+            _seminarService = seminarService;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<Seminarium>>> GetAllSeminars()
         {
-            var seminar = _serviceService.GetAllSeminars();
+            var seminar = _seminarService.GetAllSeminars();
 
             if (seminar == null)
             {
@@ -28,7 +29,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Seminarium>> GetSeminarById(int id)
         {
-            var seminar = _serviceService.GetSeminarById(id);
+            var seminar = _seminarService.GetSeminarById(id);
 
             if (seminar == null)
             {
@@ -42,7 +43,7 @@ namespace BibliotekBoklusen.Server.Controllers
         {
             if(seminarToAdd != null)
             {
-                _serviceService.CreateSeminar(seminarToAdd);
+                _seminarService.CreateSeminar(seminarToAdd);
 
                 return Ok("Seminar has been added");
             }
@@ -52,7 +53,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
         {
-            var seminar = _serviceService.UpdateSeminar(id, seminarToUpdate);
+            var seminar = _seminarService.UpdateSeminar(id, seminarToUpdate);
 
             if(seminar != null)
             {
@@ -64,7 +65,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSeminar(int id)
         {
-            var seminar = _serviceService.DeleteSeminar(id);
+            var seminar = _seminarService.DeleteSeminar(id);
 
             if(seminar != null)
             {
