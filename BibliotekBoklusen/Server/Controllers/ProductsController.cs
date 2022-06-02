@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BibliotekBoklusen.Server.Services.SeminarService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Controllers
@@ -7,9 +8,8 @@ namespace BibliotekBoklusen.Server.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        
-        private readonly IProductService _productService;
 
+        private readonly IProductService _productService;
 
         public ProductsController(IProductService productService)
         {
@@ -19,13 +19,12 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Product>>> GetAllProducts()
         {
-            var products =await _productService.GetAllProducts();
+            var products = await _productService.GetAllProducts();
 
             if (products == null)
             {
                 return BadRequest("No products found");
             }
-
             return Ok(products);
         }
 
@@ -42,9 +41,9 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] Product productToAdd)
+        public async Task<ActionResult> CreateProduct([FromBody] Product productToAdd)
         {
-          var response=await _productService.CreateProduct(productToAdd);
+            var response = await _productService.CreateProduct(productToAdd);
             return Ok(response);
         }
 
@@ -56,9 +55,9 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public async Task<ActionResult<string>> DeleteProduct(int id)
         {
-           var response =await  _productService.DeleteProduct(id);
+            var response = await _productService.DeleteProduct(id);
             return Ok(response);
         }
 

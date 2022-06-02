@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AuthDb
+namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class removedIsLoandedToLoan : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

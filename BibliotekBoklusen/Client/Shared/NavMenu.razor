@@ -1,6 +1,7 @@
 <MudNavMenu>
     <MudNavLink Href="/" Match="NavLinkMatch.All">Biblioteket Boklusen</MudNavLink>
     <AuthorizeView Roles="Librarian, Admin">
+        <MudNavLink Href="/myprofile" Icon="@Icons.Filled.AccountBox" IconColor="Color.Success" Match="NavLinkMatch.Prefix">Min sida</MudNavLink>
         <MudNavGroup Title="Admin" Expanded="true">
             <AuthorizeView Context="_context" Roles="Admin">
                 <MudNavGroup Title="Personal" Expanded="false">

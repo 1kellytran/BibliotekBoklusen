@@ -18,7 +18,7 @@
                               Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
                               RequiredError="Obligatorisk fält" @bind-Value="registerUser.Password" />
                 <MudTextField T="string"
-                              Label="Lösenord" HelperText="Upprepa lösenordet" InputType="InputType.Password"
+                              Label="Lösenord" HelperText="Upprepa lösenordet" InputType="InputType.Password" Required="true"
                               Validation="@(new Func<string, string>(PasswordMatch))" @bind-Value="registerUser.ConfirmPassword" />
                 <div class="d-flex align-center justify-space-between mt-6">
                     <AuthorizeView Context="_context" Roles=Admin>
