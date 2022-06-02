@@ -71,7 +71,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
     var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
     context.Database.Migrate();
-    appdbcontext.Database.Migrate();
+    appdbcontext.Database.Migrate(); //laddar auto
 
     if (!context.Users.Any() || !appdbcontext.Users.Any())
     {
