@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AppDb
+namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -252,7 +252,7 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756),
+                            Created = new DateTime(2022, 6, 2, 20, 9, 52, 35, DateTimeKind.Local).AddTicks(8827),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,

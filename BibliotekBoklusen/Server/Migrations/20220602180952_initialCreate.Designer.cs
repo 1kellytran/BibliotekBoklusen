@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AppDb
+namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220602134220_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220602180952_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -254,7 +254,7 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756),
+                            Created = new DateTime(2022, 6, 2, 20, 9, 52, 35, DateTimeKind.Local).AddTicks(8827),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,

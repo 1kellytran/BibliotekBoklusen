@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations
+namespace BibliotekBoklusen.Server.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20220602111505_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20220602181023_initialCreate")]
+    partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -95,6 +95,24 @@ namespace BibliotekBoklusen.Server.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "489fd337-dbac-4756-b46d-36d770ed8cb1",
+                            Email = "admin@admin.com",
+                            EmailConfirmed = true,
+                            FirstName = "",
+                            LastName = "",
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEJ2j7USAFoEAhbUiVttAEBGoLEuP9E9FfmhtF0SRuiOyUVWVXg2+CxH20ZG/MyxV5Q==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "5fae6ffe-6bba-4d82-bba1-7cebc05e490b",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@admin.com"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -122,6 +140,29 @@ namespace BibliotekBoklusen.Server.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "562555fd-78d0-4c17-bac5-ffa3c44f1247",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "5c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "d1fdb978-e715-47c6-a5fd-a616c390379c",
+                            Name = "Librarian",
+                            NormalizedName = "LIBRARIAN"
+                        },
+                        new
+                        {
+                            Id = "6c5e174e-3b0e-446f-86af-483d56fd7210",
+                            ConcurrencyStamp = "0fec6a6a-445c-492d-a44d-f3d77da4f9bd",
+                            Name = "Member",
+                            NormalizedName = "MEMBER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -209,6 +250,13 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
+                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations.AppDb
+namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -201,7 +201,7 @@ namespace BibliotekBoklusen.Server.Migrations.AppDb
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Created", "Email", "FirstName", "IsActive", "IsAdmin", "IsLibrarian", "LastName" },
-                values: new object[] { 1, new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756), "admin@admin.com", "", false, true, false, "" });
+                values: new object[] { 1, new DateTime(2022, 6, 2, 20, 9, 52, 35, DateTimeKind.Local).AddTicks(8827), "admin@admin.com", "", false, true, false, "" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",
