@@ -54,12 +54,12 @@
                         <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
                     </MudSelect>
 
-                <MudText Typo="Typo.subtitle2">Välj genre:</MudText>
-
-                    @foreach (var category in Categories)
-                    {
-                        <MudCheckBox @bind-Checked="category.isChecked">@category.CategoryName</MudCheckBox>
-                    }
+                    <MudSelect T="Category" Label="Välj genre" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
+                        @foreach (var category in Categories)
+                        {
+                            <MudSelectItem T="Category" Value="@category">@category.CategoryName</MudSelectItem>
+                        }
+                    </MudSelect>
 
                 </MudCardContent>
                 <MudCardActions>
@@ -71,7 +71,7 @@
     </MudItem>
     <MudItem xs="12" sm="5">
         <MudPaper Class="pa-4 mud-height-full">
-                <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
+            <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
             <MudCardContent>
                 @foreach (var product in addedProducts)
                 {
@@ -95,6 +95,8 @@
     public List<Category> Categories { get; set; } = new();
     static List<Product> addedProducts = new();
     string message;
+    private Category value { get; set; } = new();
+    private IEnumerable<Category> CategoriesToAdd { get; set; } = new HashSet<Category>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -120,16 +122,13 @@
 
     void SetProductValues()
     {
-        Product.Category.AddRange(Categories.Where(x => x.isChecked));
+        Product.Category.AddRange(CategoriesToAdd);
     }
 
     void ClearForm()
     {
         SetProductStartValue();
-        foreach (var category in Categories)
-        {
-            category.isChecked = false;
-        }
+
     }
 
     void AddCreator()

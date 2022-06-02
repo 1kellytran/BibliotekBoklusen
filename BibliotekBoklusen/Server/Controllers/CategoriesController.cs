@@ -60,7 +60,6 @@ namespace BibliotekBoklusen.Server.Controllers
                 return NotFound("Category was not found");
 
             categoryToChange.CategoryName = newCategoryValues.CategoryName;
-            categoryToChange.isChecked = newCategoryValues.isChecked;
 
             _context.Update(categoryToChange);
             await _context.SaveChangesAsync();
