@@ -74,7 +74,7 @@ using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider(
     context.Database.Migrate();
     appdbcontext.Database.Migrate();
 
-    if (!context.Users.Any())
+    if (!context.Users.Any() || !appdbcontext.Users.Any())
     {
         IdentityRole adminRole = new();
         adminRole.Name = "Admin";
