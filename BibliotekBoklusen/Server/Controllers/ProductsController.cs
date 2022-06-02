@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BibliotekBoklusen.Server.Services.SeminarService;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BibliotekBoklusen.Server.Controllers
@@ -9,11 +10,16 @@ namespace BibliotekBoklusen.Server.Controllers
     {
         
         private readonly IProductService _productService;
-
+        private ISeminarService _object;
 
         public ProductsController(IProductService productService)
         {
             _productService = productService;
+        }
+
+        public ProductsController(ISeminarService @object)
+        {
+            _object = @object;
         }
 
         [HttpGet]
