@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -54,19 +54,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ReservationStatuses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservationStatuses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Seminariums",
                 columns: table => new
                 {
@@ -92,7 +79,9 @@ namespace BibliotekBoklusen.Server.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsLibrarian = table.Column<bool>(type: "bit", nullable: false),
+                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,57 +158,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FinePayments",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    PaymentAmount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FinePayments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FinePayments_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    ProductId = table.Column<int>(type: "int", nullable: true),
-                    ReservationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ReservationStatusId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Reservations_ReservationStatuses_ReservationStatusId",
-                        column: x => x.ReservationStatusId,
-                        principalTable: "ReservationStatuses",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Reservations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Loans",
                 columns: table => new
                 {
@@ -227,6 +165,7 @@ namespace BibliotekBoklusen.Server.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: true),
                     ProductCopyId = table.Column<int>(type: "int", nullable: true),
+                    isReturned = table.Column<bool>(type: "bit", nullable: false),
                     LoanDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ReturnDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -240,32 +179,6 @@ namespace BibliotekBoklusen.Server.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Loans_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Fines",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    LoanId = table.Column<int>(type: "int", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: true),
-                    FineDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FineAmount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Fines", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Fines_Loans_LoanId",
-                        column: x => x.LoanId,
-                        principalTable: "Loans",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Fines_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -297,21 +210,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 column: "ProductsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FinePayments_UserId",
-                table: "FinePayments",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fines_LoanId",
-                table: "Fines",
-                column: "LoanId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Fines_UserId",
-                table: "Fines",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Loans_ProductCopyId",
                 table: "Loans",
                 column: "ProductCopyId");
@@ -325,21 +223,6 @@ namespace BibliotekBoklusen.Server.Migrations
                 name: "IX_productCopies_ProductId",
                 table: "productCopies",
                 column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_ProductId",
-                table: "Reservations",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_ReservationStatusId",
-                table: "Reservations",
-                column: "ReservationStatusId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_UserId",
-                table: "Reservations",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -351,13 +234,7 @@ namespace BibliotekBoklusen.Server.Migrations
                 name: "CreatorProduct");
 
             migrationBuilder.DropTable(
-                name: "FinePayments");
-
-            migrationBuilder.DropTable(
-                name: "Fines");
-
-            migrationBuilder.DropTable(
-                name: "Reservations");
+                name: "Loans");
 
             migrationBuilder.DropTable(
                 name: "Seminariums");
@@ -367,12 +244,6 @@ namespace BibliotekBoklusen.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "Creators");
-
-            migrationBuilder.DropTable(
-                name: "Loans");
-
-            migrationBuilder.DropTable(
-                name: "ReservationStatuses");
 
             migrationBuilder.DropTable(
                 name: "productCopies");

@@ -2,12 +2,6 @@
 using BibliotekBoklusen.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BibliotekBoklusen.Test.Controller
 {
     public class ProductServiceTests
