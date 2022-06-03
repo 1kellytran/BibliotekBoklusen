@@ -17,7 +17,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Seminarium>>> GetAllSeminars()
         {
-            var seminar = _seminarService.GetAllSeminars();
+            var seminar = await _seminarService.GetAllSeminars();
 
             if (seminar == null)
             {

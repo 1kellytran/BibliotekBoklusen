@@ -10,6 +10,7 @@ using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using BibliotekBoklusen.Server.Services.SeminarService;
 
 var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration; // nytt
@@ -61,6 +62,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<ISeminarService, SeminarService>();
 
 
 using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
