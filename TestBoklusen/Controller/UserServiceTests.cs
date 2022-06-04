@@ -20,11 +20,12 @@ namespace BibliotekBoklusen.Test.Controller
             _controller = new UserController(_mockRepo.Object);
         }
 
+
         [Fact]
         public void GetAllUsers_ShouldReturnAllUsers()
         {
             //Arrange
-         
+
             //Act
             var result = _controller.GetAllUser();
 
@@ -50,7 +51,7 @@ namespace BibliotekBoklusen.Test.Controller
         public void GetUser_ActionExecutes_ShouldReturnCorrectObject()
         {
             _mockRepo.Setup(repo => repo.GetUser(1))
-                .ReturnsAsync(new User() { Id = 1});
+                .ReturnsAsync(new User() { Id = 1 });
             var result = _controller.GetUser(1);
             var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
             var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
@@ -77,6 +78,23 @@ namespace BibliotekBoklusen.Test.Controller
             Assert.Equal("Test@hotmail.com", User.Email);
 
         }
+        [Fact]
+        public async Task DeleteUserFromDb_ShouldDeleteUser()
+        {
+            //Arrange
+            var userId = 2;
+            _mockRepo.Setup(u => u.DeleteUserFromDb(userId));
+            //Act
+            await _mockRepo.Object.DeleteUserFromDb(userId);
+
+            //Assert
+            _mockRepo.Verify(u => u.DeleteUserFromDb(userId));
+       
+        ////Act
+        //await studentService.Object.RemoveStudent(studentId);
+        ////Assert
+        //studentService.Verify(repo => repo.RemoveStudent(studentId), Times.Once);
+        }
 
 
         //[Fact]
@@ -94,13 +112,13 @@ namespace BibliotekBoklusen.Test.Controller
 
         //}
 
-    //[Fact]
-    //public async Task UpdateUser_ShouldUpdateUser()
-    //{
-    //        //Arrange
-    //        UpdatedUserDto user = new();
-    //        _mockRepo.Setup(repo => repo.UpdateUser(user, 1)).Returns(new User() { FirstName = "bla", LastName = "tia", IsLibrarian = true, Id=1 }  ); 
-    
+        //[Fact]
+        //public async Task UpdateUser_ShouldUpdateUser()
+        //{
+        //        //Arrange
+        //        UpdatedUserDto user = new();
+        //        _mockRepo.Setup(repo => repo.UpdateUser(user, 1)).Returns(new User() { FirstName = "bla", LastName = "tia", IsLibrarian = true, Id=1 }  ); 
+
         //{
         //    updateUser.IsLibrarian = true;
         //    updateUser.FirstName = "Test";
@@ -116,8 +134,9 @@ namespace BibliotekBoklusen.Test.Controller
         //Assert.Equal(studentEntity.Email, studData.Email);
     }
 
-    ////Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto model, int id);
+ 
 
+    //Task<ServiceResponse<string>> DeleteUserFromDb(int id);
 
 
 }
