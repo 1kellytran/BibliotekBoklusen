@@ -89,54 +89,73 @@ namespace BibliotekBoklusen.Test.Controller
 
             //Assert
             _mockRepo.Verify(u => u.DeleteUserFromDb(userId));
-       
-        ////Act
-        //await studentService.Object.RemoveStudent(studentId);
-        ////Assert
-        //studentService.Verify(repo => repo.RemoveStudent(studentId), Times.Once);
+
+
+        }
+        [Fact]
+        public async Task DeleteUserFromAuthDbContext_ShouldDeleteUser()
+        {
+            //Arrange
+            var userEmail = "Test@hotmail.com";
+            _mockRepo.Setup(u => u.DeleteUserFromAuthDbContext(userEmail));
+            //Act
+            await _mockRepo.Object.DeleteUserFromAuthDbContext(userEmail);
+
+            //Assert
+            _mockRepo.Verify(u => u.DeleteUserFromAuthDbContext(userEmail));
+
+
         }
 
+        [Fact]
+        public void ChangePassword_ShouldChangePassword()                                                                                                                                                                                                 
+        {
+            PasswordDto password = null;
+            _mockRepo.Setup(r => r.ChangePassword(It.IsAny<PasswordDto>()))
+          .Callback<PasswordDto>(x => password = x);
+
+            var user = new PasswordDto
+            {
+
+             NewPassword = "Test123",
+             OldPassword = "FinBoll12",
+             NewPasswordConfirmed ="Test123"
+             
+             
+            };
+            _controller.ChangePassword(user);
+            _mockRepo.Verify(x => x.ChangePassword(It.IsAny<PasswordDto>()), Times.Once);
+            Assert.Equal(password.NewPassword, user.NewPassword);
+            Assert.Equal(password.OldPassword, user.OldPassword);
+            Assert.Equal(password.NewPasswordConfirmed, user.NewPasswordConfirmed);
+
+        }
 
         //[Fact]
-        //public async Task UpdateUser_ShouldUpdateUser()
+        //public void Create_ ModelStateValid_CreateEmployeeCalledOnce()
         //{
-        //    //Arrange
-        //    var updateUser = new UpdatedUserDto();
-        //    updateUser.IsLibrarian = true;
-        //    updateUser.FirstName = "Test";
-        //    updateUser.LastName = "lol";
-        //    _mockRepo.Setup(x => x.)
-
-
-
-
+        //    Employee? emp = null;
+        //    _mockRepo.Setup(r => r.CreateEmployee(It.IsAny<Employee>()))
+        //        .Callback<Employee>(x => emp = x);
+        //    var employee = new Employee
+        //    {
+        //        Name = "Test Employee",
+        //        Age = 32,
+        //        AccountNumber = "123-5435789603-21"
+        //    };
+        //    _controller.Create(employee);
+        //    _mockRepo.Verify(x => x.CreateEmployee(It.IsAny<Employee>()), Times.Once);
+        //    Assert.Equal(emp.Name, employee.Name);
+        //    Assert.Equal(emp.Age, employee.Age);
+        //    Assert.Equal(emp.AccountNumber, employee.AccountNumber);
         //}
 
-        //[Fact]
-        //public async Task UpdateUser_ShouldUpdateUser()
-        //{
-        //        //Arrange
-        //        UpdatedUserDto user = new();
-        //        _mockRepo.Setup(repo => repo.UpdateUser(user, 1)).Returns(new User() { FirstName = "bla", LastName = "tia", IsLibrarian = true, Id=1 }  ); 
 
-        //{
-        //    updateUser.IsLibrarian = true;
-        //    updateUser.FirstName = "Test";
-        //    updateUser.LastName = "lol";
-        //};
-        ////Act
-        //await _mockRepo.Object.UpdateStudent(studData);
-        ////Assert
-        //studentService.Verify(x => x.UpdateStudent(It.IsAny<StudentEntity>()), Times.Once);
-        //Assert.Equal(studentEntity.FirstName, studData.FirstName);
-        //Assert.Equal(studentEntity.LastName, studData.LastName);
-        //Assert.Equal(studentEntity.DOB, studData.DOB);
-        //Assert.Equal(studentEntity.Email, studData.Email);
+
+
+
+
     }
-
- 
-
-    //Task<ServiceResponse<string>> DeleteUserFromDb(int id);
 
 
 }
