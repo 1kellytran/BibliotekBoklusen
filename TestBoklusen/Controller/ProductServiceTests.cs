@@ -21,12 +21,12 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void GetAllProducts_ActionExecutes_ReturnsExactNumberOfProducts()
+        public void GetAllProducts_ActionExecutes_ReturnCorrectNumberOfProducts()
         {
              _mockRepo.Setup(repo => repo.GetAllProducts()).ReturnsAsync(new List<Product> { new Product(), new Product() });
 
             var result = _controller.GetAllProducts();
-            var viewResult = Assert.IsType<Task<ActionResult<List<Product>>>>(result);
+            var taskResult = Assert.IsType<Task<ActionResult<List<Product>>>>(result);
             var actionResult = Assert.IsType<ActionResult<List<Product>>>(result.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var productList = Assert.IsType<List<Product>>(objectResult.Value);
@@ -35,16 +35,15 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void GetProduct_ActionExecutes_ReturningCorrectObject()
+        public void GetProduct_ActionExecutes_GetProductByIdCorrectContent()
         {
             _mockRepo.Setup(repo => repo.GetProductById(1))
                 .ReturnsAsync(new Product() { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() });
             var result = _controller.GetProductById(1);
-            var viewResult = Assert.IsType<Task<ActionResult<Product>>>(result);
-            var actionResult = Assert.IsType<ActionResult<Product>>(viewResult.Result);
+            var taskResult = Assert.IsType<Task<ActionResult<Product>>>(result);
+            var actionResult = Assert.IsType<ActionResult<Product>>(taskResult.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var taskProduct = Assert.IsType<Task<Product>>(objectResult.Value);
-            var product = Assert.IsType<Product>(taskProduct.Result);
+            var product = Assert.IsType<Product>(objectResult.Value);
 
             Assert.Equal(1, product.Id);
             Assert.Equal("Pippi", product.Title);
@@ -52,29 +51,42 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void Create_ActionExecutes_ReturnsViewForCreate()
+        public void Create_ActionExecutes_GetCorrectResponse()
         {
             var product = new Product { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() };
-            _mockRepo.Setup(repo => repo.CreateProduct(product));
-
+        
             var result = _controller.CreateProduct(product);
             var taskResult = Assert.IsType<Task<ActionResult>>(result);
             var actionResult = Assert.IsType<OkObjectResult>(taskResult.Result);
-           
         }
 
         [Fact]
-        public void Delete_ActionExecutes_ReturnString()
+        public void Delete_ActionExecutes_GetCorrectResponse()
         {
             var product = new Product { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() };
-            var koaz =_controller.DeleteProduct(product.Id);
-            var kaozResult = Assert.IsType<Task<ActionResult<string>>>(koaz);
-            var content = Assert.IsType<ActionResult<string>>(kaozResult.Result);
-            var katt = Assert.IsType<OkObjectResult>(content.Result);
+            var result=_controller.DeleteProduct(product.Id);
+            var taskResult = Assert.IsType<Task<ActionResult<string>>>(result);
+            var content = Assert.IsType<ActionResult<string>>(taskResult.Result);
+            Assert.IsType<OkObjectResult>(content.Result);
         }
 
+        [Fact]
+        public async Task DeleteUserFromDb_VerifyDeleteUser()
+        {
+            var userId = 2;
+            _mockRepo.Setup(u => u.DeleteProduct(userId));
+          
+            await _mockRepo.Object.DeleteProduct(userId);
 
-
-
+            _mockRepo.Verify(u => u.DeleteProduct(userId));
+        }
+        [Fact]
+        public void Put_ActionExecutes_ReturnOkObjectResult()
+        {
+            var product = new Product { Id = 1, Title = "Pippi", NumberOfCopiesOwned = 2, Published = DateTime.Now, Type = ProductType.Film, Creators = new(), Category = new() };
+           var result= _controller.UpdateProduct(1, product);
+            var taskResult = Assert.IsType<Task<ActionResult>>(result);
+            Assert.IsType<OkObjectResult>(taskResult.Result);
+        }
     }
 }

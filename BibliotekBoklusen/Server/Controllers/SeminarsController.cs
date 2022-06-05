@@ -39,7 +39,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateSeminar([FromBody] Seminarium seminarToAdd)
+        public async Task<ActionResult> CreateSeminar([FromBody] Seminarium seminarToAdd)
         {
             if(seminarToAdd != null)
             {
@@ -51,7 +51,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
+        public async Task<ActionResult> UpdateSeminar(int id, [FromBody] Seminarium seminarToUpdate)
         {
             var seminar = _seminarService.UpdateSeminar(id, seminarToUpdate);
 
@@ -63,7 +63,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSeminar(int id)
+        public async Task<ActionResult> DeleteSeminar(int id)
         {
             var seminar = _seminarService.DeleteSeminar(id);
 

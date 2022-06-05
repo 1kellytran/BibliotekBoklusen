@@ -24,12 +24,8 @@ namespace BibliotekBoklusen.Test.Controller
         [Fact]
         public void GetAllUsers_ShouldReturnAllUsers()
         {
-            //Arrange
-
-            //Act
             var result = _controller.GetAllUser();
 
-            // Assert
             Assert.IsType<Task<ActionResult<List<User>>>>(result);
         }
 
@@ -51,7 +47,7 @@ namespace BibliotekBoklusen.Test.Controller
         public void GetUser_ActionExecutes_ShouldReturnCorrectObject()
         {
             _mockRepo.Setup(repo => repo.GetUser(1))
-                .ReturnsAsync(new User() { Id = 1 });
+                .ReturnsAsync(new User() { Id = 1, FirstName="Leif" });
             var result = _controller.GetUser(1);
             var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
             var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
@@ -60,6 +56,7 @@ namespace BibliotekBoklusen.Test.Controller
             var User = Assert.IsType<User>(taskUser.Result);
 
             Assert.Equal(1, User.Id);
+            Assert.Equal("Leif", User.FirstName);
 
         }
 
@@ -74,21 +71,24 @@ namespace BibliotekBoklusen.Test.Controller
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var User = Assert.IsType<User>(objectResult.Value);
 
-
             Assert.Equal("Test@hotmail.com", User.Email);
 
         }
         [Fact]
         public async Task DeleteUserFromDb_ShouldDeleteUser()
         {
-            //Arrange
+           
             var userId = 2;
             _mockRepo.Setup(u => u.DeleteUserFromDb(userId));
-            //Act
+
             await _mockRepo.Object.DeleteUserFromDb(userId);
 
-            //Assert
             _mockRepo.Verify(u => u.DeleteUserFromDb(userId));
+<<<<<<< Updated upstream
+=======
+       
+        }
+>>>>>>> Stashed changes
 
 
         }

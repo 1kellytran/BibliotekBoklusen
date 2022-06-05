@@ -48,7 +48,7 @@ namespace BibliotekBoklusen.Server.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product productToUpdate)
+        public async Task<ActionResult> UpdateProduct([FromRoute] int id, [FromBody] Product productToUpdate)
         {
             var response = await _productService.UpdateProduct(id, productToUpdate);
             return Ok(response);
