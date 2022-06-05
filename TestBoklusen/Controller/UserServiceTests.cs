@@ -84,14 +84,11 @@ namespace BibliotekBoklusen.Test.Controller
             await _mockRepo.Object.DeleteUserFromDb(userId);
 
             _mockRepo.Verify(u => u.DeleteUserFromDb(userId));
-<<<<<<< Updated upstream
-=======
-       
-        }
->>>>>>> Stashed changes
+
 
 
         }
+
         [Fact]
         public async Task DeleteUserFromAuthDbContext_ShouldDeleteUser()
         {
