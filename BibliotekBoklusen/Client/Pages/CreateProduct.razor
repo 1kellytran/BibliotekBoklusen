@@ -54,7 +54,7 @@
                         <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
                     </MudSelect>
 
-                    <MudSelect T="Category" Label="Välj genre" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
+                    <MudSelect T="Category" Label="Välj genre" ToStringFunc="@convertFunc" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
                         @foreach (var category in Categories)
                         {
                             <MudSelectItem T="Category" Value="@category">@category.CategoryName</MudSelectItem>
@@ -97,6 +97,7 @@
     string message;
     private Category value { get; set; } = new();
     private IEnumerable<Category> CategoriesToAdd { get; set; } = new HashSet<Category>();
+    private Func<Category, string> convertFunc = ci => ci.CategoryName;
 
     protected override async Task OnInitializedAsync()
     {

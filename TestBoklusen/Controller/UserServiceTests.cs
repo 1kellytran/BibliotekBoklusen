@@ -47,7 +47,7 @@ namespace BibliotekBoklusen.Test.Controller
         public void GetUser_ActionExecutes_ShouldReturnCorrectObject()
         {
             _mockRepo.Setup(repo => repo.GetUser(1))
-                .ReturnsAsync(new User() { Id = 1, FirstName="Leif" });
+                .ReturnsAsync(new User() { Id = 1, FirstName = "Leif" });
             var result = _controller.GetUser(1);
             var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
             var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
@@ -77,7 +77,7 @@ namespace BibliotekBoklusen.Test.Controller
         [Fact]
         public async Task DeleteUserFromDb_ShouldDeleteUser()
         {
-           
+
             var userId = 2;
             _mockRepo.Setup(u => u.DeleteUserFromDb(userId));
 
@@ -105,7 +105,7 @@ namespace BibliotekBoklusen.Test.Controller
         }
 
         [Fact]
-        public void ChangePassword_ShouldChangePassword()                                                                                                                                                                                                 
+        public void ChangePassword_ShouldChangePassword()
         {
             PasswordDto password = null;
             _mockRepo.Setup(r => r.ChangePassword(It.IsAny<PasswordDto>()))
@@ -113,12 +113,9 @@ namespace BibliotekBoklusen.Test.Controller
 
             var user = new PasswordDto
             {
-
-             NewPassword = "Test123",
-             OldPassword = "FinBoll12",
-             NewPasswordConfirmed ="Test123"
-             
-             
+                NewPassword = "Test123",
+                OldPassword = "FinBoll12",
+                NewPasswordConfirmed = "Test123"
             };
             _controller.ChangePassword(user);
             _mockRepo.Verify(x => x.ChangePassword(It.IsAny<PasswordDto>()), Times.Once);

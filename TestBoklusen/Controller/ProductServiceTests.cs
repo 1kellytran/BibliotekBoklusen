@@ -88,5 +88,27 @@ namespace BibliotekBoklusen.Test.Controller
             var taskResult = Assert.IsType<Task<ActionResult>>(result);
             Assert.IsType<OkObjectResult>(taskResult.Result);
         }
+
+        //    [Fact]
+        //    public void Put_ActionExecutes_ChangeProduct()
+        //    {
+        //        Product product = null;
+        //        int idNr = 1;
+        //        _mockRepo.Setup(r => r.UpdateProduct(idNr,It.IsAny<Product>()))
+        //      .Callback<Product>(x => product = x);
+
+        //        var updatedProduct = new Product
+        //        {
+        //            Title = "Emil",
+        //            NumberOfCopiesOwned = 3,
+        //            Type = ProductType.Film
+        //        };
+        //        _controller.UpdateProduct(1,updatedProduct);
+        //        _mockRepo.Verify(x => x.UpdateProduct(idNr,It.IsAny<Product>()), Times.Once);
+        //        Assert.Equal(product.Title, updatedProduct.Title);
+        //        Assert.Equal(product.Title, updatedProduct.Title);
+        //        Assert.Equal(product.Type, updatedProduct.Type);
+
+        //    }
     }
 }
