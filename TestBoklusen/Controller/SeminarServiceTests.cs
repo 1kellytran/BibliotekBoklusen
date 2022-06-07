@@ -34,7 +34,15 @@ namespace BibliotekBoklusen.Test.Controller
         public void GetSeminarById_ActionExecutes_CorrectValuesForGetSeminarById()
         {
             _mockRepo.Setup(repo => repo.GetSeminarById(1))
-                .ReturnsAsync(new Seminarium() { Id = 1, Title = "Kelly dansar", DayAndTime = DateTime.Now, FirstName = "Kelly", LastName = "Tran" });
+                .ReturnsAsync(new Seminarium()
+                {
+                    Id = 1,
+                    Title = "Kelly dansar",
+                    SeminarDate = DateTime.Now,
+                    SeminarTime = DateTime.Now,
+                    FirstName = "Kelly",
+                    LastName = "Tran"
+                });
 
             var result = _controller.GetSeminarById(1);
             var viewResult = Assert.IsType<Task<ActionResult<Seminarium>>>(result);
@@ -52,18 +60,35 @@ namespace BibliotekBoklusen.Test.Controller
         [Fact]
         public void Create_ActionExecutes_GetCorrectResponse()
         {
-            var seminar = new Seminarium { Id = 1, Title = "Kelly dansar", DayAndTime = DateTime.Now, FirstName = "Kelly", LastName = "Tran" };
+            var seminar = new Seminarium
+            {
+                Id = 1,
+                Title = "Kelly dansar",
+                SeminarDate = DateTime.Now,
+                SeminarTime = DateTime.Now,
+                FirstName = "Kelly",
+                LastName = "Tran"
+            };
+
             _mockRepo.Setup(repo => repo.CreateSeminar(seminar));
             var result = _controller.CreateSeminar(seminar);
             var taskResult = Assert.IsType<Task<ActionResult>>(result);
             var actionResult = Assert.IsType<OkObjectResult>(taskResult.Result);
-
         }
 
         [Fact]
         public void Delete_ActionExecutes_GetCorrectResponse()
         {
-            var seminar = new Seminarium { Id = 1, Title = "Kelly dansar", DayAndTime = DateTime.Now, FirstName = "Kellys", LastName = "Mamma" };
+            var seminar = new Seminarium
+            {
+                Id = 1,
+                Title = "Kelly dansar",
+                SeminarDate = DateTime.Now,
+                SeminarTime = DateTime.Now,
+                FirstName = "Kellys",
+                LastName = "Mamma"
+            };
+
             var result = _controller.DeleteSeminar(seminar.Id);
             var taskResult = Assert.IsType<Task<ActionResult>>(result);
             Assert.IsType<OkObjectResult>(taskResult.Result);
@@ -72,22 +97,27 @@ namespace BibliotekBoklusen.Test.Controller
         [Fact]
         public async Task DeleteUserFromDb_VerifyDeleteUser()
         {
-           
             var seminarId = 2;
             _mockRepo.Setup(u => u.DeleteSeminar(seminarId));
 
-           
             await _mockRepo.Object.DeleteSeminar(seminarId);
 
-           
             _mockRepo.Verify(u => u.DeleteSeminar(seminarId));
-
         }
 
         [Fact]
         public void Put_ActionExecutes_ReturnOkObjectResult()
         {
-            var seminar = new Seminarium { Id = 1, Title = "Kelly dansar", DayAndTime = DateTime.Now, FirstName = "Kelly", LastName = "Tran" };
+            var seminar = new Seminarium
+            {
+                Id = 1,
+                Title = "Kelly dansar",
+                SeminarDate = DateTime.Now,
+                SeminarTime = DateTime.Now,
+                FirstName = "Kelly",
+                LastName = "Tran"
+            };
+
             var taskResult = _controller.DeleteSeminar(seminar.Id);
             var result = Assert.IsType<Task<ActionResult>>(taskResult);
             Assert.IsType<OkObjectResult>(result.Result);

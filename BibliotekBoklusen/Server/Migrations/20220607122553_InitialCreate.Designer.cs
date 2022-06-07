@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220607111815_initialCreate")]
-    partial class initialCreate
+    [Migration("20220607122553_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -194,9 +194,6 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DayAndTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -204,6 +201,12 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SeminarDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("SeminarTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -251,7 +254,7 @@ namespace BibliotekBoklusen.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 7, 13, 18, 15, 21, DateTimeKind.Local).AddTicks(8607),
+                            Created = new DateTime(2022, 6, 7, 14, 25, 53, 405, DateTimeKind.Local).AddTicks(966),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,

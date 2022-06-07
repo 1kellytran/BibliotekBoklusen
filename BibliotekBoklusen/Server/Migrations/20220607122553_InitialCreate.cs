@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibliotekBoklusen.Server.Migrations
 {
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -61,7 +61,8 @@ namespace BibliotekBoklusen.Server.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DayAndTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SeminarDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SeminarTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,7 +201,7 @@ namespace BibliotekBoklusen.Server.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "Created", "Email", "FirstName", "IsActive", "LastName", "UserRole" },
-                values: new object[] { 1, new DateTime(2022, 6, 7, 13, 18, 15, 21, DateTimeKind.Local).AddTicks(8607), "admin@admin.com", "", false, "", 0 });
+                values: new object[] { 1, new DateTime(2022, 6, 7, 14, 25, 53, 405, DateTimeKind.Local).AddTicks(966), "admin@admin.com", "", false, "", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",

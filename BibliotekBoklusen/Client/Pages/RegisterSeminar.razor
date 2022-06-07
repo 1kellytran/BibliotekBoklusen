@@ -24,12 +24,12 @@
             <div class="form-group">
                 <label for="dayandtime">Datum</label>
                 <InputDate min="TodaysDate" Id="dayandtime" class="form-control" @bind-Value="TodaysDate" />
-                <ValidationMessage For="@(() => CreateSeminar.DayAndTime)" />
+                <ValidationMessage For="@(() => CreateSeminar.SeminarDate)" />
             </div>
             <div class="form-group">
                 <label for="dayandtime">Tid</label>
-                <input type="time" min="08:00" max="21:00" Id="dayandtime" class="form-control" @bind-value="CreateSeminar.DayAndTime"/>
-                <ValidationMessage For="@(() => CreateSeminar.DayAndTime)" />
+                <input type="time" min="08:00" max="21:00" Id="dayandtime" class="form-control" @bind-value="CreateSeminar.SeminarTime"/>
+                <ValidationMessage For="@(() => CreateSeminar.SeminarTime)" />
             </div>
             <div>
                 <br />
@@ -52,13 +52,12 @@ else if(message == "Ett fel har uppstått. Har du fyllt i allt korrekt?")
     public List<Seminarium> AllSeminars { get; set; }
     public Seminarium CreateSeminar { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-    // PARSE DATETIME???
     public string timeOfDay;
     public string message = "";
 
     public async Task AddSeminar()
     {
-        CreateSeminar.DayAndTime = TodaysDate;
+        CreateSeminar.SeminarDate = TodaysDate;
         var result = await SeminarManager.CreateSeminar(CreateSeminar);
         if(result == $"Seminariet \"{CreateSeminar.Title}\" har lagts till")
         {

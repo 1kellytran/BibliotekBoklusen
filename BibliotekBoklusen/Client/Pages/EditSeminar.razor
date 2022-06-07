@@ -5,24 +5,29 @@
 <h3>Ändra seminariuminformation för: "@SeminarToUpdate.Title"</h3>
 <EditForm Model="SeminarToUpdate" OnSubmit="HandleSeminar">
         <div class="form-group col-4">
-            <label for="Title">Titel:</label>
+            <label for="Title">Seminarium:</label>
             <InputText Id="Title" class="form-control" @bind-Value="SeminarToUpdate.Title" />
             <ValidationMessage For="@(() => SeminarToUpdate.Title)" />
         </div>
         <div class="form-group col-4">
-            <label for="Title">Firstname:</label>
+            <label for="Title">Förnamn:</label>
             <InputText Id="Firstname" class="form-control" @bind-Value="SeminarToUpdate.FirstName" />
             <ValidationMessage For="@(() => SeminarToUpdate.FirstName)" />
         </div>
         <div class="form-group col-4">
-            <label for="Title">LastName:</label>
+            <label for="Title">Efternamn:</label>
             <InputText Id="LastName" class="form-control" @bind-Value="SeminarToUpdate.LastName" />
             <ValidationMessage For="@(() => SeminarToUpdate.LastName)" />
         </div>
         <div class="form-group col-4">
-            <label for="Title">DayAndTime:</label>
-            <InputDate Id="DayAndTime" class="form-control" @bind-Value="SeminarToUpdate.DayAndTime" />
-            <ValidationMessage For="@(() => SeminarToUpdate.DayAndTime)" />
+            <label for="Title">Datum:</label>
+            <InputDate Id="Date" class="form-control" @bind-Value="SeminarToUpdate.SeminarDate" />
+            <ValidationMessage For="@(() => SeminarToUpdate.SeminarDate)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">Tid:</label>
+            <InputDate Id="Time" class="form-control" @bind-Value="SeminarToUpdate.SeminarTime" />
+            <ValidationMessage For="@(() => SeminarToUpdate.SeminarTime)" />
         </div>
     <button type="submit" class="btn btn-primary">Spara ändringar</button>
 </EditForm>

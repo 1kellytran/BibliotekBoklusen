@@ -99,15 +99,15 @@ namespace BibliotekBoklusen.Server.Migrations.AuthDb
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "489fd337-dbac-4756-b46d-36d770ed8cb1",
+                            ConcurrencyStamp = "8867f204-02dd-49cf-9ca4-313f2dfc18cf",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "",
                             LastName = "",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ2j7USAFoEAhbUiVttAEBGoLEuP9E9FfmhtF0SRuiOyUVWVXg2+CxH20ZG/MyxV5Q==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELD7raRFtldR3p7B8KC6N2QdK5NOMHZ2vANjvlRQl+MP7iTfaduJ1SOZ0lOY31gy2g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5fae6ffe-6bba-4d82-bba1-7cebc05e490b",
+                            SecurityStamp = "09f96ee4-00d5-4e19-b9f7-259a32711bca",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -143,21 +143,21 @@ namespace BibliotekBoklusen.Server.Migrations.AuthDb
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "562555fd-78d0-4c17-bac5-ffa3c44f1247",
+                            ConcurrencyStamp = "57b83288-a5ce-41f3-b65b-121827dd5a8f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "5c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "d1fdb978-e715-47c6-a5fd-a616c390379c",
+                            ConcurrencyStamp = "d91de92e-237b-47ca-bd2d-f6435f73e2ff",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
                             Id = "6c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "0fec6a6a-445c-492d-a44d-f3d77da4f9bd",
+                            ConcurrencyStamp = "01f0689b-f7f7-41c1-a706-da1cb1dc37ee",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });
