@@ -10,20 +10,31 @@
     <MudCard Outlined="true">
         <MudCardContent>
             <MudText Typo="Typo.h6">@Product.Title</MudText>
-            @foreach(var c in Product.Creators)
-            {
-                <MudText Typo="Typo.body1">@c.FirstName @c.LastName</MudText>
-            }
+            <MudText Typo="Typo.body1">
+                @foreach (var c in Product.Creators)
+                {
+                    @c.FirstName @c.LastName
+                }
+            </MudText>
             <MudText Typo="Typo.body2">
                 This text is supposed to be a brief summary about the product to peak your interest
                 or to tell you more about the product if you knew nothing to begin with. Insert random sentence here.
-                And here is some more text to fill out space, which is Fredrik´s favourite. Forcing yet another random sentence in there... 
+                And here is some more text to fill out space, which is Fredrik´s favourite. Forcing yet another random sentence in there...
                 Am I long enought to look like a proper description? This is either a book, e-book, audio book or movie. Alright, The End.
+            </MudText><br>
+            <MudText Typo="Typo.body2">
+                <b>
+                    Genre:
+                    @foreach (var c in Product.Category)
+                    {
+                        <MudText Typo="Typo.body2">@c.CategoryName </MudText>
+                    }
+                </b>
             </MudText>
         </MudCardContent>
         <AuthorizeView Roles="Librarian, Admin">
             <MudCardActions>
-                <MudButton Variant="Variant.Text" @onclick="DeleteProduct">Radera</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="DeleteProduct">Radera</MudButton>
             </MudCardActions>
         </AuthorizeView>
         <AuthorizeView Roles="Member">
