@@ -84,7 +84,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
         {
 
             var productForCount = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
-            var nrOfCopies= productToUpdate.NumberOfCopiesOwned - productForCount.NumberOfCopiesOwned;
+            var nrOfCopies = productToUpdate.NumberOfCopiesOwned - productForCount.NumberOfCopiesOwned;
             ProductCopy productCopy = new();
             productCopy.ProductId = productToUpdate.Id;
 
@@ -99,26 +99,30 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                 }
             }
 
-            //else if (nrOfCopies < 0)
-            //{
-            //    int nrOfCopiesToRemovePos = System.Math.Abs(nrOfCopies);
-               
-            //    for (int count = 0; count < nrOfCopies; count++)
-            //    {
-            //        productCopy.CopyId = productForCount.NumberOfCopiesOwned - count;
-            //        _context.productCopies.Remove(productCopy);
-            //        await
-            //    }
+            else if (nrOfCopies < 0)
+            {
+                int nrOfCopiesToRemovePos = Math.Abs(nrOfCopies);
+
+                for (int count = 0; count < nrOfCopiesToRemovePos; count++)
+                {
+                    var postToRemove =
+                    await _context.productCopies.Where(pc => pc.ProductId == productToUpdate.Id)
+                    .OrderByDescending(q => q.CopyId)
+                    .FirstOrDefaultAsync();
+                    _context.productCopies.Remove(postToRemove);
+                    await _context.SaveChangesAsync();
+
+                }
 
 
-            //}
+            }
 
 
 
 
 
 
-            var product =await _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefaultAsync(x => x.Id == id);
+            var product = await _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefaultAsync(x => x.Id == id);
             if (product != null)
             {
                 var creatorList = new List<Creator>();
