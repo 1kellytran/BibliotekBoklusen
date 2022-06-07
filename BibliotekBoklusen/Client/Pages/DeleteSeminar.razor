@@ -23,9 +23,9 @@
     [Parameter] 
     public Color Color { get; set; }
 
-    void Submit()
+    async Task Submit()
     {
-        SeminarManager.DeleteSeminar(Id);
+        await SeminarManager.DeleteSeminar(Id);
         MudDialog.Close(DialogResult.Ok(true));
     } 
     void Cancel() => MudDialog.Cancel();    

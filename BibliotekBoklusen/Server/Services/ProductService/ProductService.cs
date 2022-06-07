@@ -16,7 +16,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
         public async Task<List<Product>> GetAllProducts()
         {
-            var products =  _context.Products.Include(p => p.Creators)
+            var products = _context.Products.Include(p => p.Creators)
                 .Include(c => c.Category).ToList();
             if (products != null)
             {
@@ -79,10 +79,46 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             }
             return "Product already exists";
         }
-       
+
         public async Task<string> UpdateProduct(int id, Product productToUpdate)
         {
-            var product = _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefault(x => x.Id == id);
+
+            var productForCount = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var nrOfCopies= productToUpdate.NumberOfCopiesOwned - productForCount.NumberOfCopiesOwned;
+            ProductCopy productCopy = new();
+            productCopy.ProductId = productToUpdate.Id;
+
+            if (nrOfCopies > 0)
+            {
+                for (int add = 1; add <= nrOfCopies; add++)
+                {
+                    productCopy.Id = 0;
+                    productCopy.CopyId = productForCount.NumberOfCopiesOwned + add;
+                    await _context.productCopies.AddAsync(productCopy);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            //else if (nrOfCopies < 0)
+            //{
+            //    int nrOfCopiesToRemovePos = System.Math.Abs(nrOfCopies);
+               
+            //    for (int count = 0; count < nrOfCopies; count++)
+            //    {
+            //        productCopy.CopyId = productForCount.NumberOfCopiesOwned - count;
+            //        _context.productCopies.Remove(productCopy);
+            //        await
+            //    }
+
+
+            //}
+
+
+
+
+
+
+            var product =await _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefaultAsync(x => x.Id == id);
             if (product != null)
             {
                 var creatorList = new List<Creator>();
@@ -91,7 +127,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
                 foreach (var creator in productToUpdate.Creators)
                 {
-                    var creatorExists = _context.Creators.FirstOrDefault(c => c.FirstName.ToLower() == creator.FirstName.ToLower() && c.LastName.ToLower() == creator.LastName.ToLower());
+                    var creatorExists = await _context.Creators.FirstOrDefaultAsync(c => c.FirstName.ToLower() == creator.FirstName.ToLower() && c.LastName.ToLower() == creator.LastName.ToLower());
 
                     if (creatorExists != null)
                     {
@@ -102,15 +138,15 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                         newCreator.FirstName = creator.FirstName;
                         newCreator.LastName = creator.LastName;
 
-                        _context.Creators.Add(newCreator);
-                        _context.SaveChanges();
+                        await _context.Creators.AddAsync(newCreator);
+                        await _context.SaveChangesAsync();
                         creatorList.Add(newCreator);
                     }
                 }
 
                 foreach (var category in productToUpdate.Category)
                 {
-                    var categoryExists = _context.Categories.FirstOrDefault(c => c.Id == category.Id);
+                    var categoryExists = await _context.Categories.FirstOrDefaultAsync(c => c.Id == category.Id);
                     if (categoryExists != null)
                         categoryList.Add(categoryExists);
                     else
@@ -145,7 +181,7 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             {
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
-                
+
             }
 
             var list = _context.productCopies.Where(p => p.ProductId == id).ToList();

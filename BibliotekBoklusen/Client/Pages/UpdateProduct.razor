@@ -1,6 +1,7 @@
 ﻿@page "/updateproduct/{Id:int}"
 @inject IProductManager ProductManager
 @inject ICategoryManager CategoryManager
+@inject NavigationManager NavigationManager
 
 <MudGrid>
   <MudItem xs="10" sm="8">
@@ -99,6 +100,8 @@
     {
         SetProductValues();
         var message = await ProductManager.UpdateProduct(Id, Product);
+        NavigationManager.NavigateTo("/allproducts", true);
+        
     }
 
     void SetProductValues()

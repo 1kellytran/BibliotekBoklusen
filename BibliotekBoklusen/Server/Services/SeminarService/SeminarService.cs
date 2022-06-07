@@ -1,4 +1,6 @@
-﻿namespace BibliotekBoklusen.Server.Services.SeminarService
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace BibliotekBoklusen.Server.Services.SeminarService
 {
     public class SeminarService : ISeminarService
     {
@@ -9,7 +11,7 @@
         }
         public async Task<List<Seminarium>> GetAllSeminars()
         {
-            var seminar = _context.Seminariums.ToList();
+            var seminar =await  _context.Seminariums.ToListAsync();
 
             if (seminar == null)
             {
@@ -20,7 +22,7 @@
 
         public async Task<Seminarium> GetSeminarById(int id)
         {
-            var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
+            var seminar =await _context.Seminariums.FirstOrDefaultAsync(s => s.Id == id);
             
             if(seminar == null)
             {
@@ -61,7 +63,7 @@
 
         public async Task<Seminarium> DeleteSeminar(int id)
         {
-            var seminar = _context.Seminariums.FirstOrDefault(s => s.Id == id);
+            var seminar =await  _context.Seminariums.FirstOrDefaultAsync(s => s.Id == id);
 
             if(seminar != null)
             {
