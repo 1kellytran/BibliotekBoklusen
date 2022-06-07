@@ -1,8 +1,19 @@
 ﻿@page "/searchEmployee"
+@inject NavigationManager NavigationManager
 @inject IUserManager UserManager
 
-<MudTextField Class="md-2" @bind-Value="searchText" Label="Sök personal" Variant="Variant.Text"></MudTextField>
-<MudButton @onclick="SearchForEmployee"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>
+<div class="input-group">
+	<MudTextField @bind-Value="searchText" Label="Sök personal" Variant="Variant.Outlined" @onkeypress="KeywordEnterPressed" />
+
+	<div class="input-group-append" >
+		<button class="btn btn-primary" @onclick="SearchForEmployee">
+			<span class="oi oi-magnifying-glass"></span>
+		</button>
+
+	</div>
+</div>
+
+
 
 @if (editUser)
 {
@@ -78,6 +89,7 @@
 @code {
     private List<User> employees = new List<User>();
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
+    
     User userToEdit = new User();
     int userId;
     bool editUser = false;
@@ -125,4 +137,24 @@
         await UserManager.DeleteUser(userId);
         employees = await UserManager.GetEmployees();
     }
+
+    protected  async Task KeywordEnterPressed(KeyboardEventArgs eventArgs)
+    {
+        if (eventArgs.Key == null || eventArgs.Key.Equals("Enter"))
+        {
+           await SearchForEmployee();
+        }
+       
+    }
+   
 }
+
+   
+
+        
+
+
+
+    
+    
+
