@@ -22,7 +22,8 @@
                         <td><input type="text" @bind-value="SeminarToUpdate.Title" /></td>
                         <td><input type="text" @bind-value="SeminarToUpdate.FirstName" /></td>
                         <td><input type="text" @bind-value="SeminarToUpdate.LastName" /></td>
-                        <td><input type="text" @bind-value="SeminarToUpdate.DayAndTime" /></td>
+                        <td><input type="text" @bind-value="SeminarToUpdate.SeminarDate" /></td>
+                        <td><input type="text" @bind-value="SeminarToUpdate.SeminarTime" /></td>
                         <td><button type="submit" class="btn btn-primary">Spara</button></td>
                     </tr>
                 </tbody>
@@ -56,8 +57,8 @@ else
         <RowTemplate>
             <MudTd DataLabel="Seminarium"><a href="SeminarById/@context.Id"></a>@context.Title</MudTd>
             <MudTd DataLabel="Föreläsare">@context.FirstName @context.LastName</MudTd>
-            <MudTd DataLabel="Datum">@context.DayAndTime.DayOfWeek @context.DayAndTime.ToShortDateString()</MudTd>
-            <MudTd DataLabel="Datum">@context.DayAndTime.ToString("HH:mm")</MudTd>
+            <MudTd DataLabel="Datum">@context.SeminarDate.DayOfWeek @context.SeminarDate.ToShortDateString()</MudTd>
+            <MudTd DataLabel="Datum">@context.SeminarTime.ToString("HH:mm")</MudTd>
             <AuthorizeView Context="_context" Roles="Librarian, Admin">
                 <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
                     <MudButton @onclick="() => EditSeminar(context.Id, context)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
@@ -127,7 +128,7 @@ else
 
     public async Task AddSeminar()
     {
-        CreateSeminar.DayAndTime = TodaysDate;
+        CreateSeminar.SeminarDate = TodaysDate;
         var result = await SeminarManager.CreateSeminar(CreateSeminar);
         _ = result == null ? (message = $"Seminariet \"{CreateSeminar.Title}\" har lagts till") : (message = result);
     }

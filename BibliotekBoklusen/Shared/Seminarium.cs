@@ -6,14 +6,12 @@ namespace BibliotekBoklusen.Shared
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string Title { get; set; }
+        public string Title { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public string LastName { get; set; }
+        public string LastName { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public DateTime SeminarDate { get; set; }
-        [Required(ErrorMessage = "Obligatorisk fält")]
-        public DateTime SeminarTime { get; set; }
+        public DateTime DayAndTime { get; set; }
     }
 }

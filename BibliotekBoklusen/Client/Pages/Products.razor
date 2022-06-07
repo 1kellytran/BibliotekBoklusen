@@ -1,5 +1,5 @@
 ﻿@page "/allproducts"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage;
 @inject ISearchManager SearchManager
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
@@ -9,34 +9,35 @@
 <AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
     {
-        <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
+        <EditProduct></EditProduct>
+        @*<EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
             <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Titel</th>
-                        <th>Förnamn</th>
-                        <th>Efternamn</th>
-                        <th>Utgåva</th>
-                        <th>Exemplar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
-                        @foreach (var c in ProductToUpdate.Creators)
-                        {
-                            <td><input type="text" @bind-value=c.FirstName /></td>
-                            <td><input type="text" @bind-value="c.LastName" /></td>
-                        }
-                        <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
-                        <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
+            <thead class="thead-light">
+            <tr>
+            <th>Titel</th>
+            <th>Förnamn</th>
+            <th>Efternamn</th>
+            <th>Utgåva</th>
+            <th>Exemplar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+            <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
+            @foreach (var c in ProductToUpdate.Creators)
+            {
+            <td><input type="text" @bind-value=c.FirstName /></td>
+            <td><input type="text" @bind-value="c.LastName" /></td>
+            }
+            <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
+            <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
 
-           <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
 
-                    </tr>
-                </tbody>
+            </tr>
+            </tbody>
             </table>
-        </EditForm>
+            </EditForm>*@
     }
 </AuthorizeView>
 
@@ -102,7 +103,7 @@ else
                 {
                 <MudTd>
 
-                <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
 
                 </MudTd>
                 }
@@ -110,7 +111,7 @@ else
                 {
                 <MudTd>
 
-                       <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
+                    <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
                 </MudTd>
                 }
                 else
@@ -146,6 +147,7 @@ else
     public List<Category> Categories { get; set; } = new();
     public List<Product> AvailableLoans { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
+    [Parameter]
     public Product ProductToUpdate { get; set; } = new();
     public Creator Creator { get; set; } = new();
     public User CurrentUser { get; set; } = new();
@@ -157,7 +159,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
         CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();
