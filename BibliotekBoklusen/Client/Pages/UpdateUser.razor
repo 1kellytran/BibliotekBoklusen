@@ -1,5 +1,5 @@
 ﻿@page "/updateuser"
-@inject ILocalStorageService localStorage;
+@inject ILocalStorageService LocalStorage;
 @inject IUserManager UserManager
 
 <h3 class="mb-3">Uppdatera uppgifter</h3>
@@ -22,7 +22,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
         user = await UserManager.GetCurrentUser(userEmail);
     }
 

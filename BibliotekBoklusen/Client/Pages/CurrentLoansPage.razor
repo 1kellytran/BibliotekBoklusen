@@ -1,6 +1,6 @@
 ﻿@page "/currentLoans"
 @inject IUserManager UserManager
-@inject ILocalStorageService localStorage;
+@inject ILocalStorageService LocalStorage;
 @inject NavigationManager NavigationManager
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
@@ -65,7 +65,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
         User = await UserManager.GetCurrentUser(userEmail);
         AllUserLoans = await LoanManager.GetLoansByUserId(User.Id);
 

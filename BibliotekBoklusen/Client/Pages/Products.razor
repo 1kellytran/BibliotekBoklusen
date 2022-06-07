@@ -1,5 +1,5 @@
 ﻿@page "/allproducts"
-@inject Blazored.LocalStorage.ILocalStorageService localStorage;
+@inject ILocalStorageService LocalStorage;
 @inject ISearchManager SearchManager
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
@@ -157,7 +157,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
         CurrentUser = await UserManager.GetCurrentUser(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();

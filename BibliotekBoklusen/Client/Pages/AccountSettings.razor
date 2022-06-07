@@ -1,6 +1,6 @@
 ﻿@page "/AccountSettings"
 @inject IUserManager UserManager
-@inject ILocalStorageService localStorage;
+@inject ILocalStorageService LocalStorage;
 @inject NavigationManager NavigationManager
 
 @if (!editUser)
@@ -58,7 +58,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var userEmail = await localStorage.GetItemAsync<string>("email");
+        var userEmail = await LocalStorage.GetItemAsync<string>("email");
 
         user = await UserManager.GetCurrentUser(userEmail);
     }
