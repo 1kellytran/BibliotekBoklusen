@@ -52,7 +52,6 @@ else if(message == "Ett fel har uppstått. Har du fyllt i allt korrekt?")
     public List<Seminarium> AllSeminars { get; set; }
     public Seminarium CreateSeminar { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
-    public string timeOfDay;
     public string message = "";
 
     public async Task AddSeminar()

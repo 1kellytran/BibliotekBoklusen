@@ -42,7 +42,7 @@ else if (message == $"Bibliotekarie {registerUser.FirstName} tillagd")
 {
     <MudAlert Severity="Severity.Success">@message</MudAlert>
 }
-else if (message == $"Det finns redan en användare registrerad på mejladressen {registerUser.Email}")
+else if (message == $"Det finns redan en användare registrerad på e-mailadressen \"{registerUser.Email}\"")
 {
     <MudAlert Severity="Severity.Warning">@message</MudAlert>
 }
@@ -86,7 +86,7 @@ else if (message == $"Det finns redan en användare registrerad på mejladressen
         }
         else if (message == "User already exists.")
         {
-            message = $"Det finns redan en användare registrerad på mejladressen {registerUser.Email}";
+            message = $"Det finns redan en användare registrerad på e-mailadressen \"{registerUser.Email}\"";
         }
         else
         {
