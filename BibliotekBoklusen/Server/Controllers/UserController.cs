@@ -25,7 +25,7 @@ namespace BibliotekBoklusen.Server.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
-            var user = _userService.GetUser(id);
+            var user = await _userService.GetUser(id);
 
             if (user != null)
             {
