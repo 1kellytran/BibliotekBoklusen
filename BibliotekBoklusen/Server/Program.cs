@@ -1,4 +1,5 @@
 global using BibliotekBoklusen.Shared;
+global using BibliotekBoklusen.Shared.DataModels;
 global using BibliotekBoklusen.Server.Data;
 global using BibliotekBoklusen.Server.Services;
 global using BibliotekBoklusen.Server.Services.ProductService;
@@ -63,41 +64,6 @@ builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<ISeminarService, SeminarService>();
-
-
-using (ServiceProvider servicepProvider = builder.Services.BuildServiceProvider())
-{
-    //var context = servicepProvider.GetRequiredService<AuthDbContext>();
-    //var appdbcontext = servicepProvider.GetRequiredService<AppDbContext>();
-    //var userManager = servicepProvider.GetRequiredService<UserManager<ApplicationUser>>();
-    //var roleManager = servicepProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
-    //context.Database.Migrate();
-    //appdbcontext.Database.Migrate();
-
-    //if (!context.Users.Any() || !appdbcontext.Users.Any())
-    //{
-    //    IdentityRole adminRole = new();
-    //    adminRole.Name = "Admin";
-
-    //    await roleManager.CreateAsync(adminRole);
-
-    //    ApplicationUser newUser = new();
-    //    newUser.UserName = "admin";
-    //    newUser.Email = "admin@admin.com";
-    //    string password = "admin123";
-
-    //    User user = new();
-    //    user.Email = newUser.Email;
-    //    user.IsAdmin = true;
-
-    //    await appdbcontext.Users.AddAsync(user);
-    //    await appdbcontext.SaveChangesAsync();
-    //    await userManager.CreateAsync(newUser, password);
-
-    //    await userManager.AddToRoleAsync(newUser, "Admin");
-    //}
-}
 
 var app = builder.Build();
 app.UseSwaggerUI();

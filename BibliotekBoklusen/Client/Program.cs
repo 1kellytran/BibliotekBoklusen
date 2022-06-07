@@ -1,4 +1,5 @@
 global using BibliotekBoklusen.Shared;
+global using BibliotekBoklusen.Shared.DataModels;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Blazored.LocalStorage;
 global using System.Net.Http.Json;

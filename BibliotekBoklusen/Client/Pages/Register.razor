@@ -24,7 +24,7 @@
                     <AuthorizeView Context="_context" Roles=Admin>
                         <div class="form-group">
                             <label for="librarian">Behörig bibliotekarie</label>
-                            <MudCheckBox T="bool" Required="false" Class="ml-n2" @bind-Checked="registerUser.IsLibrarian" />
+                            <MudCheckBox T="bool" Required="false" Class="ml-n2" @bind-Checked="isLibrarian" />
                         </div>
                     </AuthorizeView>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" @onclick="() => HandleRegistration()">Registrera</MudButton>
@@ -50,6 +50,7 @@ else if (message == $"Det finns redan en användare registrerad på mejladressen
 
 @code {
     private RegisterDto registerUser = new RegisterDto();
+    bool isLibrarian;
     string[] errors = { };
     bool success;
     string message = "";
@@ -58,6 +59,14 @@ else if (message == $"Det finns redan en användare registrerad på mejladressen
 
     public async Task HandleRegistration()
     {
+        if(isLibrarian)
+        {
+            registerUser.UserRole = UserRole.Librarian;
+        }
+        else {
+            registerUser.UserRole = UserRole.Member;
+        }
+
         message = await UserManager.Register(registerUser);
         if (message == "User has been registered")
         {
@@ -66,7 +75,7 @@ else if (message == $"Det finns redan en användare registrerad på mejladressen
                 NavigationManager.NavigateTo("/login");
                 message = $"{registerUser.FirstName} tillagd";
             }
-            else if (registerUser.IsLibrarian)
+            else if (registerUser.UserRole.Equals(UserRole.Librarian))
             {
                 message = $"Bibliotekarie {registerUser.FirstName} tillagd";
             }

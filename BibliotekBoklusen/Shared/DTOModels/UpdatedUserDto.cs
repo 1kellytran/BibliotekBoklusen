@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BibliotekBoklusen.Shared.DataModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace BibliotekBoklusen.Shared
 {
@@ -10,7 +11,6 @@ namespace BibliotekBoklusen.Shared
         public string LastName { get; set; }
 
         public bool IsActive { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsLibrarian { get; set; }
+        public UserRole UserRole { get; set; }
     }
 }

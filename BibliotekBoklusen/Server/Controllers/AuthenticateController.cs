@@ -104,7 +104,7 @@ namespace BibliotekBoklusen.Server.Controllers
                     LastName = model.LastName,
                     Email = model.Email,
                     IsActive = true,
-                    IsLibrarian = model.IsLibrarian
+                    UserRole = model.UserRole
                 };
 
                 var result = await _signInManager.UserManager.CreateAsync(user, model.Password);
@@ -112,7 +112,7 @@ namespace BibliotekBoklusen.Server.Controllers
                 if (!result.Succeeded)
                     return BadRequest("Något gick snett, försök igen.");
 
-                if (model.IsLibrarian)
+                if (model.UserRole.Equals(UserRole.Librarian))
                 {
                     if (!await _roleManager.RoleExistsAsync(UserRoles.Librarian))
                     {
@@ -135,8 +135,6 @@ namespace BibliotekBoklusen.Server.Controllers
                         await _signInManager.UserManager.AddToRoleAsync(user, UserRoles.Member);
                     }
                 }
-
-
 
                 _appDbContext.Users.Add(userModel);
                 var dbContextResult = await _appDbContext.SaveChangesAsync();

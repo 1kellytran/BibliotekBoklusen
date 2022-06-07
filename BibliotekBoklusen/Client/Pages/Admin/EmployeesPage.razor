@@ -26,7 +26,7 @@
                     <td><input @bind="userToUpdate.LastName" /></td>
                     <td>@userToEdit.Email</td>
                     <td>@userToEdit.Created.ToString("d")</td>
-                    <td><input type="checkbox" @bind="userToUpdate.IsAdmin" /></td>
+                    <td><input type="checkbox" @bind="isAdmin" /></td>
                     <td><button type="submit" class="btn btn-primary">Spara</button></td>
                 </tr>
             </tbody>
@@ -52,7 +52,7 @@
                 <td>@employee.LastName</td>
                 <td>@employee.Email</td>
                 <td>@employee.Created.ToString("d")</td>
-                @if (employee.IsAdmin)
+                @if (employee.UserRole.Equals(UserRole.Admin))
                 {
                     <td>Ja</td>
                 }
@@ -76,6 +76,7 @@
     User userToEdit = new User();
     int userId;
     bool editUser = false;
+    bool isAdmin;
     string message;
 
     protected override async Task OnInitializedAsync()
@@ -91,11 +92,20 @@
         userToUpdate.IsActive = user.IsActive;
         userToEdit = user;
         userId = user.Id;
+
         editUser = true;
     }
 
     private async Task UpdateUser()
     {
+        if (isAdmin)
+        {
+            userToUpdate.UserRole = UserRole.Admin;
+        }
+        else
+        {
+            userToUpdate.UserRole = UserRole.Librarian;
+        }
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
         Employees = await UserManager.GetEmployees();
