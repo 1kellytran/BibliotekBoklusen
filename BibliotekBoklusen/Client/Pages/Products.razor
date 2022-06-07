@@ -69,14 +69,14 @@ else
 
         </HeaderContent>
         <RowTemplate>
-            <MudTd DataLabel="Titel"><a href="ProductById/@product.Id">@product.Title</a></MudTd>
+            <MudTd DataLabel="Titel"><a href="ProductById/@product.Id"><b>@product.Title</b></a></MudTd>
             @foreach (var creator in @product.Creators)
             {
             <MudTd DataLabel="Skapare">
                 @creator.FirstName @creator.LastName
             </MudTd>
             }
-        <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy/MM/dd")</MudTd>
+        <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy")</MudTd>
         @if (product.Category.Count > 1)
             {
             <MudTd DataLabel="Genre">
