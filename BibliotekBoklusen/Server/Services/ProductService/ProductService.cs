@@ -82,7 +82,6 @@ namespace BibliotekBoklusen.Server.Services.ProductService
 
         public async Task<string> UpdateProduct(int id, Product productToUpdate)
         {
-
             var productForCount = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
             var nrOfCopies = productToUpdate.NumberOfCopiesOwned - productForCount.NumberOfCopiesOwned;
             ProductCopy productCopy = new();
@@ -111,16 +110,8 @@ namespace BibliotekBoklusen.Server.Services.ProductService
                     .FirstOrDefaultAsync();
                     _context.productCopies.Remove(postToRemove);
                     await _context.SaveChangesAsync();
-
                 }
-
-
             }
-
-
-
-
-
 
             var product = await _context.Products.Include(p => p.Creators).Include(p => p.Category).FirstOrDefaultAsync(x => x.Id == id);
             if (product != null)
