@@ -1,36 +1,87 @@
-﻿@inject IProductManager ProductManager
+﻿@page "/editproduct/{Id:int}"
+@inject IProductManager ProductManager
 @inject ICategoryManager CategoryManager
 @inject ICreatorManager CreatorManager
 
 <h3>Ändra produktinformation för: "@ProductToUpdate.Title"</h3>
 
-<EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>Titel</th>
-                <th>Förnamn</th>
-                <th>Efternamn</th>
-                <th>Utgåva</th>
-                <th>Exemplar</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
-                @foreach (var c in ProductToUpdate.Creators)
+<EditForm Model="ProductToUpdate" OnSubmit=SaveEditProduct>
+    <DataAnnotationsValidator />
+
+    <div class="form-group col-4">
+        <label for="Title">Titel:</label>
+        <InputText Id="Title" class="form-control" @bind-Value="ProductToUpdate.Title" />
+        <ValidationMessage For="@(() => ProductToUpdate.Title)" />
+    </div>
+
+    @foreach (var c in ProductToUpdate.Creators)
+    {
+        <div class="row">
+            <label for="lastname">Skapare:</label>
+            <div class="col-4">
+                <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="c.FirstName" />
+                <ValidationMessage For="@(() => c.FirstName)" />
+            </div>
+
+            <div class="col-4">
+                <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="c.LastName" />
+                <ValidationMessage For="@(() => c.LastName)" />
+            </div>
+            <div class="col-4 align-content-end">
+                <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+            </div>
+        </div>
+    }
+    @if (addCreator)
+    {
+        <div class="row">
+            <div class="col-4">
+                <InputText Id="firstname" class="form-control" placeholder="Förnamn" @bind-Value="Creator.FirstName" />
+                <ValidationMessage For="@(() => Creator.FirstName)" />
+            </div>
+
+            <div class="col-4">
+                <InputText Id="lastname" class="form-control" placeholder="Efternamn" @bind-Value="Creator.LastName" />
+                <ValidationMessage For="@(() => Creator.LastName)" />
+            </div>
+        </div>
+        <div class="col-4 align-content-end">
+            <h3 class="btn btn-secondary" @onclick="SaveCreator">OK</h3>
+        </div>
+        <div class="col-4 align-content-end">
+            <h3 class="btn btn-secondary" @onclick="AddCreator">+</h3>
+        </div>
+    }
+
+    <div class="form-group col-2">
+        <label for="published ">Utgiven:</label>
+        <InputDate Id="published" min="1500-01-01" max="TodaysDate" class="form-control" @bind-Value="TodaysDate" />
+        <ValidationMessage For="@(() => ProductToUpdate.Published)" />
+    </div>
+    <div class="form-group col-2">
+        <label for="NumberOfCopies ">Antal Kopior:</label>
+        <InputNumber Id="NumberOfCopies" class="form-control" @bind-Value="ProductToUpdate.NumberOfCopiesOwned" />
+        <ValidationMessage For="@(() => ProductToUpdate.Published)" />
+    </div>
+    <div class="form-group">
+        <div class="selectdiv">
+            <label>Typ:</label>
+            <InputSelect id="type" @bind-Value="ProductToUpdate.Type">
+                <option value="" selected></option>
+                @foreach (var productType in Enum.GetValues(typeof(ProductType)))
                 {
-                    <td><input type="text" @bind-value=c.FirstName /></td>
-                    <td><input type="text" @bind-value="c.LastName" /></td>
+                    <option value="@productType">@productType</option>
                 }
-                <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
-                <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
-
-                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
-
-            </tr>
-        </tbody>
-    </table>
+            </InputSelect>
+        </div>
+    </div>
+    <MudSelect T="Category" Label="Välj genre" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
+        @foreach (var category in Categories)
+        {
+            <MudSelectItem T="Category" Value="@category">@category.CategoryName</MudSelectItem>
+        }
+    </MudSelect>
+    <button type="submit" class="btn btn-primary">Spara</button>
 </EditForm>
 
 @code {
@@ -39,7 +90,6 @@
     public List<Creator> Creators { get; set; } = new();
     public Creator Creator { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
-    [Parameter]
     public Product ProductToUpdate { get; set; } = new();
     public DateTime TodaysDate { get; set; } = DateTime.Now;
     private Category value { get; set; } = new();

@@ -3,52 +3,28 @@
 @inject NavigationManager NavigationManager
 
 <h3>Ändra seminariuminformation för: "@SeminarToUpdate.Title"</h3>
-@*<EditForm Model="SeminarToUpdate" OnSubmit="HandleSeminar">
-    <div class="form-group col-4">
-    <label for="Title">Titel:</label>
-    <InputText Id="Title" class="form-control" @bind-Value="SeminarToUpdate.Title" />
-    <ValidationMessage For="@(() => SeminarToUpdate.Title)" />
-    </div>
-    <div class="form-group col-4">
-    <label for="Title">Firstname:</label>
-    <InputText Id="Firstname" class="form-control" @bind-Value="SeminarToUpdate.FirstName" />
-    <ValidationMessage For="@(() => SeminarToUpdate.FirstName)" />
-    </div>
-    <div class="form-group col-4">
-    <label for="Title">LastName:</label>
-    <InputText Id="LastName" class="form-control" @bind-Value="SeminarToUpdate.LastName" />
-    <ValidationMessage For="@(() => SeminarToUpdate.LastName)" />
-    </div>
-    <div class="form-group col-4">
-    <label for="Title">DayAndTime:</label>
-    <InputDate Id="DayAndTime" class="form-control" @bind-Value="SeminarToUpdate.DayAndTime" />
-    <ValidationMessage For="@(() => SeminarToUpdate.DayAndTime)" />
-    </div>
+<EditForm Model="SeminarToUpdate" OnSubmit="HandleSeminar">
+        <div class="form-group col-4">
+            <label for="Title">Titel:</label>
+            <InputText Id="Title" class="form-control" @bind-Value="SeminarToUpdate.Title" />
+            <ValidationMessage For="@(() => SeminarToUpdate.Title)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">Firstname:</label>
+            <InputText Id="Firstname" class="form-control" @bind-Value="SeminarToUpdate.FirstName" />
+            <ValidationMessage For="@(() => SeminarToUpdate.FirstName)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">LastName:</label>
+            <InputText Id="LastName" class="form-control" @bind-Value="SeminarToUpdate.LastName" />
+            <ValidationMessage For="@(() => SeminarToUpdate.LastName)" />
+        </div>
+        <div class="form-group col-4">
+            <label for="Title">DayAndTime:</label>
+            <InputDate Id="DayAndTime" class="form-control" @bind-Value="SeminarToUpdate.DayAndTime" />
+            <ValidationMessage For="@(() => SeminarToUpdate.DayAndTime)" />
+        </div>
     <button type="submit" class="btn btn-primary">Spara ändringar</button>
-    </EditForm>*@
-
-<EditForm Context="_context" Model="SeminarToUpdate" OnSubmit="HandleSeminar">
-    <table class="table">
-        <thead class="thead-light">
-            <tr>
-                <th>Seminarium</th>
-                <th>Förnamn</th>
-                <th>Efternamn</th>
-                <th>Dag & datum</th>
-                <th>Tid</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" @bind-value="SeminarToUpdate.Title" /></td>
-                <td><input type="text" @bind-value="SeminarToUpdate.FirstName" /></td>
-                <td><input type="text" @bind-value="SeminarToUpdate.LastName" /></td>
-                <td><input type="text" @bind-value="SeminarToUpdate.SeminarDate" /></td>
-                <td><input type="text" @bind-value="SeminarToUpdate.SeminarTime" /></td>
-                <td><button type="submit" class="btn btn-primary">Spara</button></td>
-            </tr>
-        </tbody>
-    </table>
 </EditForm>
 
 @code {

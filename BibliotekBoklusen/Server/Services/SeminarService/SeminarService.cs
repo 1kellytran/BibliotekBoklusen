@@ -50,8 +50,7 @@
                 seminar.Title = seminarToUpdate.Title;
                 seminar.FirstName = seminarToUpdate.FirstName;
                 seminar.LastName = seminarToUpdate.LastName;
-                seminar.SeminarDate = seminarToUpdate.SeminarDate;
-                seminar.SeminarTime = seminarToUpdate.SeminarTime;
+                seminar.DayAndTime = seminarToUpdate.DayAndTime;
                 await _context.SaveChangesAsync();
 
                 return seminarToUpdate;
