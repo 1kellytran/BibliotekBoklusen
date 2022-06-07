@@ -2,122 +2,142 @@
 @page "/searchMember"
 
 
-    <MudTextField Class="md-2" @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Text"></MudTextField>
-    <MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>
+@*<MudTextField Class="md-2" @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Text"></MudTextField>
+<MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>*@
 
-    @if (editUser)
+<div class="input-group">
+	<MudTextField @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Outlined" @onkeypress="KeywordEnterPressed" />
+
+	<div class="input-group-append">
+		<button class="btn btn-primary" @onclick="SearchForMembers">
+			<span class="oi oi-magnifying-glass"></span>
+		</button>
+
+	</div>
+</div>
+
+@if (editUser)
 {
-    <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Förnamn</th>
-                    <th scope="col">Efternamn</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Medlem sedan</th>
-                    <th scope="col">Aktiv</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input @bind="userToUpdate.FirstName" /></td>
-                    <td><input @bind="userToUpdate.LastName" /></td>
-                    <td>@userToEdit.Email</td>
-                    <td>@userToEdit.Created.ToString("d")</td>
-                    <td><input type="checkbox" @bind="userToUpdate.IsActive" /></td>
-                    <td><button type="submit" class="btn btn-primary">Spara</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </EditForm>
+	<EditForm Model="userToUpdate" OnSubmit="UpdateUser">
+		<table class="table">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Förnamn</th>
+					<th scope="col">Efternamn</th>
+					<th scope="col">Email</th>
+					<th scope="col">Medlem sedan</th>
+					<th scope="col">Aktiv</th>
+					<th scope="col"></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input @bind="userToUpdate.FirstName" /></td>
+					<td><input @bind="userToUpdate.LastName" /></td>
+					<td>@userToEdit.Email</td>
+					<td>@userToEdit.Created.ToString("d")</td>
+					<td><input type="checkbox" @bind="userToUpdate.IsActive" /></td>
+					<td><button type="submit" class="btn btn-primary">Spara</button></td>
+				</tr>
+			</tbody>
+		</table>
+	</EditForm>
 }
 
 @if (members != null || members.Count != 0)
 {
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Förnamn</th>
-                <th scope="col">Efternamn</th>
-                <th scope="col">Email</th>
-                <th scope="col">Medlem sedan</th>
-                <th scope="col">Aktiv</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var member in members)
-            {
-                <tr>
-                    @if (@member.Email != "admin@admin.com")
-                    {
-                        <td>@member.FirstName</td>
-                        <td>@member.LastName</td>
-                        <td>@member.Email</td>
-                        <td>@member.Created.ToString("d")</td>
-                        <td>@member.IsActive</td>
-                        <td>
+	<table class="table">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">Förnamn</th>
+				<th scope="col">Efternamn</th>
+				<th scope="col">Email</th>
+				<th scope="col">Medlem sedan</th>
+				<th scope="col">Aktiv</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var member in members)
+			{
+				<tr>
+					@if (@member.Email != "admin@admin.com")
+					{
+						<td>@member.FirstName</td>
+						<td>@member.LastName</td>
+						<td>@member.Email</td>
+						<td>@member.Created.ToString("d")</td>
+						<td>@member.IsActive</td>
+						<td>
 
-                            <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-                            <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
+							<MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+							<MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+						</td>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
 }
- <h6 class="validation-message">@message</h6>
+<h6 class="validation-message">@message</h6>
 
 @code {
-    private List<User> members = new List<User>();
-    UpdatedUserDto userToUpdate = new UpdatedUserDto();
-    User userToEdit = new User();
-    int userId;
-    bool editUser = false;
-    string message;
-    string searchText;
+	private List<User> members = new List<User>();
+	UpdatedUserDto userToUpdate = new UpdatedUserDto();
+	User userToEdit = new User();
+	int userId;
+	bool editUser = false;
+	string message;
+	string searchText;
 
 
-    private async Task SearchForMembers()
-    {
-        if (searchText != null || searchText != "")
-        {
-            var result = await UserManager.GetUsersBySearch(searchText);
-            if (result == null || result.Count == 0)
-            {
-                message = "Inga användare funna";
-                members = new();
-            }
-            else
-            {
-                members = result.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
-            }
-        }
-    }
+	private async Task SearchForMembers()
+	{
+		if (searchText != null || searchText != "")
+		{
+			var result = await UserManager.GetUsersBySearch(searchText);
+			if (result == null || result.Count == 0)
+			{
+				message = "Inga användare funna";
+				members = new();
+			}
+			else
+			{
+				members = result.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
+			}
+		}
+	}
 
-    private void EditUser(User user)
-    {
-        userToUpdate.FirstName = user.FirstName;
-        userToUpdate.LastName = user.LastName;
-        userToUpdate.IsActive = user.IsActive;
-        userToEdit = user;
-        userId = user.Id;
-        editUser = true;
-    }
+	private void EditUser(User user)
+	{
+		userToUpdate.FirstName = user.FirstName;
+		userToUpdate.LastName = user.LastName;
+		userToUpdate.IsActive = user.IsActive;
+		userToEdit = user;
+		userId = user.Id;
+		editUser = true;
+	}
 
-    private async Task UpdateUser()
-    {
-        editUser = false;
-        await UserManager.UpdateUserinformation(userToUpdate, userId);
-        members = await UserManager.GetAllUser();
-        message = "Användaren har uppdaterats";
-    }
+	private async Task UpdateUser()
+	{
+		editUser = false;
+		await UserManager.UpdateUserinformation(userToUpdate, userId);
+		members = await UserManager.GetAllUser();
+		message = "Användaren har uppdaterats";
+	}
 
-    private async Task DeleteUser(int userId)
-    {
-        await UserManager.DeleteUser(userId);
-        members = await UserManager.GetAllUser();
-    }
+	private async Task DeleteUser(int userId)
+	{
+		await UserManager.DeleteUser(userId);
+		members = await UserManager.GetAllUser();
+	}
+
+	protected async Task KeywordEnterPressed(KeyboardEventArgs eventArgs)
+	{
+		if (eventArgs.Key == null || eventArgs.Key.Equals("Enter"))
+		{
+			await SearchForMembers();
+		}
+
+	}
 }
