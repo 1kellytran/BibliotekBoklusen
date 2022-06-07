@@ -121,9 +121,14 @@ else
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        DialogService.Show<DeleteSeminar>("Radera Seminarium", parameters, options);
-        
-        AllSeminars = await SeminarManager.GetAllSeminars();
+        var dialog = DialogService.Show<DeleteSeminar>("Radera Seminarium", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            AllSeminars = await SeminarManager.GetAllSeminars();
+        }
+
     }
 
     public async Task AddSeminar()
