@@ -5,42 +5,13 @@
 @inject IProductManager ProductManager
 @inject IUserManager UserManager
 @inject IProductCopyManager ProductCopyManager
+@inject IDialogService DialogService
 
 <AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
     {
 
         <UpdateProduct Id=Id />
-
-@*        <EditForm Context="_context" Model="ProductToUpdate">
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Titel</th>
-                        <th>Förnamn</th>
-                        <th>Efternamn</th>
-                        <th>Utgåva</th>
-                        <th>Exemplar</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><input type="text" @bind-value="ProductToUpdate.Title" /></td>
-                        @foreach (var c in ProductToUpdate.Creators)
-                        {
-                            <td><input type="text" @bind-value=c.FirstName /></td>
-                            <td><input type="text" @bind-value="c.LastName" /></td>
-                        }
-                        <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
-                        <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
-
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small" OnClick="SaveEditProduct">Spara</MudButton>
-
-                    </tr>
-                </tbody>
-            </table>
-        </EditForm>*@
-
     }
 </AuthorizeView>
 
@@ -135,7 +106,7 @@ else
         </AuthorizeView>
         <AuthorizeView Context="_context" Roles="Librarian, Admin">
             <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
-                <MudButton @onclick="() => EditProduct(product.Id, product)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                <MudButton @onclick="() => EditProduct(product.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
                 <MudButton @onclick="() => DeleteProduct(product.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
             </MudTd>
         </AuthorizeView>
@@ -171,23 +142,30 @@ else
         AllProducts = await ProductManager.GetAllProducts();
     }
 
-    public async Task EditProduct(int id, Product productToEdit)
+    public async Task EditProduct(int id)
     {
         editProduct = true;
         Id = id;
-        ProductToUpdate = productToEdit;
     }
 
-    //public async Task SaveEditProduct()
-    //{
-    //    await ProductManager.UpdateProduct(Id, ProductToUpdate);
-    //    editProduct = false;
-    //}
-
-    public async Task DeleteProduct(int id)
+        public async Task DeleteProduct(int id)
     {
-        await ProductManager.DeleteProduct(id);
-        AllProducts = await ProductManager.GetAllProducts();
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill radera produkten? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Radera");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DeleteProduct>("Radera produkter", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+                AllProducts = await ProductManager.GetAllProducts();
+        }
+
     }
 
     public async Task LoanProduct(int productId)

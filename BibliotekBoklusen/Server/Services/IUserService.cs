@@ -8,7 +8,7 @@ namespace BibliotekBoklusen.Server.Services
 
         Task<List<User>> GetAllUser();
         Task<User> GetUser(int id);
-        Task<User> GetCurrentUser(string userEmail);
+        Task<User> GetUserByEmail(string userEmail);
         Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto model, int id);
         Task<ServiceResponse<string>> ChangePassword(PasswordDto editPassword);
         Task<ServiceResponse<string>> DeleteUserFromDb(int id);

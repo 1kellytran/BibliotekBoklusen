@@ -35,7 +35,7 @@ namespace BibliotekBoklusen.Server.Services
            .FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetCurrentUser(string userEmail)
+        public async Task<User> GetUserByEmail(string userEmail)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
         }

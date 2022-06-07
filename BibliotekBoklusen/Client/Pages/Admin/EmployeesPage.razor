@@ -1,5 +1,6 @@
 ﻿@page "/employees"
 @inject IUserManager UserManager
+@inject IDialogService DialogService
 
 
 <h3>Personal</h3>
@@ -112,10 +113,24 @@
         message = "Användaren har uppdaterats";
     }
 
-    private async Task DeleteUser(int userId)
+      public async Task DeleteUser(int id)
     {
-        await UserManager.DeleteUser(userId);
-        Employees = await UserManager.GetEmployees();
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill radera anställd? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Radera");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DeleteUser>("Radera anställd", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+              Employees = await UserManager.GetEmployees();
+        }
+
     }
 
 }
