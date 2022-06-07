@@ -12,7 +12,7 @@
 
         <UpdateProduct Id=Id />
 
-@*        <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
+@*        <EditForm Context="_context" Model="ProductToUpdate">
             <table class="table">
                 <thead class="thead-light">
                     <tr>
@@ -34,7 +34,7 @@
                         <td><input type="text" @bind-value="ProductToUpdate.Published" /></td>
                         <td><input type="number" @bind-value="ProductToUpdate.NumberOfCopiesOwned" /></td>
 
-                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small">Spara</MudButton>
+                        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Save" Size="Size.Small" OnClick="SaveEditProduct">Spara</MudButton>
 
                     </tr>
                 </tbody>
@@ -178,11 +178,11 @@ else
         ProductToUpdate = productToEdit;
     }
 
-    public async Task SaveEditProduct()
-    {
-        await ProductManager.UpdateProduct(productId, ProductToUpdate);
-        editProduct = false;
-    }
+    //public async Task SaveEditProduct()
+    //{
+    //    await ProductManager.UpdateProduct(Id, ProductToUpdate);
+    //    editProduct = false;
+    //}
 
     public async Task DeleteProduct(int id)
     {
