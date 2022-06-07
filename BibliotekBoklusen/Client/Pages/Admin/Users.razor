@@ -1,6 +1,9 @@
-﻿@inject IUserManager UserManager
-@page "/members"
+﻿@page "/members"
+@inject IDialogService DialogService
+@inject IUserManager UserManager
 
+
+<h3>Medlemmar</h3>
 <div>
     <h6 class="validation-message">@message</h6>
 </div>
@@ -103,9 +106,23 @@
         message = "Användaren har uppdaterats";
     }
 
-    private async Task DeleteUser(int userId)
+    public async Task DeleteUser(int id)
     {
-        await UserManager.DeleteUser(userId);
-        Members = await UserManager.GetAllUser();
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill radera användaren? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Radera");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DeleteUser>("Radera användare", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            Members = await UserManager.GetAllUser();
+        }
+
     }
 }

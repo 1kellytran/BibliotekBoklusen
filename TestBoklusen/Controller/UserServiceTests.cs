@@ -63,9 +63,9 @@ namespace BibliotekBoklusen.Test.Controller
         [Fact]
         public void GetCurrentUser_ShouldReturnUserById()
         {
-            _mockRepo.Setup(repo => repo.GetCurrentUser("Test@hotmail.com"))
+            _mockRepo.Setup(repo => repo.GetUserByEmail("Test@hotmail.com"))
                 .ReturnsAsync(new User() { Email = "Test@hotmail.com" });
-            var result = _controller.GetCurrentUser("Test@hotmail.com");
+            var result = _controller.GetUserByEmail("Test@hotmail.com");
             var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
             var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
