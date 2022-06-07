@@ -15,7 +15,7 @@ namespace BibliotekBoklusen.Server.Data
         {
             string adminId = "02174cf0–9412–4cfe-afbf-59f706d72cf6";
             string adminRoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210";
-            string adminPassword = "admin123";
+            string adminPassword = "Admin123";
 
             //seed admin role
             builder.Entity<IdentityRole>().HasData(new IdentityRole { Id = adminRoleId, Name = "Admin", NormalizedName = "ADMIN".ToUpper() },
