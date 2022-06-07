@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 namespace BibliotekBoklusen.Shared
 {
     public class Seminarium
@@ -12,6 +11,8 @@ namespace BibliotekBoklusen.Shared
         [Required(ErrorMessage = "Obligatorisk fält")]
         public string LastName { get; set; } 
         [Required(ErrorMessage = "Obligatorisk fält")]
-        public DateTime DayAndTime { get; set; }
+        public DateTime SeminarDate { get; set; }
+        [Required(ErrorMessage = "Obligatorisk fält")]
+        public DateTime SeminarTime { get; set; }
     }
 }
