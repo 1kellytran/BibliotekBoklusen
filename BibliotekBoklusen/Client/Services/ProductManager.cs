@@ -30,9 +30,11 @@
             return message;
         }
 
-        public async Task UpdateProduct(int id, Product product)
+        public async Task<string> UpdateProduct(int id, Product product)
         {
-            await _httpClient.PutAsJsonAsync($"api/products/{id}", product);
+            var result = await _httpClient.PutAsJsonAsync($"api/products/{id}", product);
+            var message = result.IsSuccessStatusCode ? $"Produkten {product.Title} har uppdaterats" : null;
+            return message;
         }
 
         public async Task DeleteProduct(int id)

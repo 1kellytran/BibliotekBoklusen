@@ -9,7 +9,10 @@
 <AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
     {
-        <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
+
+        <UpdateProduct Id=Id />
+
+@*        <EditForm Context="_context" Model="ProductToUpdate" OnSubmit="SaveEditProduct">
             <table class="table">
                 <thead class="thead-light">
                     <tr>
@@ -36,7 +39,8 @@
                     </tr>
                 </tbody>
             </table>
-        </EditForm>
+        </EditForm>*@
+
     }
 </AuthorizeView>
 
@@ -170,7 +174,7 @@ else
     public async Task EditProduct(int id, Product productToEdit)
     {
         editProduct = true;
-        productId = id;
+        Id = id;
         ProductToUpdate = productToEdit;
     }
 

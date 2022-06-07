@@ -1,0 +1,122 @@
+﻿@page "/updateproduct/{Id:int}"
+@inject IProductManager ProductManager
+@inject ICategoryManager CategoryManager
+
+<MudGrid>
+    <MudItem xs="4" sm="10">
+        <MudPaper Class="pa-4">
+            <MudForm Model=Product>
+                <MudCardHeader>
+                    <h5>Ändra detaljer</h5>
+                </MudCardHeader>
+                <MudCardContent Class="pa-0">
+                    <MudTable Items="@Product.Creators" Elevation="0" Breakpoint="Breakpoint.Sm">
+                        <RowTemplate>
+                            <MudTd Datalabel="FirstName">
+                                <MudForm Model="@context">
+                                    <MudTextField @bind-Value="context.FirstName"
+                                                  For="@(() => context.FirstName)"
+                                                  Label="Skaparens förnamn" />
+                                </MudForm>
+                            </MudTd>
+                            <MudTd Datalabel="LastName">
+                                <MudForm Model="@context">
+                                    <MudTextField @bind-Value="context.LastName"
+                                                  For="@(() => context.LastName)"
+                                                  Label="Skaparens efternamn" />
+                                </MudForm>
+                            </MudTd>
+                            <MudTd Datalabel="RemoveCreator">
+                                <MudForm Model="@context">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
+                                </MudForm>
+                            </MudTd>
+                        </RowTemplate>
+                    </MudTable>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Class="ml-auto" @onclick="AddCreator">Lägg till extra skapare</MudButton>
+                </MudCardActions>
+                <MudCardContent>
+
+                    <MudTextField @bind-Value="Product.Title"
+                                  For="@(() => Product.Title)"
+                                  Label="Titel" />
+
+
+                    <MudTextField @bind-Value="Product.Published"
+                                  For="@(() => Product.Published)"
+                                  Label="Publicerad" />
+
+                    <MudTextField @bind-Value="Product.NumberOfCopiesOwned"
+                                  For="@(() => Product.NumberOfCopiesOwned)"
+                                  Label="Antal exemplar" />
+
+                    <MudSelect T="ProductType" Label="Typ" @bind-Value="Product.Type" Placeholder="Välj typ" AnchorOrigin="Origin.BottomCenter">
+                        <MudSelectItem T="ProductType" Value="@ProductType.Bok">@ProductType.Bok.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Ebok">@ProductType.Ebok.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Film">@ProductType.Film.ToString()</MudSelectItem>
+                        <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
+                    </MudSelect>
+
+                    <MudSelect T="Category" Label="Välj genre" ToStringFunc="@convertFunc" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
+                        @foreach (var category in Categories)
+                        {
+                            <MudSelectItem T="Category" Value="@category">@category.CategoryName</MudSelectItem>
+                        }
+                    </MudSelect>
+
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="UpdateTheProduct">Skicka</MudButton>
+                </MudCardActions>
+
+            </MudForm>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public Product Product { get; set; } = new();
+    public DateTime TodaysDate { get; set; } = DateTime.Now;
+    public List<Category> Categories { get; set; } = new();
+    static List<Product> addedProducts = new();
+    string message;
+    private Category value { get; set; } = new();
+    private IEnumerable<Category> CategoriesToAdd { get; set; } = new HashSet<Category>();
+    private Func<Category, string> convertFunc = ci => ci.CategoryName;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Product = await ProductManager.GetProductById(Id);
+        Categories = await CategoryManager.GetAllCategoriesAsync();
+    }
+
+
+    public async Task UpdateTheProduct()
+    {
+        SetProductValues();
+        var message = await ProductManager.UpdateProduct(Id, Product);
+    }
+
+    void SetProductValues()
+    {
+        Product.Category.Clear();
+        Product.Category.AddRange(CategoriesToAdd);
+    }
+
+
+    void AddCreator()
+    {
+        Product.Creators.Add(new Creator { });
+    }
+
+    void RemoveCreator(int id)
+    {
+        var creatorToRemove = Product.Creators.FirstOrDefault(c => c.Id == id);
+        Product.Creators.Remove(creatorToRemove);
+    }
+
+}
