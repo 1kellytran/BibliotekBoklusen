@@ -10,8 +10,8 @@
 <AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
     {
-
-        <UpdateProduct Id=Id />
+        <MudButton @onclick="CloseEditProduct"> <MudIcon Icon="@Icons.Filled.Close"></MudIcon></MudButton>
+        <UpdateProduct Id=Id OnUpdateProduct="UpdateProduct"/>
     }
 </AuthorizeView>
 
@@ -120,6 +120,7 @@ else
 @code {
     [Parameter]
     public int Id { get; set; }
+    [Parameter]
     public List<Product>? AllProducts { get; set; } = new();
     public List<Category> Categories { get; set; } = new();
     public List<Product> AvailableLoans { get; set; } = new();
@@ -142,13 +143,18 @@ else
         AllProducts = await ProductManager.GetAllProducts();
     }
 
+    protected async Task UpdateProduct()
+    {
+        AllProducts = await ProductManager.GetAllProducts();
+    }
+
     public async Task EditProduct(int id)
     {
         editProduct = true;
         Id = id;
     }
 
-        public async Task DeleteProduct(int id)
+    public async Task DeleteProduct(int id)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Är du säker på att du vill radera produkten? Detta går inte att återkalla.");
@@ -163,7 +169,7 @@ else
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-                AllProducts = await ProductManager.GetAllProducts();
+            AllProducts = await ProductManager.GetAllProducts();
         }
 
     }
@@ -177,6 +183,11 @@ else
     void AddCreator()
     {
         _ = addCreator = true ? (addCreator == false) : (addCreator == true);
+    }
+
+    void CloseEditProduct()
+    {
+        editProduct = false;
     }
 
     private bool FilterFunc1(Product product) => FilterFunc(product, searchString1);
