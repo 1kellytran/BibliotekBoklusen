@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations.AuthDb
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220606114615_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,15 +101,15 @@ namespace BibliotekBoklusen.Server.Migrations.AuthDb
                         {
                             Id = "02174cf0–9412–4cfe-afbf-59f706d72cf6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4f82ddf0-7d2c-4895-bb5e-1a1dfe31c35f",
+                            ConcurrencyStamp = "d2137c42-c1b6-447c-847b-b1ab5d31698c",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "",
                             LastName = "",
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEAmOe8q/5FD3PjtPgrmpMlIpN1rhqbjJCyN1tKFjP4Wb0JqHmLSqvNa4C3k3s0hFiA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEPiyqcsxWmEQcDAoRiCf15RJUz6m2s114+Ae2oOrzWRQHEoM4G68qwV8kQjaUAOsHA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "77046edd-d513-4cd4-b4a5-9a67c788ed53",
+                            SecurityStamp = "e7cd6bd2-9cc3-4aae-844b-23cbe7678aca",
                             TwoFactorEnabled = false,
                             UserName = "admin@admin.com"
                         });
@@ -143,21 +145,21 @@ namespace BibliotekBoklusen.Server.Migrations.AuthDb
                         new
                         {
                             Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "56e2ef5d-1131-4164-8c4b-42de6521df83",
+                            ConcurrencyStamp = "a8822a66-7d6f-4c82-957d-499f1fca83e5",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "5c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "55b7bf04-bc96-4a6a-acbe-ca5093078376",
+                            ConcurrencyStamp = "c090d7dc-3746-492c-b61f-2276a62c187c",
                             Name = "Librarian",
                             NormalizedName = "LIBRARIAN"
                         },
                         new
                         {
                             Id = "6c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "2253eaf0-38e0-4405-b764-5cb796d3e651",
+                            ConcurrencyStamp = "551c445d-25c5-4fae-a50c-521001982a4e",
                             Name = "Member",
                             NormalizedName = "MEMBER"
                         });

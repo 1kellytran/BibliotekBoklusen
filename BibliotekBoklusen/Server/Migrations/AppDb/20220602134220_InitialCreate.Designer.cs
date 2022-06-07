@@ -4,16 +4,18 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace BibliotekBoklusen.Server.Migrations
+namespace BibliotekBoklusen.Server.Migrations.AppDb
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602134220_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,6 +194,9 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("DayAndTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -199,12 +204,6 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SeminarDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SeminarTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -255,7 +254,7 @@ namespace BibliotekBoklusen.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 6, 13, 53, 6, 640, DateTimeKind.Local).AddTicks(6986),
+                            Created = new DateTime(2022, 6, 2, 15, 42, 20, 630, DateTimeKind.Local).AddTicks(2756),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,

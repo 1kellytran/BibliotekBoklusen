@@ -1,9 +1,9 @@
 ﻿namespace BibliotekBoklusen.Server.Services.SeminarService
 {
-    public class SeminarService : ISeminarService
+    public class SeminarManager : ISeminarManager
     {
         private readonly AppDbContext _context;
-        public SeminarService(AppDbContext context)
+        public SeminarManager(AppDbContext context)
         {
             _context = context;
         }
@@ -50,8 +50,7 @@
                 seminar.Title = seminarToUpdate.Title;
                 seminar.FirstName = seminarToUpdate.FirstName;
                 seminar.LastName = seminarToUpdate.LastName;
-                seminar.SeminarDate = seminarToUpdate.SeminarDate;
-                seminar.SeminarTime = seminarToUpdate.SeminarTime;
+                seminar.DayAndTime = seminarToUpdate.DayAndTime;
                 await _context.SaveChangesAsync();
 
                 return seminarToUpdate;

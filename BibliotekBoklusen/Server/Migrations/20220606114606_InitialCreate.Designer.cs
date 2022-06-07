@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220606114606_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,8 +205,8 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<DateTime>("SeminarDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("SeminarTime")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("SeminarTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -255,7 +257,7 @@ namespace BibliotekBoklusen.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 6, 13, 53, 6, 640, DateTimeKind.Local).AddTicks(6986),
+                            Created = new DateTime(2022, 6, 6, 13, 46, 6, 792, DateTimeKind.Local).AddTicks(8774),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,

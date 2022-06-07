@@ -4,6 +4,7 @@ using BibliotekBoklusen.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220602091050_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,6 +36,9 @@ namespace BibliotekBoklusen.Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("isChecked")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
@@ -42,42 +47,50 @@ namespace BibliotekBoklusen.Server.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryName = "Deckare"
+                            CategoryName = "Deckare",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 2,
-                            CategoryName = "Feelgood"
+                            CategoryName = "Feelgood",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 3,
-                            CategoryName = "Biografi"
+                            CategoryName = "Biografi",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 4,
-                            CategoryName = "Spänning"
+                            CategoryName = "Spänning",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 5,
-                            CategoryName = "Romaner"
+                            CategoryName = "Romaner",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 6,
-                            CategoryName = "Historia"
+                            CategoryName = "Historia",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 7,
-                            CategoryName = "Fantasy & SciFi"
+                            CategoryName = "Fantasy & SciFi",
+                            isChecked = false
                         },
                         new
                         {
                             Id = 8,
-                            CategoryName = "Fakta"
+                            CategoryName = "Fakta",
+                            isChecked = false
                         });
                 });
 
@@ -192,6 +205,9 @@ namespace BibliotekBoklusen.Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<DateTime>("DayAndTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -199,12 +215,6 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("SeminarDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("SeminarTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -250,19 +260,6 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Created = new DateTime(2022, 6, 6, 13, 53, 6, 640, DateTimeKind.Local).AddTicks(6986),
-                            Email = "admin@admin.com",
-                            FirstName = "",
-                            IsActive = false,
-                            IsAdmin = true,
-                            IsLibrarian = false,
-                            LastName = ""
-                        });
                 });
 
             modelBuilder.Entity("CategoryProduct", b =>
