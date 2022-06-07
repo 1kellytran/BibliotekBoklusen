@@ -143,7 +143,6 @@ namespace BibliotekBoklusen.Server.Services.ProductService
             }
             else
             {
-                product.Type = new();
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
                 
