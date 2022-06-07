@@ -47,7 +47,7 @@
         @foreach (var member in Members)
         {
             <tr>
-                @if (!member.IsAdmin && !member.IsLibrarian)
+                @if (member.UserRole.Equals(UserRole.Member))
                 {
                     <td>@member.FirstName</td>
                     <td>@member.LastName</td>

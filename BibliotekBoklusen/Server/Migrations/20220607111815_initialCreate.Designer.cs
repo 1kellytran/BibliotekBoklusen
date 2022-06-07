@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibliotekBoklusen.Server.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220602180952_initialCreate")]
+    [Migration("20220607111815_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -236,15 +236,12 @@ namespace BibliotekBoklusen.Server.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsLibrarian")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserRole")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -254,13 +251,12 @@ namespace BibliotekBoklusen.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2022, 6, 2, 20, 9, 52, 35, DateTimeKind.Local).AddTicks(8827),
+                            Created = new DateTime(2022, 6, 7, 13, 18, 15, 21, DateTimeKind.Local).AddTicks(8607),
                             Email = "admin@admin.com",
                             FirstName = "",
                             IsActive = false,
-                            IsAdmin = true,
-                            IsLibrarian = false,
-                            LastName = ""
+                            LastName = "",
+                            UserRole = 0
                         });
                 });
 

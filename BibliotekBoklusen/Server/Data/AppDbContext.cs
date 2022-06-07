@@ -33,7 +33,7 @@ namespace BibliotekBoklusen.Server.Data
                 new Category() { Id = 8, CategoryName = "Fakta" });
 
             modelBuilder.Entity<User>()
-                .HasData(new User() { Id = 1, Email = "admin@admin.com", Created = DateTime.Now, IsAdmin = true });
+                .HasData(new User() { Id = 1, Email = "admin@admin.com", Created = DateTime.Now, UserRole = UserRole.Admin });
 
         }
     }

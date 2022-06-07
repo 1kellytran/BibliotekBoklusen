@@ -24,7 +24,7 @@
                     <td><input @bind="userToUpdate.LastName" /></td>
                     <td>@userToEdit.Email</td>
                     <td>@userToEdit.Created.ToString("d")</td>
-                    <td><input type="checkbox" @bind="userToUpdate.IsAdmin" /></td>
+                    <td><input type="checkbox" @bind="isAdmin" /></td>
                     <td><button type="submit" class="btn btn-primary">Spara</button></td>
                 </tr>
             </tbody>
@@ -55,7 +55,7 @@
                         <td>@employee.LastName</td>
                         <td>@employee.Email</td>
                         <td>@employee.Created.ToString("d")</td>
-                        @if (employee.IsAdmin)
+                        @if (employee.UserRole.Equals(UserRole.Admin))
                         {
                             <td>Ja</td>
                         }
@@ -80,6 +80,7 @@
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
     User userToEdit = new User();
     int userId;
+    bool isAdmin;
     bool editUser = false;
     string message;
     string searchText;
@@ -97,7 +98,7 @@
             }
             else
             {
-                employees = result.Where(u => u.IsLibrarian == true || u.IsAdmin == true).ToList();
+                employees = result.Where(u => u.UserRole.Equals(UserRole.Librarian) || u.UserRole.Equals(UserRole.Admin)).ToList();
             }
         }
     }

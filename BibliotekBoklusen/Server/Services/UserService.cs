@@ -61,12 +61,13 @@ namespace BibliotekBoklusen.Server.Services
             dbUser.FirstName = user.FirstName;
             dbUser.LastName = user.LastName;
             dbUser.IsActive = user.IsActive;
+            dbUser.UserRole = user.UserRole;
 
-            if (user.IsAdmin)
+            if (user.UserRole.Equals(UserRole.Admin))
             {
                 await SetUserToAdmin(dbUser, authUser);
             }
-            else if (user.IsLibrarian)
+            else if (user.UserRole.Equals(UserRole.Librarian))
             {
                 await SetUserToLibrarian(dbUser, authUser);
             }
@@ -131,27 +132,23 @@ namespace BibliotekBoklusen.Server.Services
         }
         public async Task<List<User>> GetEmployees()
         {
-            return await _context.Users.Where(u => u.IsLibrarian == true).ToListAsync();
+            return await _context.Users.Where(u => u.UserRole.Equals(UserRole.Librarian) || u.UserRole.Equals(UserRole.Admin)).ToListAsync();
         }
         private async Task SetUserToAdmin(User dbUser, ApplicationUser authUser)
         {
-            dbUser.IsAdmin = true;
-            dbUser.IsLibrarian = false;
 
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Admin);
         }
         private async Task SetUserToLibrarian(User dbUser, ApplicationUser authUser)
         {
-            dbUser.IsLibrarian = true;
-            dbUser.IsAdmin = false;
+
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Librarian);
         }
         private async Task SetUserToMember(User dbUser, ApplicationUser authUser)
         {
-            dbUser.IsLibrarian = false;
-            dbUser.IsAdmin = false;
+    
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Member);

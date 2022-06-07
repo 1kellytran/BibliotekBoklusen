@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BibliotekBoklusen.Shared.DataModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace BibliotekBoklusen.Shared
 {
@@ -26,7 +27,7 @@ namespace BibliotekBoklusen.Shared
         [Display(Name = "Bekräfta lösenord")]
         [Compare("Password", ErrorMessage = "Lösenordet matchar inte")]
         public string ConfirmPassword { get; set; }
-        public bool IsLibrarian { get; set; }
-    }
+        public UserRole UserRole {get;set;}
+}
 }
 

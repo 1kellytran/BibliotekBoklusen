@@ -92,7 +92,7 @@
             }
             else
             {
-                members = result.Where(u => u.IsAdmin == false && u.IsLibrarian == false).ToList();
+                members = result.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
             }
         }
     }

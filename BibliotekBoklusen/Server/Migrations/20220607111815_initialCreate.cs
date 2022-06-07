@@ -79,8 +79,7 @@ namespace BibliotekBoklusen.Server.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    IsLibrarian = table.Column<bool>(type: "bit", nullable: false),
-                    IsAdmin = table.Column<bool>(type: "bit", nullable: false)
+                    UserRole = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,8 +199,8 @@ namespace BibliotekBoklusen.Server.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "Created", "Email", "FirstName", "IsActive", "IsAdmin", "IsLibrarian", "LastName" },
-                values: new object[] { 1, new DateTime(2022, 6, 2, 20, 9, 52, 35, DateTimeKind.Local).AddTicks(8827), "admin@admin.com", "", false, true, false, "" });
+                columns: new[] { "Id", "Created", "Email", "FirstName", "IsActive", "LastName", "UserRole" },
+                values: new object[] { 1, new DateTime(2022, 6, 7, 13, 18, 15, 21, DateTimeKind.Local).AddTicks(8607), "admin@admin.com", "", false, "", 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_CategoryProduct_ProductsId",
