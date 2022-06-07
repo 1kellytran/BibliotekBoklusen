@@ -33,6 +33,7 @@ else
                       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
+            <MudTh></MudTh>
             <MudTh>Titel</MudTh>
             <MudTh>Skapare</MudTh>
             <MudTh>Utgiven</MudTh>
@@ -44,6 +45,7 @@ else
 
         </HeaderContent>
         <RowTemplate>
+           <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4"  Height="110" Alt="Book" />
             <MudTd DataLabel="Titel"><a href="ProductById/@product.Id"><b>@product.Title</b></a></MudTd>
             @if (product.Creators.Count > 1)
             {
