@@ -3,7 +3,7 @@
 @inject ICategoryManager CategoryManager
 
 <MudGrid>
-    <MudItem xs="10" sm="6">
+    <MudItem xs="10" sm="8">
         <MudPaper Class="pa-4">
             <MudForm Model=Product>
                 <MudCardHeader>
@@ -24,6 +24,11 @@
                                     <MudTextField @bind-Value="context.LastName"
                                                   For="@(() => context.LastName)"
                                                   Label="Skaparens efternamn" />
+                                </MudForm>
+                            </MudTd>
+                            <MudTd Datalabel="RemoveCreator">
+                                <MudForm Model="@context">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
                                 </MudForm>
                             </MudTd>
                         </RowTemplate>
@@ -69,7 +74,7 @@
             </MudForm>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" sm="5">
+    <MudItem xs="12" sm="4">
         <MudPaper Class="pa-4 mud-height-full">
             <MudText Typo="Typo.subtitle2">Tillagda produkter</MudText>
             <MudCardContent>
@@ -147,5 +152,11 @@
     void ClearAddedList()
     {
         addedProducts = new();
+    }
+
+    void RemoveCreator(int id)
+    {
+        var creatorToRemove = Product.Creators.FirstOrDefault(c => c.Id == id);
+        Product.Creators.Remove(creatorToRemove);
     }
 }
