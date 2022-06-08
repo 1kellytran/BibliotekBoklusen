@@ -28,11 +28,14 @@
                                                   Label="Skaparens efternamn" />
                                 </MudForm>
                             </MudTd>
-                            <MudTd Datalabel="RemoveCreator">
-                                <MudForm Model="@context">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
-                                </MudForm>
-                            </MudTd>
+                             @if (CreatorCounter != 0)
+                            {
+                                <MudTd Datalabel="RemoveCreator">
+                                    <MudForm Model="@context">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
+                                    </MudForm>
+                                </MudTd>
+                            }
                         </RowTemplate>
                     </MudTable>
                 </MudCardContent>
@@ -77,6 +80,16 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+@if(message == "Produkten har uppdaterats")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if(message == "Välj minst en Kategori")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+
+
 
 @code {
     [Parameter]
@@ -91,6 +104,7 @@
     private Category value { get; set; } = new();
     private IEnumerable<Category> CategoriesToAdd { get; set; } = new HashSet<Category>();
     private Func<Category, string> convertFunc = ci => ci.CategoryName;
+    public int CreatorCounter { get; set; } = 0;
 
     protected override async Task OnInitializedAsync()
     {
@@ -101,10 +115,18 @@
 
     public async Task UpdateTheProduct()
     {
-        SetProductValues();
-        var message = await ProductManager.UpdateProduct(Id, Product);
-        await OnUpdateProduct.InvokeAsync(Id);
-        //NavigationManager.NavigateTo("/allproducts", true);
+        if (CategoriesToAdd.Count() == 0)
+        {
+            message = "Välj minst en Kategori";
+
+        }
+        else
+        {
+            SetProductValues();
+            message = await ProductManager.UpdateProduct(Id, Product);
+            await OnUpdateProduct.InvokeAsync(Id);
+        }
+
 
     }
 
@@ -117,11 +139,13 @@
 
     void AddCreator()
     {
+        CreatorCounter++;
         Product.Creators.Add(new Creator { });
     }
 
     void RemoveCreator(int id)
     {
+        CreatorCounter--;
         var creatorToRemove = Product.Creators.FirstOrDefault(c => c.Id == id);
         Product.Creators.Remove(creatorToRemove);
     }

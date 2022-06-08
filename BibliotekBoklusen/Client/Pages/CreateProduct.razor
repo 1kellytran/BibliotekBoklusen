@@ -95,7 +95,14 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
-<MudAlert Severity="Severity.Success">@message</MudAlert>
+@if (message == "Produkten tillagd")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if (message == "Välj minst en Kategori")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
 
 
 

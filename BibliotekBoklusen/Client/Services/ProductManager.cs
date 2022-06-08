@@ -26,14 +26,14 @@
         public async Task<string> CreateProduct(Product productToAdd)
         {
             var result = await _httpClient.PostAsJsonAsync("api/products", productToAdd);
-            var message = result.IsSuccessStatusCode ? $"Produkten {productToAdd.Title} tillagd" : null;
+            var message = result.IsSuccessStatusCode ? "Produkten tillagd" : null;
             return message;
         }
 
         public async Task<string> UpdateProduct(int id, Product product)
         {
             var result = await _httpClient.PutAsJsonAsync($"api/products/{id}", product);
-            var message = result.IsSuccessStatusCode ? $"Produkten {product.Title} har uppdaterats" : null;
+            var message = result.IsSuccessStatusCode ? "Produkten har uppdaterats" : null;
             return message;
         }
 
