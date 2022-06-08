@@ -2,7 +2,6 @@
 @inject IUserManager UserManager
 @inject IDialogService DialogService
 
-<h2 class="mt-3">Personal</h2>
 <div>
     <h6 class="validation-message">@message</h6>
 </div>
@@ -34,41 +33,45 @@
         </table>
     </EditForm>
 }
-@*<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Förnamn</th>
-            <th scope="col">Efternamn</th>
-            <th scope="col">Email</th>
-            <th scope="col">Medlem sedan</th>
-            <th scope="col">Behörig admin</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Employees)
-        {
-            <tr>
-                <td>@employee.FirstName</td>
-                <td>@employee.LastName</td>
-                <td>@employee.Email</td>
-                <td>@employee.Created.ToString("d")</td>
-                @if (employee.UserRole.Equals(UserRole.Admin))
-                {
-                    <td>Ja</td>
-                }
-                else
-                {
-                    <td>Nej</td>
-                }
-                <td>
-                    <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-                    <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>*@
+
+@if (AllEmployees != null || AllEmployees.Count != 0)
+{
+    <MudTable Context="employee" Items="@AllEmployees">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Personal</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Förnamn</MudTh>
+            <MudTh>Efternamn</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Medlem sedan</MudTh>
+            <MudTh>Behörig admin</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Förnamn">@employee.FirstName</MudTd>
+            <MudTd DataLabel="Efternamn">@employee.LastName</MudTd>
+            <MudTd DataLabel="Email">@employee.Email</MudTd>
+            <MudTd DataLabel="Medlem sedan">@employee.Created.ToString("d")</MudTd>
+            @if (employee.UserRole.Equals(UserRole.Admin))
+            {
+            <MudTd DataLabel="Behörig admin">Ja</MudTd>
+            }
+            else
+            {
+            <MudTd DataLabel="Behörig admin">Nej</MudTd>
+            }
+        <MudTd>
+            <MudButton @onclick="() => EditEmployee(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+            <MudButton @onclick="() => DeleteEmployee(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+}
 
 @code {
     List<User> AllEmployees = new List<User>();
@@ -111,7 +114,7 @@
         message = "Användaren har uppdaterats";
     }
 
-      public async Task DeleteEmployee(int id)
+    public async Task DeleteEmployee(int id)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Är du säker på att du vill radera anställd? Detta går inte att återkalla.");
@@ -128,8 +131,6 @@
         {
               AllEmployees = await UserManager.GetEmployees();
         }
-
     }
-
 }
 

@@ -3,26 +3,11 @@
 @inject IUserManager UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@*<div class="card">
-	<h1 class="card-header">Logga in</h1>
-	<div class="card-body">
-		<EditForm Model="user" OnValidSubmit="HandleLogin">
-			<DataAnnotationsValidator />
-			<div class="form-group">
-				<label for="email">Email</label>
-				<InputText id="email" @bind-Value="user.Email" class="form-control" />
-				<ValidationMessage For="@(() => user.Email)" />
-			</div>
-			<div class="form-group">
-				<label for="password">Lösenord</label>
-				<InputText id="password" @bind-Value="user.Password" type="password" class="form-control" />
-				<ValidationMessage For="@(() => user.Password)" />
-			</div>
-			<button type="submit" class="btn btn-primary">Logga in</button>
-			<NavLink href="register" class="btn btn-link">Registrera</NavLink>
-		</EditForm>
-	</div>
-</div>*@
+@if (message != "You have been signed in " && message != null)
+{
+	<MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+
 <EditForm Model="user" OnValidSubmit="HandleLogin">
 	<section class="vh-100 gradient-custom">
 		<div class="container py-5 h-100">
@@ -67,11 +52,6 @@
 		</div>
 	</section>
 </EditForm>
-
-@if (message != "You have been signed in " && message != null)
-{
-	<MudAlert Severity="Severity.Error">@message</MudAlert>
-}
 
 @code {
 	private LoginDto user = new LoginDto();

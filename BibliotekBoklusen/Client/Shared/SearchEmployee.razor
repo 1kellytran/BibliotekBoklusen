@@ -1,10 +1,11 @@
 ﻿@page "/searchEmployee"
 @inject NavigationManager NavigationManager
 @inject IUserManager UserManager
+@inject IDialogService DialogService
 
 @if (editUser)
 {
-    <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
+    <EditForm Model="EmployeeToUpdate" OnSubmit="UpdateUser">
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -18,10 +19,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input @bind="userToUpdate.FirstName" /></td>
-                    <td><input @bind="userToUpdate.LastName" /></td>
-                    <td>@userToEdit.Email</td>
-                    <td>@userToEdit.Created.ToString("d")</td>
+                    <td><input @bind="EmployeeToUpdate.FirstName" /></td>
+                    <td><input @bind="EmployeeToUpdate.LastName" /></td>
+                    <td>@EmployeeToEdit.Email</td>
+                    <td>@EmployeeToEdit.Created.ToString("d")</td>
                     <td><input type="checkbox" @bind="isAdmin" /></td>
                     <td><button type="submit" class="btn btn-primary">Spara</button></td>
                 </tr>
@@ -30,9 +31,9 @@
     </EditForm>
 }
 
-@if (employees != null || employees.Count != 0)
+@if (AllEmployees != null || AllEmployees.Count != 0)
 {
-    <MudTable Context="employee" Items="@employees">
+    <MudTable Context="employee" Items="@AllEmployees">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Personal</MudText>
             <MudSpacer />
@@ -40,7 +41,6 @@
             <MudButton @onclick="SearchForEmployee"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>
         </ToolBarContent>
         <HeaderContent>
-            <MudTh></MudTh>
             <MudTh>Förnamn</MudTh>
             <MudTh>Efternamn</MudTh>
             <MudTh>Email</MudTh>
@@ -72,12 +72,15 @@
 </MudTable>
 
 }
-<h6 class="validation-message">@message</h6>
+@if (message != null)
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
 
 @code {
-    private List<User> employees = new List<User>();
-    UpdatedUserDto userToUpdate = new UpdatedUserDto();
-    User userToEdit = new User();
+    List<User> AllEmployees = new List<User>();
+    UpdatedUserDto EmployeeToUpdate = new UpdatedUserDto();
+    User EmployeeToEdit = new User();
     int userId;
     bool isAdmin;
     bool editUser = false;
@@ -92,22 +95,23 @@
             var result = await UserManager.GetUsersBySearch(searchText);
             if (result == null || result.Count == 0)
             {
-                message = "Inga användare funna";
-                employees = new();
+                message = "Inga personal funna";
+                AllEmployees = new();
             }
             else
             {
-                employees = result.Where(u => u.UserRole.Equals(UserRole.Librarian) || u.UserRole.Equals(UserRole.Admin)).ToList();
+                AllEmployees = result.Where(u => u.UserRole.Equals(UserRole.Librarian) || u.UserRole.Equals(UserRole.Admin)).ToList();
+                message = null;
             }
         }
     }
 
     private void EditUser(User user)
     {
-        userToUpdate.FirstName = user.FirstName;
-        userToUpdate.LastName = user.LastName;
-        userToUpdate.IsActive = user.IsActive;
-        userToEdit = user;
+        EmployeeToUpdate.FirstName = user.FirstName;
+        EmployeeToUpdate.LastName = user.LastName;
+        EmployeeToUpdate.IsActive = user.IsActive;
+        EmployeeToEdit = user;
         userId = user.Id;
         editUser = true;
     }
@@ -115,8 +119,8 @@
     private async Task UpdateUser()
     {
         editUser = false;
-        await UserManager.UpdateUserinformation(userToUpdate, userId);
-        message = "Användaren har uppdaterats";
+        await UserManager.UpdateUserinformation(EmployeeToUpdate, userId);
+        message = "Uppdaderad";
     }
 
     private async Task DeleteUser(int userId)
@@ -124,6 +128,24 @@
         await UserManager.DeleteUser(userId);
     }
 
+    public async Task DeleteEmployee(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill ta bort anställd? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Ta bort");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<Pages.DeleteUser>("Ta bort anställd", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            AllEmployees = await UserManager.GetEmployees();
+        }
+    }
 }
 
 
