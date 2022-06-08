@@ -9,7 +9,7 @@
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
                    <h5 class="card-title">Registrera</h5>
-            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+            <MudForm @ref="form" @bind-Errors="@errors">
                 <MudTextField T="string" Label="Förnamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.FirstName" />
                 <MudTextField T="string" Label="Efternamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.LastName" />
                 <MudTextField T="string" Label="E-mail" Required="true" RequiredError="Obligatorisk fält"
@@ -28,7 +28,7 @@
                             <MudCheckBox T="bool" Required="false" Class="ml-n2" @bind-Checked="isLibrarian" />
                         </div>
                     </AuthorizeView>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="ml-auto" @onclick="() => HandleRegistration()">Registrera</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="() => HandleRegistration()">Registrera</MudButton>
                 </div>
             </MudForm>
         </MudPaper>
@@ -53,7 +53,6 @@ else if (message == $"Det finns redan en användare registrerad på e-mailadress
     private RegisterDto registerUser = new RegisterDto();
     bool isLibrarian;
     string[] errors = { };
-    bool success;
     string message = "";
     MudTextField<string> pwField1;
     MudForm form;
