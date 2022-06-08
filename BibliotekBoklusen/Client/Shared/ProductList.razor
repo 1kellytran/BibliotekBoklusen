@@ -113,7 +113,7 @@ else
         var userEmail = await localStorage.GetItemAsync<string>("email");
         if (userEmail != null)
         {
-            CurrentUser = await UserManager.GetCurrentUser(userEmail);
+            CurrentUser = await UserManager.GetUserByEmail(userEmail);
         }
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         SearchManager.ProductsChanged += StateHasChanged;
