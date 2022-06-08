@@ -1,20 +1,6 @@
-﻿@inject IUserManager UserManager
-@page "/searchMember"
-
-
-@*<MudTextField Class="md-2" @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Text"></MudTextField>
-<MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>*@
-
-<div class="input-group">
-	<MudTextField @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Outlined"  />
-
-	<div class="input-group-append">
-		<button class="btn btn-primary" @onclick="SearchForMembers" >
-			<span class="oi oi-magnifying-glass"></span>
-		</button>
-
-	</div>
-</div>
+﻿@page "/searchMember"
+@inject IUserManager UserManager
+@inject IDialogService DialogService
 
 @if (editUser)
 {
@@ -46,39 +32,45 @@
 
 @if (members != null || members.Count != 0)
 {
-	<table class="table">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">Förnamn</th>
-				<th scope="col">Efternamn</th>
-				<th scope="col">Email</th>
-				<th scope="col">Medlem sedan</th>
-				<th scope="col">Aktiv</th>
-				<th scope="col"></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var member in members)
-			{
-				<tr>
-					@if (@member.Email != "admin@admin.com")
-					{
-						<td>@member.FirstName</td>
-						<td>@member.LastName</td>
-						<td>@member.Email</td>
-						<td>@member.Created.ToString("d")</td>
-						<td>@member.IsActive</td>
-						<td>
-
-							<MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-							<MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-						</td>
-					}
-				</tr>
-			}
-		</tbody>
-	</table>
+    <MudTable Context="member" Items="@members">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Personal</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchText" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0"></MudTextField>
+            <MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>Förnamn</MudTh>
+            <MudTh>Efternamn</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Medlem sedan</MudTh>
+            <MudTh>Behörig admin</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="FirstName">@member.FirstName</MudTd>
+            <MudTd DataLabel="LastName">@member.LastName</MudTd>
+            <MudTd DataLabel="Email">@member.Email</MudTd>
+            <MudTd>@member.Created.ToString("d")</MudTd>
+            @if (member.UserRole.Equals(UserRole.Admin))
+            {
+            <MudTd>Ja</MudTd>
+            }
+            else
+            {
+            <MudTd>Nej</MudTd>
+            }
+        <MudTd>
+            <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+            <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 }
+
 <h6 class="validation-message">@message</h6>
 
 @code {
@@ -89,7 +81,6 @@
 	bool editUser = false;
 	string message;
 	string searchText;
-
 
 	private async Task SearchForMembers()
 	{
@@ -104,6 +95,7 @@
 			else
 			{
 				members = result.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
+				message = null;
 			}
 		}
 	}
@@ -123,7 +115,7 @@
 		editUser = false;
 		await UserManager.UpdateUserinformation(userToUpdate, userId);
 		members = await UserManager.GetAllUser();
-		message = "Användaren har uppdaterats";
+		message = "Uppdaterad";
 	}
 
 	private async Task DeleteUser(int userId)
@@ -138,6 +130,24 @@
 		{
 			SearchForMembers();
 		}
-
 	}
+
+	public async Task DeleteMember(int id)
+    {
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill ta bort medlem? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Ta bort");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<Pages.DeleteUser>("Ta bort medlem", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
+        {
+            members = await UserManager.GetEmployees();
+        }
+    }
 }
