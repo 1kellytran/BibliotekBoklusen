@@ -2,19 +2,6 @@
 @inject NavigationManager NavigationManager
 @inject IUserManager UserManager
 
-<div class="input-group">
-	<MudTextField @bind-Value="searchText" Label="Sök personal" Variant="Variant.Outlined" @onkeypress="KeywordEnterPressed" />
-
-	<div class="input-group-append" >
-		<button class="btn btn-primary" @onclick="SearchForEmployee">
-			<span class="oi oi-magnifying-glass"></span>
-		</button>
-
-	</div>
-</div>
-
-
-
 @if (editUser)
 {
     <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
@@ -45,62 +32,62 @@
 
 @if (employees != null || employees.Count != 0)
 {
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col">Förnamn</th>
-            <th scope="col">Efternamn</th>
-            <th scope="col">Email</th>
-            <th scope="col">Medlem sedan</th>
-            <th scope="col">Behörig admin</th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-            @foreach (var employee in employees)
+    <MudTable Context="employee" Items="@employees">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Personal</MudText>
+            <MudSpacer />
+            <MudTextField @bind-Value="searchText" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0"></MudTextField>
+            <MudButton @onclick="SearchForEmployee"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>Förnamn</MudTh>
+            <MudTh>Efternamn</MudTh>
+            <MudTh>Email</MudTh>
+            <MudTh>Medlem sedan</MudTh>
+            <MudTh>Behörig admin</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="FirstName">@employee.FirstName</MudTd>
+            <MudTd DataLabel="LastName">@employee.LastName</MudTd>
+            <MudTd DataLabel="Email">@employee.Email</MudTd>
+            <MudTd>@employee.Created.ToString("d")</MudTd>
+            @if (employee.UserRole.Equals(UserRole.Admin))
             {
-                <tr>
-                    @if (@employee.Email != "admin@admin.com")
-                    {
-                        <td>@employee.FirstName</td>
-                        <td>@employee.LastName</td>
-                        <td>@employee.Email</td>
-                        <td>@employee.Created.ToString("d")</td>
-                        @if (employee.UserRole.Equals(UserRole.Admin))
-                        {
-                            <td>Ja</td>
-                        }
-                        else
-                        {
-                            <td>Nej</td>
-                        }                        
-                        <td>
-                            <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-                            <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
-                        </td>
-                    }
-                </tr>
+            <MudTd>Ja</MudTd>
             }
-        </tbody>
-    </table>
+            else
+            {
+            <MudTd>Nej</MudTd>
+            }
+        <MudTd>
+            <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+            <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
 }
 <h6 class="validation-message">@message</h6>
 
 @code {
     private List<User> employees = new List<User>();
     UpdatedUserDto userToUpdate = new UpdatedUserDto();
-    
     User userToEdit = new User();
     int userId;
     bool isAdmin;
     bool editUser = false;
     string message;
-    string searchText;
+    string searchText = String.Empty;
 
 
     private async Task SearchForEmployee()
     {
-        if (searchText != null || searchText != "")
+        if (!String.IsNullOrEmpty(searchText))
         {
             var result = await UserManager.GetUsersBySearch(searchText);
             if (result == null || result.Count == 0)
@@ -129,33 +116,22 @@
     {
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
-        employees = await UserManager.GetEmployees();
         message = "Användaren har uppdaterats";
     }
 
     private async Task DeleteUser(int userId)
     {
         await UserManager.DeleteUser(userId);
-        employees = await UserManager.GetEmployees();
     }
 
-    protected void KeywordEnterPressed(KeyboardEventArgs eventArgs)
-    {
-        if (eventArgs.Key == null || eventArgs.Key.Equals("Enter"))
-        {
-            SearchForEmployee();
-        }
-       
-    }
-   
 }
 
-   
-
-        
 
 
 
-    
-    
+
+
+
+
+
 
