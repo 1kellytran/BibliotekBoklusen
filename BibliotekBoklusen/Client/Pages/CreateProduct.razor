@@ -34,8 +34,6 @@
                                     </MudForm>
                                 </MudTd>
                             }
-
-
                         </RowTemplate>
                     </MudTable>
                 </MudCardContent>
@@ -43,39 +41,31 @@
                     <MudButton Class="ml-auto" @onclick="AddCreator">Lägg till extra skapare</MudButton>
                 </MudCardActions>
                 <MudCardContent>
-
                     <MudTextField @bind-Value="Product.Title"
                                   For="@(() => Product.Title)"
                                   Label="Titel" />
-
-
                     <MudTextField @bind-Value="Product.Published"
                                   For="@(() => Product.Published)"
                                   Label="Publicerad" />
-
                     <MudTextField @bind-Value="Product.NumberOfCopiesOwned"
                                   For="@(() => Product.NumberOfCopiesOwned)"
                                   Label="Antal exemplar" />
-
                     <MudSelect T="ProductType" Label="Typ" @bind-Value="Product.Type" Placeholder="Välj typ" AnchorOrigin="Origin.BottomCenter">
                         <MudSelectItem T="ProductType" Value="@ProductType.Bok">@ProductType.Bok.ToString()</MudSelectItem>
                         <MudSelectItem T="ProductType" Value="@ProductType.Ebok">@ProductType.Ebok.ToString()</MudSelectItem>
                         <MudSelectItem T="ProductType" Value="@ProductType.Film">@ProductType.Film.ToString()</MudSelectItem>
                         <MudSelectItem T="ProductType" Value="@ProductType.Ljudbok">@ProductType.Ljudbok.ToString()</MudSelectItem>
                     </MudSelect>
-
                     <MudSelect T="Category" Label="Välj genre" ToStringFunc="@convertFunc" MultiSelection="true" @bind-Value="value" @bind-SelectedValues="CategoriesToAdd">
                         @foreach (var category in Categories)
                         {
                             <MudSelectItem T="Category" Value="@category">@category.CategoryName</MudSelectItem>
                         }
                     </MudSelect>
-
                 </MudCardContent>
                 <MudCardActions>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" @onclick="RegisterProduct">Spara</MudButton>
                 </MudCardActions>
-
             </MudForm>
         </MudPaper>
     </MudItem>
@@ -99,13 +89,10 @@
 {
     <MudAlert Severity="Severity.Success">@message</MudAlert>
 }
-else if (message == "Välj minst en Kategori")
+else if (message == "Välj minst en genre")
 {
     <MudAlert Severity="Severity.Error">@message</MudAlert>
 }
-
-
-
 
 @code {
     public Product Product { get; set; } = new();
@@ -128,8 +115,7 @@ else if (message == "Välj minst en Kategori")
     {
         if (CategoriesToAdd.Count() == 0)
         {
-            message = "Välj minst en Kategori";
-
+            message = "Välj minst en genre";
         }
         else
         {
@@ -146,8 +132,6 @@ else if (message == "Välj minst en Kategori")
             }
             ClearForm();
         }
-
-
     }
 
     void SetProductValues()
@@ -158,7 +142,6 @@ else if (message == "Välj minst en Kategori")
     void ClearForm()
     {
         SetProductStartValue();
-
     }
 
     void AddCreator()

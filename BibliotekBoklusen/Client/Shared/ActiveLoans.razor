@@ -1,36 +1,37 @@
 ﻿@inject ILoanManager LoanManager
 @page "/activeloans"
 
-<h2 class="mt-3">Aktiva lån</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Användare</th>
-            <th scope="col">Titel på boken</th>
-            <th scope="col">Exemplar Id</th>
-            <th scope="col">Returneras:</th>
-        </tr>
-    </thead>
-
-    @foreach (var l in Loans)
-    {
-        <tbody>
-            <tr>
-                <th scope="row">@(currentCount++)</th>
-                <td>@l.User.Email</td>
-                <td>@l.ProductCopy.product.Title</td>
-                <td>@l.ProductCopyId</td>
-                <td>@l.ReturnDate.ToString("d")</td>
-            </tr>
-        </tbody>
-    }
-
-</table>
+@if (Loans != null || Loans.Count != 0)
+{
+    <MudTable Context="loan" Items="@Loans">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Aktiva lån</MudText>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+            <MudTh>#</MudTh>
+            <MudTh>Medlem</MudTh>
+            <MudTh>E-postadress</MudTh>
+            <MudTh>Titel</MudTh>
+            <MudTh>Exemplar ID</MudTh>
+            <MudTh>Åter</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+                <MudTd DataLabel="#">@(currentCount++)</MudTd>
+                <MudTd DataLabel="Medlem">@loan.User.FirstName @loan.User.LastName</MudTd>
+                <MudTd DataLabel="E-postadress">@loan.User.Email</MudTd>
+                <MudTd DataLabel="Titel">@loan.ProductCopy.product.Title</MudTd>
+                <MudTd DataLabel="Exemplar ID">@loan.ProductCopy.Id</MudTd>
+                <MudTd DataLabel="Åter"><b>@loan.ReturnDate.ToString("d")</b></MudTd>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+}
 
 @code {
-
-    private List<Loan> Loans { get; set; } = new List<Loan>();
+    public List<Loan> Loans { get; set; } = new();
     private int currentCount = 1;
 
     protected override async Task OnInitializedAsync()

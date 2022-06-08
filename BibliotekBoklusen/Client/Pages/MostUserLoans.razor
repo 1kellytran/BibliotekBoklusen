@@ -2,38 +2,35 @@
 @inject ILoanManager LoanManager
 @inject IUserManager UserManager
 
-    <h2 class="mt-3">Top 10 låntagare</h2>
-
-    <table class="table mb-5">
-        <thead class="thead-light">
-            <tr>
-                <th>Id:</th>
-                <th>Förnamn:</th>
-                <th>Efternamn:</th>
-                <th>Email:</th>
-                <th>Antal lån:</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in TopUsers)
+<MudTable Context="user" Items="@TopUsers">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Aktiva lån</MudText>
+        <MudSpacer />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>ID</MudTh>
+        <MudTh>Förnamn</MudTh>
+        <MudTh>Efternamn</MudTh>
+        <MudTh>E-postadress</MudTh>
+        <MudTh>Antal lån</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@user.Id</MudTd>
+        <MudTd DataLabel="Förnamn">@user.FirstName</MudTd>
+        <MudTd DataLabel="Efternamn">@user.LastName</MudTd>
+        <MudTd DataLabel="E-postadress">@user.Email</MudTd>
+        @foreach(var item in LoansByUser)
+        {
+            if(item.UserId == user.Id)
             {
-                <tr>
-                    <td>@user.Id</td>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.Email</td>
-
-                    @foreach (var item in LoansByUser)
-                    {
-                        if (item.UserId ==user.Id)
-                        {
-                            <td>@item.LoansCount</td>
-                        }                        
-                    }
-                </tr>
+                <MudTd DataLabel="Antal lån">@item.LoansCount</MudTd>
             }
-        </tbody>
-    </table>
+        }
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
 
 @code {
     public List<User> TopUsers { get; set; } = new();
@@ -65,7 +62,6 @@
             var topUser = await UserManager.GetUser(user.UserId);
             TopUsers.Add(topUser);
         }
-
     }
 
     bool ProductsToBeReturned;
