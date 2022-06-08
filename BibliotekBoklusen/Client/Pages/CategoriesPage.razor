@@ -3,19 +3,18 @@
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 
-<MudButton @onclick="()=>AddCategoryBool()">Lägg till Kategori</MudButton>
 @if (addCategory)
 {
     <EditForm Model=Category>
         <DataAnnotationsValidator />
 
         <div class="form-group">
-            <label for="Title">Kategori namn:</label>
+          <MudText Typo="Typo.h6">Kategori namn</MudText>
             <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
             <ValidationMessage For="@(() => Category.CategoryName)" />
         </div>
 
-        <MudButton type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Lägg till</MudButton>
+        <MudButton Variant="Variant.Filled"  Color="Color.Primary" type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Spara</MudButton>
     </EditForm>
 }
 
@@ -23,7 +22,7 @@
 
 @if (update)
 {
-    <h3>Uppdatera</h3>
+      <MudText Typo="Typo.h6">Uppdatera</MudText>
     <EditForm Context="_context" Model="Category2">
         <table class="table">
             <thead class="thead-light">
@@ -35,38 +34,43 @@
             <tbody>
                 <tr>
                     <td><input type="text" @bind-value="Category2.CategoryName" /></td>
-                    <td><MudButton @onclick="()=>UpdateCategory()">Spara</MudButton></td>
+                    <td><MudButton Variant="Variant.Filled"  Color="Color.Primary" @onclick="()=>UpdateCategory()">Spara</MudButton></td>
                 </tr>
             </tbody>
         </table>
     </EditForm>
 }
 
-<h2 class="mt-2">Kategorier</h2>
 @if (Categories != null)
 {
-    <table class="table">
-        <ColGroup><col style="width: 70%;" /><col style="width: 10%;" /><col style="width: 10%;" /></ColGroup>
-        <thead class="thead-light mb-2">
-            <tr>
-                <th>Kategorier</th>
-                <th style="text-align:right">Ändra</th>
-                <th style="text-align:right">Ta bort</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var category in Categories)
-            {
-                <AuthorizeView Roles="Admin, Librarian">
-                    <tr>
-                        <td>@category.CategoryName</td>
-                        <td style="text-align:right"><MudButton @onclick="() => SetIdToUpdate(category.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton></td>
-                        <td style="text-align:right"><MudButton @onclick="() => HandleDeleteCategory(category.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton></td>
-                    </tr>
-                </AuthorizeView>
-            }
-        </tbody>
-    </table>
+        <MudTable Context="category" Items="@Categories">
+        <ToolBarContent>
+            <MudText Typo="Typo.h6">Kategorier</MudText>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="()=>AddCategoryBool()">Lägg till Kategori</MudButton>
+        </ToolBarContent>
+        <ColGroup><col style="width: 70%;" /><col style="width: 10%;" /></ColGroup>
+        <HeaderContent>
+            <MudTh>Kategori</MudTh>
+            <MudTh></MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="CategoryName">@category.CategoryName</MudTd>
+            <AuthorizeView Roles="Admin, Librarian">
+                <MudTd>
+                    <MudButton @onclick="() => SetIdToUpdate(category.Id)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
+                </MudTd>
+                <MudTd>
+                    <MudButton @onclick="() => HandleDeleteCategory(category.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+                </MudTd>
+            </AuthorizeView>
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
 }
 <br />
 

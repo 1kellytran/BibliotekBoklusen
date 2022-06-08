@@ -1,9 +1,9 @@
 ﻿@page "/returnproducts"
 @inject ILoanManager LoanManager
 
-<h2 class="mt-3">Returnera Produkter</h2>
 <MudCard>
     <MudCardContent>
+          <MudText Typo="Typo.h6">Returnera produkter</MudText>
         <MudNumericField Label="Vilket exemplar ska återlämnas?" @bind-Value="copyToReturn"
             For="@(() => copyToReturn)" HelperText="Minimum värde är 1."></MudNumericField>
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ReturnLoan">Returnera</MudButton>
@@ -12,7 +12,7 @@
         {
             <MudAlert Severity="Severity.Success">@message</MudAlert>
         }
-        else if (message == "Finns inget med detta exeplarID")
+        else if (message == "Finns inget med detta exemplarID")
         {
             <MudAlert Severity="Severity.Error" Variant="Variant.Outlined">@message</MudAlert>
 
@@ -34,7 +34,7 @@
         }
         else
         {
-            message = "Finns inget med detta exeplarID";
+            message = "Finns inget med detta exemplarID";
         }
     }
 }
