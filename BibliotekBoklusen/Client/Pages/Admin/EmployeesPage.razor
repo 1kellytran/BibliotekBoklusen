@@ -2,9 +2,10 @@
 @inject IUserManager UserManager
 @inject IDialogService DialogService
 
-<div>
-    <h6 class="validation-message">@message</h6>
-</div>
+@if(message == "Uppdaterad")
+{
+	<MudAlert Severity="Severity.Success">@message</MudAlert>
+}
 
 @if (editUser)
 {
@@ -111,20 +112,20 @@
         editUser = false;
         await UserManager.UpdateUserinformation(EmployeeToUpdate, userId);
         AllEmployees = await UserManager.GetEmployees();
-        message = "Användaren har uppdaterats";
+        message = "Uppdaterad";
     }
 
     public async Task DeleteEmployee(int id)
     {
         var parameters = new DialogParameters();
-        parameters.Add("ContentText", "Är du säker på att du vill radera anställd? Detta går inte att återkalla.");
-        parameters.Add("ButtonText", "Radera");
+        parameters.Add("ContentText", "Är du säker på att du vill ta bort anställd? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Ta bort");
         parameters.Add("Color", Color.Error);
         parameters.Add("Id", id);
 
         var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
 
-        var dialog = DialogService.Show<DeleteUser>("Radera anställd", parameters, options);
+        var dialog = DialogService.Show<DeleteUser>("Ta bort anställd", parameters, options);
 
         var result = await dialog.Result;
         if (!result.Cancelled)

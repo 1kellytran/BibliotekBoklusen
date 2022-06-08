@@ -2,6 +2,15 @@
 @inject IUserManager UserManager
 @inject IDialogService DialogService
 
+@if(message == "Ingen medlem hittades")
+{
+	<MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+else if(message == "Uppdaterad")
+{
+	<MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+
 @if (editUser)
 {
 	<EditForm Model="userToUpdate" OnSubmit="UpdateUser">
@@ -28,15 +37,6 @@
 			</tbody>
 		</table>
 	</EditForm>
-}
-
-@if(message == "Ingen medlem hittades")
-{
-	<MudAlert Severity="Severity.Error">@message</MudAlert>
-}
-else if(message == "Uppdaterad")
-{
-	<MudAlert Severity="Severity.Success">@message</MudAlert>
 }
 
 @if (members != null || members.Count != 0)
@@ -122,6 +122,21 @@ else if(message == "Uppdaterad")
 		editUser = false;
 		await UserManager.UpdateUserinformation(userToUpdate, userId);
 		message = "Uppdaterad";
+
+		if (searchText != null || searchText != "")
+		{
+			var result = await UserManager.GetUsersBySearch(searchText);
+			if (result == null || result.Count == 0)
+			{
+				message = "Ingen medlem hittades";
+				members = new();
+			}
+			else
+			{
+				members = result.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
+				message = null;
+			}
+		}
 	}
 
 	protected async Task KeywordEnterPressed(KeyboardEventArgs eventArgs)
@@ -147,8 +162,7 @@ else if(message == "Uppdaterad")
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-			var result2 = await UserManager.GetUsersBySearch(searchText);
-            members = result2.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
+			members = await UserManager.GetMembers();
         }
     }
 }

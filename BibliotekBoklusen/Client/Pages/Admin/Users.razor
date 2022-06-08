@@ -2,9 +2,11 @@
 @inject IDialogService DialogService
 @inject IUserManager UserManager
 
-<div>
-    <h6 class="validation-message">@message</h6>
-</div>
+@if(message == "Uppdaterad")
+{
+	<MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+
 @if (editUser)
 {
     <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
@@ -100,7 +102,7 @@
     {
         editUser = false;
         await UserManager.UpdateUserinformation(userToUpdate, userId);
-        Members = await UserManager.GetAllUser();
+        Members = await UserManager.GetMembers();
         message = "Uppdaterad";
     }
 
@@ -108,7 +110,7 @@
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Är du säker på att du vill ta bort användaren? Detta går inte att återkalla.");
-        parameters.Add("ButtonText", "Radera");
+        parameters.Add("ButtonText", "Ta bort");
         parameters.Add("Color", Color.Error);
         parameters.Add("Id", id);
 
@@ -119,8 +121,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            Members = await UserManager.GetAllUser();
+            Members = await UserManager.GetMembers();
         }
-
     }
 }
