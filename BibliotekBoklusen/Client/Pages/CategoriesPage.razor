@@ -1,7 +1,7 @@
 ﻿@page "/categories"
 @inject ICategoryManager CategoryManager
 @inject NavigationManager NavigationManager
-@using BibliotekBoklusen.Client.Pages
+@inject IDialogService DialogService
 
 <MudButton @onclick="()=>AddCategoryBool()">Lägg till Kategori</MudButton>
 @if (addCategory)
@@ -16,10 +16,10 @@
         </div>
 
         <MudButton type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Lägg till</MudButton>
-    </EditForm> 
+    </EditForm>
 }
 
- <div style="color:red">@message</div>
+<div style="color:red">@message</div>
 
 @if (update)
 {
@@ -39,7 +39,7 @@
                 </tr>
             </tbody>
         </table>
-    </EditForm> 
+    </EditForm>
 }
 
 <h3 class="mt-2">Kategorier</h3>
@@ -83,17 +83,31 @@
         Categories = await CategoryManager.GetAllCategoriesAsync();
     }
 
-    async Task HandleDeleteCategory(int id)
+    public async Task HandleDeleteCategory(int id)
     {
-        await CategoryManager.DeleteCategoryAsync(id);
-        foreach (var category in Categories)
+        var parameters = new DialogParameters();
+        parameters.Add("ContentText", "Är du säker på att du vill radera kategorin? Detta går inte att återkalla.");
+        parameters.Add("ButtonText", "Radera");
+        parameters.Add("Color", Color.Error);
+        parameters.Add("Id", id);
+
+        var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var dialog = DialogService.Show<DeleteCategory>("Radera kategori", parameters, options);
+
+        var result = await dialog.Result;
+        if (!result.Cancelled)
         {
-            if (category.Id == id)
+            foreach (var category in Categories)
             {
-                message = $"{category.CategoryName} har tagits bort";
+                if (category.Id == id)
+                {
+                    message = $"{category.CategoryName} har tagits bort";
+                }
             }
+            Categories = await CategoryManager.GetAllCategoriesAsync();
         }
-        Categories = await CategoryManager.GetAllCategoriesAsync();
+
     }
 
     async Task SetIdToUpdate(int id)
