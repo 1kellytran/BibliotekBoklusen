@@ -5,6 +5,15 @@
 @inject IUserManager UserManager
 @inject ILoanManager LoanManager
 
+@if (message == "Produkt lånad")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if (message == "Gick inte")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+
 @if (Product != null)
 {
     <MudCard Outlined="true">
@@ -84,6 +93,7 @@
     public Product Product { get; set; }
     public User CurrentUser { get; set; } = new();
     public List<Product> AvailableLoans { get; set; } = new();
+    string message;
 
     protected override async Task OnInitializedAsync()
     {
@@ -104,7 +114,7 @@
 
     private async Task LoanProduct()
     {
-        await LoanManager.AddLoan(Product.Id, CurrentUser.Id);
+        message = await LoanManager.AddLoan(Product.Id, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 }
