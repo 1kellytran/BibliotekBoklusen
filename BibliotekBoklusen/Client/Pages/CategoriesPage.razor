@@ -9,20 +9,30 @@
         <DataAnnotationsValidator />
 
         <div class="form-group">
-          <MudText Typo="Typo.h6">Kategori namn</MudText>
+            <MudText Typo="Typo.h6">Kategori namn</MudText>
             <InputText Id="Title" class="form-control" @bind-Value="Category.CategoryName" />
             <ValidationMessage For="@(() => Category.CategoryName)" />
         </div>
 
-        <MudButton Variant="Variant.Filled"  Color="Color.Primary" type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Spara</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" type="submit" @onclick="()=>HandleAddCategory()" class="btn btn-primary mt-2 mb-2">Spara</MudButton>
     </EditForm>
 }
+@if (!string.IsNullOrEmpty(message))
+{
+    if (message == $"{Category.CategoryName} finns redan")
+    {
+        <MudAlert Severity="Severity.Warning">@message</MudAlert>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Success">@message</MudAlert>
+    }
 
-<MudAlert Severity="Severity.Success">@message</MudAlert>
+}
 
 @if (update)
 {
-      <MudText Typo="Typo.h6">Uppdatera</MudText>
+    <MudText Typo="Typo.h6">Uppdatera</MudText>
     <EditForm Context="_context" Model="Category2">
         <table class="table">
             <thead class="thead-light">
@@ -34,7 +44,7 @@
             <tbody>
                 <tr>
                     <td><input type="text" @bind-value="Category2.CategoryName" /></td>
-                    <td><MudButton Variant="Variant.Filled"  Color="Color.Primary" @onclick="()=>UpdateCategory()">Spara</MudButton></td>
+                    <td><MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="()=>UpdateCategory()">Spara</MudButton></td>
                 </tr>
             </tbody>
         </table>
@@ -43,7 +53,7 @@
 
 @if (Categories != null)
 {
-        <MudTable Context="category" Items="@Categories">
+    <MudTable Context="category" Items="@Categories">
         <ToolBarContent>
             <MudText Typo="Typo.h6">Kategorier</MudText>
             <MudSpacer />
