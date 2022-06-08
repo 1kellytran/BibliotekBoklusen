@@ -26,15 +26,15 @@
                                                   Label="Skaparens efternamn" />
                                 </MudForm>
                             </MudTd>
-                            @if (CreatorCounter !=0)
+                            @if (CreatorCounter != 0)
                             {
                                 <MudTd Datalabel="RemoveCreator">
-                                <MudForm Model="@context">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
-                                </MudForm>
-                            </MudTd>
+                                    <MudForm Model="@context">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Delete" aria-label="delete" @onclick="() => RemoveCreator(context.Id)"></MudIconButton>
+                                    </MudForm>
+                                </MudTd>
                             }
-                            
+
 
                         </RowTemplate>
                     </MudTable>
@@ -95,6 +95,7 @@
         </MudPaper>
     </MudItem>
 </MudGrid>
+<MudAlert Severity="Severity.Success">@message</MudAlert>
 
 
 
@@ -118,18 +119,28 @@
 
     public async Task RegisterProduct()
     {
-        SetProductValues();
-        var result = await ProductManager.CreateProduct(Product);
-        if (result == null)
+        if (CategoriesToAdd.Count() == 0)
         {
-            message = "";
+            message = "Välj minst en Kategori";
+
         }
         else
         {
-            AddedProducts.Add(Product);
-            message = result;
+            SetProductValues();
+            var result = await ProductManager.CreateProduct(Product);
+            if (result == null)
+            {
+                message = "";
+            }
+            else
+            {
+                AddedProducts.Add(Product);
+                message = result;
+            }
+            ClearForm();
         }
-        ClearForm();
+
+
     }
 
     void SetProductValues()
