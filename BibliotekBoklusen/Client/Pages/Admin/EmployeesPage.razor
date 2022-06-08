@@ -2,14 +2,14 @@
 @inject IUserManager UserManager
 @inject IDialogService DialogService
 
-
 <h2 class="mt-3">Personal</h2>
 <div>
     <h6 class="validation-message">@message</h6>
 </div>
+
 @if (editUser)
 {
-    <EditForm Model="userToUpdate" OnSubmit="UpdateUser">
+    <EditForm Model="EmployeeToUpdate" OnSubmit="UpdateEmployee">
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -23,10 +23,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><input @bind="userToUpdate.FirstName" /></td>
-                    <td><input @bind="userToUpdate.LastName" /></td>
-                    <td>@userToEdit.Email</td>
-                    <td>@userToEdit.Created.ToString("d")</td>
+                    <td><input @bind="EmployeeToUpdate.FirstName" /></td>
+                    <td><input @bind="EmployeeToUpdate.LastName" /></td>
+                    <td>@EmployeeToEdit.Email</td>
+                    <td>@EmployeeToEdit.Created.ToString("d")</td>
                     <td><input type="checkbox" @bind="isAdmin" /></td>
                     <td><button type="submit" class="btn btn-primary">Spara</button></td>
                 </tr>
@@ -34,7 +34,7 @@
         </table>
     </EditForm>
 }
-<table class="table">
+@*<table class="table">
     <thead class="thead-dark">
         <tr>
             <th scope="col">Förnamn</th>
@@ -68,52 +68,50 @@
             </tr>
         }
     </tbody>
-</table>
-
+</table>*@
 
 @code {
-    private List<User> Employees = new List<User>();
-    UpdatedUserDto userToUpdate = new UpdatedUserDto();
-    User userToEdit = new User();
+    List<User> AllEmployees = new List<User>();
+    UpdatedUserDto EmployeeToUpdate = new UpdatedUserDto();
+    User EmployeeToEdit = new User();
     int userId;
-    bool editUser = false;
+    bool editUser;
     bool isAdmin;
     string message;
 
     protected override async Task OnInitializedAsync()
     {
-        message = "";
-        Employees = await UserManager.GetEmployees();
+        AllEmployees = await UserManager.GetEmployees();
     }
 
-    private void EditUser(User user)
+    private void EditEmployee(User employee)
     {
-        userToUpdate.FirstName = user.FirstName;
-        userToUpdate.LastName = user.LastName;
-        userToUpdate.IsActive = user.IsActive;
-        userToEdit = user;
-        userId = user.Id;
+        EmployeeToUpdate.FirstName = employee.FirstName;
+        EmployeeToUpdate.LastName = employee.LastName;
+        EmployeeToUpdate.IsActive = employee.IsActive;
+        EmployeeToEdit = employee;
+        userId = employee.Id;
 
         editUser = true;
     }
 
-    private async Task UpdateUser()
+    private async Task UpdateEmployee()
     {
         if (isAdmin)
         {
-            userToUpdate.UserRole = UserRole.Admin;
+            EmployeeToUpdate.UserRole = UserRole.Admin;
         }
         else
         {
-            userToUpdate.UserRole = UserRole.Librarian;
+            EmployeeToUpdate.UserRole = UserRole.Librarian;
         }
         editUser = false;
-        await UserManager.UpdateUserinformation(userToUpdate, userId);
-        Employees = await UserManager.GetEmployees();
+        await UserManager.UpdateUserinformation(EmployeeToUpdate, userId);
+        AllEmployees = await UserManager.GetEmployees();
         message = "Användaren har uppdaterats";
     }
 
-      public async Task DeleteUser(int id)
+      public async Task DeleteEmployee(int id)
     {
         var parameters = new DialogParameters();
         parameters.Add("ContentText", "Är du säker på att du vill radera anställd? Detta går inte att återkalla.");
@@ -128,7 +126,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-              Employees = await UserManager.GetEmployees();
+              AllEmployees = await UserManager.GetEmployees();
         }
 
     }
