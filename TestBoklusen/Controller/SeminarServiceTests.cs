@@ -48,8 +48,7 @@ namespace BibliotekBoklusen.Test.Controller
             var viewResult = Assert.IsType<Task<ActionResult<Seminarium>>>(result);
             var actionResult = Assert.IsType<ActionResult<Seminarium>>(viewResult.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var taskSeminarium = Assert.IsType<Task<Seminarium>>(objectResult.Value);
-            var seminarium = Assert.IsType<Seminarium>(taskSeminarium.Result);
+            var seminarium = Assert.IsType<Seminarium>(objectResult.Value);
 
             Assert.Equal(1, seminarium.Id);
             Assert.Equal("Kelly dansar", seminarium.Title);
@@ -76,26 +75,9 @@ namespace BibliotekBoklusen.Test.Controller
             var actionResult = Assert.IsType<OkObjectResult>(taskResult.Result);
         }
 
-        [Fact]
-        public void Delete_ActionExecutes_GetCorrectResponse()
-        {
-            var seminar = new Seminarium
-            {
-                Id = 1,
-                Title = "Kelly dansar",
-                SeminarDate = DateTime.Now,
-                SeminarTime = DateTime.Now,
-                FirstName = "Kellys",
-                LastName = "Mamma"
-            };
-
-            var result = _controller.DeleteSeminar(seminar.Id);
-            var taskResult = Assert.IsType<Task<ActionResult>>(result);
-            Assert.IsType<OkObjectResult>(taskResult.Result);
-        }
 
         [Fact]
-        public async Task DeleteUserFromDb_VerifyDeleteUser()
+        public async Task DeleteSeminar_VerifyDeleteSeminar()
         {
             var seminarId = 2;
             _mockRepo.Setup(u => u.DeleteSeminar(seminarId));
@@ -103,24 +85,6 @@ namespace BibliotekBoklusen.Test.Controller
             await _mockRepo.Object.DeleteSeminar(seminarId);
 
             _mockRepo.Verify(u => u.DeleteSeminar(seminarId));
-        }
-
-        [Fact]
-        public void Put_ActionExecutes_ReturnOkObjectResult()
-        {
-            var seminar = new Seminarium
-            {
-                Id = 1,
-                Title = "Kelly dansar",
-                SeminarDate = DateTime.Now,
-                SeminarTime = DateTime.Now,
-                FirstName = "Kelly",
-                LastName = "Tran"
-            };
-
-            var taskResult = _controller.DeleteSeminar(seminar.Id);
-            var result = Assert.IsType<Task<ActionResult>>(taskResult);
-            Assert.IsType<OkObjectResult>(result.Result);
         }
     }
 }

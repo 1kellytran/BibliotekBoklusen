@@ -61,14 +61,15 @@ namespace BibliotekBoklusen.Server.Services.SeminarService
             return null;
         }
 
-        public async Task<Seminarium> DeleteSeminar(int id)
+        public async Task<string> DeleteSeminar(int id)
         {
             var seminar =await  _context.Seminariums.FirstOrDefaultAsync(s => s.Id == id);
 
             if(seminar != null)
             {
-                _context.Seminariums.Remove(seminar);
+                var response=_context.Seminariums.Remove(seminar);
                 await _context.SaveChangesAsync();
+                return "Product has been deleted";
             }
             return null;
         }

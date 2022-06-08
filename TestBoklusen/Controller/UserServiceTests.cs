@@ -54,7 +54,6 @@ namespace BibliotekBoklusen.Test.Controller
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
             var User = Assert.IsType<User>(objectResult.Value);
 
-
             Assert.Equal(1, User.Id);
             Assert.Equal("Leif", User.FirstName);
 
