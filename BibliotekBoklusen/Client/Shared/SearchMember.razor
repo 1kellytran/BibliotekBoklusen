@@ -6,10 +6,10 @@
 <MudButton @onclick="SearchForMembers"><MudIcon Icon="@Icons.Filled.PersonSearch"></MudIcon></MudButton>*@
 
 <div class="input-group">
-	<MudTextField @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Outlined" @onkeypress="KeywordEnterPressed" />
+	<MudTextField @bind-Value="searchText" Label="Sök medlemmar" Variant="Variant.Outlined"  />
 
 	<div class="input-group-append">
-		<button class="btn btn-primary" @onclick="SearchForMembers">
+		<button class="btn btn-primary" @onclick="SearchForMembers" >
 			<span class="oi oi-magnifying-glass"></span>
 		</button>
 
