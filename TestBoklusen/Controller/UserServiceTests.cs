@@ -52,8 +52,8 @@ namespace BibliotekBoklusen.Test.Controller
             var viewResult = Assert.IsType<Task<ActionResult<User>>>(result);
             var actionResult = Assert.IsType<ActionResult<User>>(viewResult.Result);
             var objectResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            var taskUser = Assert.IsType<Task<User>>(objectResult.Value);
-            var User = Assert.IsType<User>(taskUser.Result);
+            var User = Assert.IsType<User>(objectResult.Value);
+
 
             Assert.Equal(1, User.Id);
             Assert.Equal("Leif", User.FirstName);
