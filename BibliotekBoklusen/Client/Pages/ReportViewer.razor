@@ -1,6 +1,6 @@
 ﻿@page "/ReportViewer"
 @inject IJSRuntime js
-<h3>Skriv ut Rapporter</h3>
+<h2 class="mt-3">Skriv ut Rapporter</h2>
 
 
 <MudButton Variant="Variant.Text" Color="Color.Secondary" @onclick= "ShowTopProducts">Populära produkter</MudButton>
@@ -13,7 +13,7 @@
 
 <div class="row">
 	<div class = "col-2">
-		<button class ="btn btn-primary" @onclick= "Print">Skriv ut</button>
+		<MudButton class ="btn btn-primary mb-2" @onclick= "Print">Skriv ut</MudButton>
 	</div>
 </div>
 

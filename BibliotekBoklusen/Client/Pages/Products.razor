@@ -139,7 +139,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await LocalStorage.GetItemAsync<string>("email");
-        CurrentUser = await UserManager.GetCurrentUser(userEmail);
+        CurrentUser = await UserManager.GetUserByEmail(userEmail);
 
         AvailableLoans = await ProductCopyManager.GetAllLoans();
         AllProducts = await ProductManager.GetAllProducts();

@@ -139,11 +139,11 @@
         employees = await UserManager.GetEmployees();
     }
 
-    protected  async Task KeywordEnterPressed(KeyboardEventArgs eventArgs)
+    protected void KeywordEnterPressed(KeyboardEventArgs eventArgs)
     {
         if (eventArgs.Key == null || eventArgs.Key.Equals("Enter"))
         {
-           await SearchForEmployee();
+            SearchForEmployee();
         }
        
     }

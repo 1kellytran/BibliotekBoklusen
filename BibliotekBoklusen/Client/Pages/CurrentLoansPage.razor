@@ -5,7 +5,7 @@
 @inject ILoanManager LoanManager
 @inject IProductManager ProductManager
 
-<h3>Aktuella lån:</h3>
+<h3 >Aktuella lån:</h3>
 
 <table class="table mb-5">
     <thead class="thead-light">
@@ -19,6 +19,7 @@
     <tbody>
         @foreach (var currentLoan in CurrentLoans)
         {
+            
             <tr>
                 <td>@currentLoan.Title</td>
                 <td>@currentLoan.Type</td>
@@ -74,7 +75,7 @@
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await LocalStorage.GetItemAsync<string>("email");
-        User = await UserManager.GetCurrentUser(userEmail);
+        User = await UserManager.GetUserByEmail(userEmail);
         AllUserLoans = await LoanManager.GetLoansByUserId(User.Id);
 
         foreach (var loan in AllUserLoans)

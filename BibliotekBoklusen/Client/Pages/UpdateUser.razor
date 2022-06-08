@@ -23,7 +23,7 @@
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await LocalStorage.GetItemAsync<string>("email");
-        user = await UserManager.GetCurrentUser(userEmail);
+        user = await UserManager.GetUserByEmail(userEmail);
     }
 
     private async Task SubmitUser()
