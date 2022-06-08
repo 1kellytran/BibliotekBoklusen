@@ -7,21 +7,31 @@
 @inject IProductCopyManager ProductCopyManager
 @inject IDialogService DialogService
 
+@if (message == "Produkt lånad")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if (message == "Gick inte")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+
+
 <AuthorizeView Roles="Librarian, Admin">
     @if (editProduct)
     {
         <MudButton @onclick="CloseEditProduct"> <MudIcon Icon="@Icons.Filled.Close"></MudIcon></MudButton>
-        <UpdateProduct Id=Id OnUpdateProduct="UpdateProduct"/>
+        <UpdateProduct Id=Id OnUpdateProduct="UpdateProduct" />
     }
 </AuthorizeView>
 
 @if (AllProducts == null)
 {
-    <h4>Inga produkter för tillfället</h4>
+    <h3 class="mt-2">Inga produkter för tillfället</h3>
 }
 else if (AllProducts.Count == 0)
 {
-    <h4>Laddar...</h4>
+    <h3 class="mt-2">Laddar...</h3> 
 }
 else
 {
@@ -30,7 +40,7 @@ else
             <MudText Typo="Typo.h6">Produkter</MudText>
             <MudSpacer />
             <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start"
-                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
         </ToolBarContent>
         <HeaderContent>
             <MudTh></MudTh>
@@ -42,11 +52,21 @@ else
             <AuthorizeView Roles="Admin, Librarian">
                 <MudTh>Antal exemplar</MudTh>
             </AuthorizeView>
-
         </HeaderContent>
         <RowTemplate>
-           <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4"  Height="110" Alt="Book" />
-            <MudTd DataLabel="Titel"><a href="ProductById/@product.Id"><b>@product.Title</b></a></MudTd>
+            @if(@product.Title.Contains("Harry"))
+            {
+                <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+            }
+            else if (@product.Title.Contains("Pippi"))
+            {
+                <MudImage Src="images/Pippi.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book"/>
+            }
+            else
+            {
+                <MudImage Src="images/Random.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book"/>
+            }
+        <MudTd DataLabel="Titel"><a href="ProductById/@product.Id"><b>@product.Title</b></a></MudTd>
             @if (product.Creators.Count > 1)
             {
             <MudTd DataLabel="Skapare">
@@ -61,17 +81,17 @@ else
             }
         <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy")</MudTd>
         @if (product.Category.Count > 1)
-            {
+        {
             <MudTd DataLabel="Genre">
                 @product.Category[0].CategoryName, m.fl
             </MudTd>
-            }
-            else
-            {
+        }
+        else
+        {
             <MudTd DataLabel="Genre">
                 @product.Category[0].CategoryName
             </MudTd>
-            }
+        }
         <MudTd DataLabel="Typ">@product.Type</MudTd>
 
         <AuthorizeView Roles="Admin, Librarian">
@@ -79,32 +99,32 @@ else
         </AuthorizeView>
         <AuthorizeView Roles="Member">
             @if (AvailableLoans.Count == 0)
-                {
+            {
                 <MudTd>
 
                     <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
 
                 </MudTd>
-                }
-                else if (!AvailableLoans.Any(l => l.Id == product.Id))
+            }
+            else if (!AvailableLoans.Any(l => l.Id == product.Id))
                 {
                 <MudTd>
 
                     <MudButton Disabled Variant="Variant.Filled" Size="Size.Small" Color="Color.Primary">Ej tillgänglig</MudButton>
                 </MudTd>
-                }
-                else
-                {
+            }
+            else
+            {
                 @foreach (var availableProduct in AvailableLoans)
-                    {
+                {
                     @if (availableProduct.Id == product.Id)
-                        {
+                    {
                         <MudTd>
-                            <MudButton @onclick="() => LoanProduct(product.Id)">Låna</MudButton>
+                            <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="() => LoanProduct(product.Id)">Låna</MudButton>
                         </MudTd>
-                        }
                     }
                 }
+            }
         </AuthorizeView>
         <AuthorizeView Context="_context" Roles="Librarian, Admin">
             <MudTd DataLabel="EditAndDelete" HorizontalAlignment="HorizontalAlignment.Right">
@@ -112,11 +132,11 @@ else
                 <MudButton @onclick="() => DeleteProduct(product.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
             </MudTd>
         </AuthorizeView>
-    </RowTemplate>
+        </RowTemplate>
     <PagerContent>
         <MudTablePager />
     </PagerContent>
-</MudTable>
+    </MudTable>
 }
 
 @code {
@@ -134,6 +154,7 @@ else
     private bool hover = true;
     private bool addCreator;
     public bool editProduct;
+    private string message;
     int productId;
 
     protected override async Task OnInitializedAsync()
@@ -173,12 +194,11 @@ else
         {
             AllProducts = await ProductManager.GetAllProducts();
         }
-
     }
 
     public async Task LoanProduct(int productId)
     {
-        await LoanManager.AddLoan(productId, CurrentUser.Id);
+        message = await LoanManager.AddLoan(productId, CurrentUser.Id);
         AvailableLoans = await ProductCopyManager.GetAllLoans();
     }
 

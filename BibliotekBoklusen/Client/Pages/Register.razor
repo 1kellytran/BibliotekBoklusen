@@ -8,14 +8,13 @@
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
-
-                   <h4 class="card-title">Registrera</h4>
+            <MudText Typo="Typo.h6">Registrera</MudText>
             <MudForm @ref="form" @bind-Errors="@errors">
                 <MudTextField T="string" Label="Förnamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.FirstName" />
                 <MudTextField T="string" Label="Efternamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.LastName" />
-                <MudTextField T="string" Label="E-mail" Required="true" RequiredError="Obligatorisk fält"
-                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "E-mailen finns redan"})" @bind-Value="registerUser.Email" />
-                <MudTextField T="string" Label="Lösenord" HelperText="Använd ett starkt lösenord" @ref="pwField1"
+                <MudTextField T="string" Label="E-postadress" Required="true" RequiredError="Obligatorisk fält"
+                              Validation="@(new EmailAddressAttribute() {ErrorMessage = "Du måste fylla i en e-postadress"})" @bind-Value="registerUser.Email" />
+                <MudTextField T="string" Label="Lösenord" HelperText="Lösenordet måste innehålla minst 6 tecken, en stor bokstav, en liten bokstav och en siffra" @ref="pwField1"
                               InputType="InputType.Password"
                               Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))" Required="true"
                               RequiredError="Obligatorisk fält" @bind-Value="registerUser.Password" />
@@ -44,11 +43,10 @@ else if (message == $"Bibliotekarie {registerUser.FirstName} tillagd")
 {
     <MudAlert Severity="Severity.Success">@message</MudAlert>
 }
-else if (message == $"Det finns redan en användare registrerad på e-mailadressen \"{registerUser.Email}\"")
+else if (message == $"Det finns redan en användare registrerad på e-postadressen \"{registerUser.Email}\"")
 {
     <MudAlert Severity="Severity.Warning">@message</MudAlert>
 }
-
 
 @code {
     private RegisterDto registerUser = new RegisterDto();
@@ -87,7 +85,7 @@ else if (message == $"Det finns redan en användare registrerad på e-mailadress
         }
         else if (message == "User already exists.")
         {
-            message = $"Det finns redan en användare registrerad på e-mailadressen \"{registerUser.Email}\"";
+            message = $"Det finns redan en användare registrerad på e-postadressen \"{registerUser.Email}\"";
         }
         else
         {

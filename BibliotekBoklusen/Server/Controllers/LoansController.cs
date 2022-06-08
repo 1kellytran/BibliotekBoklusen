@@ -55,11 +55,11 @@ namespace BibliotekBoklusen.Server.Controllers
             {
                 await _context.Loans.AddAsync(loan);
                 _context.SaveChangesAsync();
-                return Ok("Loan har lagts till");
+                return Ok("Produkt lånad");
             }
             else
             {
-                return NotFound("Inga exemplar finns tillgänglig av denna bok");
+                return NotFound("Gick inte");
             }
         }
 

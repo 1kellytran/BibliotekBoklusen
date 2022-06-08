@@ -2,9 +2,9 @@
 @inject IDialogService DialogService
 @inject IUserManager UserManager
 
-@if(message == "Uppdaterad")
+@if (message == "Uppdaterad")
 {
-	<MudAlert Severity="Severity.Success">@message</MudAlert>
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
 }
 
 @if (editUser)
@@ -57,21 +57,21 @@
             <MudTd DataLabel="Medlem sedan">@member.Created.ToString("d")</MudTd>
             @if (member.UserRole.Equals(UserRole.Admin))
             {
-            <MudTd DataLabel="Behörig admin">Ja</MudTd>
+                <MudTd DataLabel="Behörig admin">Ja</MudTd>
             }
             else
             {
-            <MudTd DataLabel="Behörig admin">Nej</MudTd>
+                <MudTd DataLabel="Behörig admin">Nej</MudTd>
             }
         <MudTd>
             <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
             <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
         </MudTd>
-    </RowTemplate>
+        </RowTemplate>
     <PagerContent>
         <MudTablePager />
     </PagerContent>
-</MudTable>
+    </MudTable>
 }
 
 @code {

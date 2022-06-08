@@ -9,14 +9,23 @@
 {
     <MudCard Outlined="true">
         <MudCardContent>
-              <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4"  Height="110" Alt="Book" />
+            @if (@Product.Title.Contains("Harry"))
+            {
+                <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+            }
+            else if (@Product.Title.Contains("Pippi"))
+            {
+                <MudImage Src="images/Pippi.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+            }
+            else
+            {
+                <MudImage Src="images/Random.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+            }
             <MudText Typo="Typo.h6">@Product.Title</MudText>
-            <MudText Typo="Typo.body1">
-                @foreach (var c in Product.Creators)
-                {
-                    @c.FirstName @c.LastName
-                }
-            </MudText>
+            @foreach (var c in Product.Creators)
+            {
+                <MudText Typo="Typo.body1">@c.FirstName @c.LastName</MudText>
+            }
             <MudText Typo="Typo.body2">
                 This text is supposed to be a brief summary about the product to peak your interest
                 or to tell you more about the product if you knew nothing to begin with. Insert random sentence here.
@@ -59,7 +68,7 @@
                         @if (availableProduct.Id == Product.Id)
                         {
                             <MudTd>
-                                <MudButton @onclick="LoanProduct">Låna</MudButton>
+                                <MudButton Variant="Variant.Filled" Color="Color.Warning" @onclick="LoanProduct">Låna</MudButton>
                             </MudTd>
                         }
                     }

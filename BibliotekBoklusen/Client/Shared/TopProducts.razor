@@ -1,26 +1,57 @@
-﻿
+﻿@page "/topproduct"
 @inject ILoanManager LoanManager
-@page "/topproduct"
 
-<h2 class="mt-3">Populära produkter</h2>
-
-
-@foreach (var p in Products)
-{
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="https://upload.wikimedia.org/wikipedia/commons/c/ca/Fairy_Tales_%28Boston_Public_Library%29.jpg" alt="Hej jag är en bild">
-        <div class="card-body">
-            <h5 class="card-title"><a href="/ProductById/@p.Id" class="table-bordered">@p.Title</a></h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            @foreach (var creator in p.Creators)
-            {
-                <h6>@creator.FirstName @creator.LastName</h6>
-            }
-        </div>
-    </div>
-
-}
-
+<MudTable Context="product" Items="Products">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Populära produkter</MudText>
+        <MudSpacer />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh></MudTh>
+        <MudTh>Titel</MudTh>
+        <MudTh>Skapare</MudTh>
+        <MudTh>Utgiven</MudTh>
+        <MudTh>Genre</MudTh>
+        <MudTh>Typ</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        @if (@product.Title.Contains("Harry"))
+        {
+            <MudImage Src="images/harry-potter-and-the-goblet-of-fire-5.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+        }
+        else if (@product.Title.Contains("Pippi"))
+        {
+            <MudImage Src="images/Pippi.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+        }
+        else
+        {
+            <MudImage Src="images/Random.jpg" Class="rounded-lg ma-4" Height="110" Alt="Book" />
+        }
+        <MudTd DataLabel="Titel"><a href="ProductById/@product.Id"><b>@product.Title</b></a></MudTd>
+        @if (product.Creators.Count > 1)
+        {
+            <MudTd DataLabel="Skapare">
+                @product.Creators[0].FirstName @product.Creators[0].LastName, m.fl
+            </MudTd>
+        }
+        else
+        {
+            <MudTd DataLabel="Skapare">
+                @product.Creators[0].FirstName @product.Creators[0].LastName
+            </MudTd>
+        }
+        <MudTd DataLabel="Utgiven">@product.Published.ToString("yyyy")</MudTd>
+        @if (@product.Category.Count > 1)
+        {
+            <MudTd DataLabel="Genre">@product.Category[0].CategoryName, m.fl</MudTd>
+        }
+        else
+        {
+            <MudTd DataLabel="Genre">@product.Category[0].CategoryName</MudTd>
+        }
+        <MudTd DataLabel="Typ">@product.Type</MudTd>
+    </RowTemplate>
+</MudTable>
 
 @code {
     public List<Product> Products { get; set; } = new List<Product>();
@@ -29,5 +60,4 @@
     {
         Products = await LoanManager.GetTopProducts();
     }
-
 }
