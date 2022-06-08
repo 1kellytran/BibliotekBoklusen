@@ -23,9 +23,13 @@
                 <td>@currentLoan.Title</td>
                 <td>@currentLoan.Type</td>
                 <td>@currentLoan.Published.ToString("yyyy")</td>
-                @foreach (var creator in currentLoan.Creators)
+                @if (currentLoan.Creators.Count > 0)
                 {
-                    <td>@creator.FirstName @creator.LastName</td>
+                    <td>@currentLoan.Creators[0].FirstName @currentLoan.Creators[0].LastName, m.fl</td>
+                }
+                else
+                {
+                    <td>@currentLoan.Creators[0].FirstName @currentLoan.Creators[0].LastName</td>
                 }
             </tr>
         }
@@ -48,9 +52,13 @@
                 <td>@previousLoan.Title</td>
                 <td>@previousLoan.Type</td>
                 <td>@previousLoan.Published.ToString("yyyy")</td>
-                @foreach (var creator in previousLoan.Creators)
+                @if (previousLoan.Creators.Count > 0)
                 {
-                    <td>@creator.FirstName @creator.LastName</td>
+                    <td>@previousLoan.Creators[0].FirstName @previousLoan.Creators[0].LastName, m.fl</td>
+                }
+                else
+                {
+                    <td>@previousLoan.Creators[0].FirstName @previousLoan.Creators[0].LastName</td>
                 }
             </tr>
         }
@@ -71,7 +79,7 @@
 
         foreach (var loan in AllUserLoans)
         {
-            var product= await ProductManager.GetProductById(loan.ProductCopy.ProductId);
+            var product = await ProductManager.GetProductById(loan.ProductCopy.ProductId);
             if (loan.isReturned)
             {
                 PreviousLoans.Add(product);
