@@ -47,7 +47,7 @@
             return null;
         }
 
-        public async Task<User> GetCurrentUser(string userEmail)
+        public async Task<User> GetUserByEmail(string userEmail)
         {
             var result = await _http.GetFromJsonAsync<User>($"api/user/GetUserByEmail?userEmail={userEmail}");
             return result;

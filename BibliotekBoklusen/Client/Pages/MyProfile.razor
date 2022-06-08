@@ -43,7 +43,7 @@
     protected override async Task OnInitializedAsync()
     {
         var userEmail = await localStorage.GetItemAsync<string>("email");
-        User = await UserManager.GetCurrentUser(userEmail);
+        User = await UserManager.GetUserByEmail(userEmail);
     }
 
     private void NavigateToChangePassword() { NavigationManager.NavigateTo("ChangePasswordEdit"); }
