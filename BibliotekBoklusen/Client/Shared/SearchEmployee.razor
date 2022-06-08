@@ -46,7 +46,7 @@ else if(message == "Ingen personal hittades")
         <ToolBarContent>
             <MudText Typo="Typo.h6">Personal</MudText>
             <MudSpacer />
-            <MudTextField @bind-Value="searchText" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0"></MudTextField>
+            <MudTextField @onkeyup="HandleSearchEmployee" @bind-Value="searchText" Placeholder="Search" Adornment="Adornment.Start" Class="mt-0"></MudTextField>
             <MudButton @onclick="SearchForEmployee"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>
         </ToolBarContent>
         <HeaderContent>
@@ -153,6 +153,13 @@ else if(message == "Ingen personal hittades")
         if (!result.Cancelled)
         {
             AllEmployees = await UserManager.GetEmployees();
+        }
+    }
+    	    public async Task HandleSearchEmployee(KeyboardEventArgs args)
+    {
+        if (args.Key == null || args.Key.Equals("Enter"))
+        {
+            SearchForEmployee();
         }
     }
 }

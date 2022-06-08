@@ -9,7 +9,7 @@
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
 
-                   <h4 class="card-title">Registrera</h4>
+              <MudText Typo="Typo.h6">Registrera</MudText>
             <MudForm @ref="form" @bind-Errors="@errors">
                 <MudTextField T="string" Label="Förnamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.FirstName" />
                 <MudTextField T="string" Label="Efternamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.LastName" />
