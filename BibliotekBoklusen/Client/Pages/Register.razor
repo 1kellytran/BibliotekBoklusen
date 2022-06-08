@@ -8,8 +8,13 @@
 <MudGrid>
     <MudItem xs="12" sm="7">
         <MudPaper Class="pa-4">
+<<<<<<< Updated upstream
                    <h5 class="card-title">Registrera</h5>
             <MudForm @ref="form" @bind-Errors="@errors">
+=======
+                   <h4 class="card-title">Registrera</h4>
+            <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors">
+>>>>>>> Stashed changes
                 <MudTextField T="string" Label="Förnamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.FirstName" />
                 <MudTextField T="string" Label="Efternamn" Required="true" RequiredError="Obligatorisk fält" @bind-Value="registerUser.LastName" />
                 <MudTextField T="string" Label="E-mail" Required="true" RequiredError="Obligatorisk fält"
