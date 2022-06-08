@@ -68,7 +68,7 @@ else
         <AuthorizeView Roles="Admin, Librarian">
             <MudTd>@product.NumberOfCopiesOwned</MudTd>
         </AuthorizeView>
-        <AuthorizeView>
+      <AuthorizeView Roles="Member">
             @if (AvailableLoans.Count == 0)
                 {
                 <MudTd>
