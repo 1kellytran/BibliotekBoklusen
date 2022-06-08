@@ -1,28 +1,29 @@
 ﻿@inject NavigationManager NavigationManager
 @inject ISearchManager SearchManager
 
-<div class="input-group">
-    <input @bind-value="searchText"
-           @bind-value:event="oninput"
-           type="search"
-           list="products"
-           @onkeyup="HandleSearch"
-           class="form-control"
-           placeholder="Sök i vår katalog (titel, författare, ämne etc)"
-           @ref="searchInput" />
-    <datalist id="products">
-        @foreach (var suggestion in suggestions)
-        {
-            <option>@suggestion</option>
-        }
-    </datalist>
-    <div class="input-group-append">
-        <button class="btn btn-primary" @onclick="SearchProducts">
-            <span class="oi oi-magnifying-glass"></span>
-        </button>
-    </div>
-</div>
-
+<MudGrid Justify="Justify.Center">
+     <MudItem xs="12" sm="6">
+        <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+            <input @bind-value="searchText"
+                   @bind-value:event="oninput"
+                   type="search"
+                   list="products"
+                   @onkeyup="HandleSearch"
+                   class="form-control align-content-center"
+                   placeholder="Sök i vår katalog (titel, författare, ämne etc)"
+                   @ref="searchInput" />
+            <datalist id="products">
+                @foreach (var suggestion in suggestions)
+                {
+                    <option>@suggestion</option>
+                }
+            </datalist>
+            <div class="input-group-append">
+                <MudButton @onclick="SearchProducts"><MudIcon Icon="@Icons.Material.Filled.Search"></MudIcon></MudButton>
+            </div>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
 @code {
 
     private string searchText = string.Empty;
