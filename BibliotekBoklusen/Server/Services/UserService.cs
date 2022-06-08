@@ -38,10 +38,8 @@ namespace BibliotekBoklusen.Server.Services
         public async Task<User> GetUserByEmail(string userEmail)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == userEmail);
-        }
-       
-        
-        
+        }      
+                
         public async Task<ServiceResponse<User>> UpdateUser(UpdatedUserDto user, int id)
         {
             var dbUser = _context.Users.Where(x => x.Id == id).FirstOrDefault();
@@ -100,6 +98,7 @@ namespace BibliotekBoklusen.Server.Services
             await DeleteUserFromAuthDbContext(userDb.Email);
             return new ServiceResponse<string> { Success = true };
         }
+
         public async Task DeleteUserFromAuthDbContext(string email)
         {
             var user = _signInManager.UserManager.Users.FirstOrDefault(x => x.Email == email);
@@ -128,24 +127,32 @@ namespace BibliotekBoklusen.Server.Services
         {
             var result = await _context.Users.Where(u => u.FirstName.ToLower().Contains(searchText.ToLower()) || u.LastName.ToLower().Contains(searchText.ToLower())).ToListAsync();
             return result;
-
         }
+
         public async Task<List<User>> GetEmployees()
         {
             return await _context.Users.Where(u => u.UserRole.Equals(UserRole.Librarian) || u.UserRole.Equals(UserRole.Admin)).ToListAsync();
         }
+
+        public async Task<List<User>> GetMembers()
+        {
+            return await _context.Users.Where(u => u.UserRole.Equals(UserRole.Member)).ToListAsync();
+        }
+
         private async Task SetUserToAdmin(User dbUser, ApplicationUser authUser)
         {
 
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Admin);
         }
+
         private async Task SetUserToLibrarian(User dbUser, ApplicationUser authUser)
         {
 
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Admin);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Librarian);
         }
+
         private async Task SetUserToMember(User dbUser, ApplicationUser authUser)
         {
     
@@ -153,8 +160,6 @@ namespace BibliotekBoklusen.Server.Services
             await _signInManager.UserManager.RemoveFromRoleAsync(authUser, UserRoles.Librarian);
             await _signInManager.UserManager.AddToRoleAsync(authUser, UserRoles.Member);
         }
-
-
     }
 }
 

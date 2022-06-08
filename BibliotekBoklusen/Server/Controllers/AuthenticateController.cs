@@ -1,4 +1,3 @@
-
 using BibliotekBoklusen.Server.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -7,8 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BibliotekBoklusen.Server.Controllers
 {
@@ -35,6 +32,14 @@ namespace BibliotekBoklusen.Server.Controllers
         public async Task<IActionResult> GetEmployees()
         {
             var result = await _userManager.GetEmployees();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("getmembers")]
+        public async Task<IActionResult> GetMembers()
+        {
+            var result = await _userManager.GetMembers();
             return Ok(result);
         }
 

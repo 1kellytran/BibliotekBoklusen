@@ -13,8 +13,6 @@
         Task<User> GetUserByEmail(string userEmail);
         Task<List<User>> GetUsersBySearch(string searchText);
         Task<List<User>> GetEmployees();
-
-
-
+        Task<List<User>> GetMembers();
     }
 }

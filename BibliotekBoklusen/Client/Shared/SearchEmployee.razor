@@ -31,6 +31,15 @@
     </EditForm>
 }
 
+@if (message == "Uppdaterad")
+{
+    <MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+else if(message == "Ingen personal hittades")
+{
+    <MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+
 @if (AllEmployees != null || AllEmployees.Count != 0)
 {
     <MudTable Context="employee" Items="@AllEmployees">
@@ -63,18 +72,13 @@
             }
         <MudTd>
             <MudButton @onclick="() => EditUser(employee)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-            <MudButton @onclick="() => DeleteUser(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+            <MudButton @onclick="() => DeleteEmployee(employee.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
         </MudTd>
     </RowTemplate>
     <PagerContent>
         <MudTablePager />
     </PagerContent>
 </MudTable>
-
-}
-@if (message != null)
-{
-    <MudAlert Severity="Severity.Error">@message</MudAlert>
 }
 
 @code {
@@ -95,7 +99,7 @@
             var result = await UserManager.GetUsersBySearch(searchText);
             if (result == null || result.Count == 0)
             {
-                message = "Inga personal funna";
+                message = "Ingen personal hittades";
                 AllEmployees = new();
             }
             else
@@ -118,14 +122,19 @@
 
     private async Task UpdateUser()
     {
+        if (isAdmin)
+        {
+            EmployeeToUpdate.UserRole = UserRole.Admin;
+        }
+        else
+        {
+            EmployeeToUpdate.UserRole = UserRole.Librarian;
+        }
+
         editUser = false;
         await UserManager.UpdateUserinformation(EmployeeToUpdate, userId);
-        message = "Uppdaderad";
-    }
-
-    private async Task DeleteUser(int userId)
-    {
-        await UserManager.DeleteUser(userId);
+        AllEmployees = await UserManager.GetEmployees();
+        message = "Uppdaterad";
     }
 
     public async Task DeleteEmployee(int id)

@@ -30,6 +30,15 @@
 	</EditForm>
 }
 
+@if(message == "Ingen medlem hittades")
+{
+	<MudAlert Severity="Severity.Error">@message</MudAlert>
+}
+else if(message == "Uppdaterad")
+{
+	<MudAlert Severity="Severity.Success">@message</MudAlert>
+}
+
 @if (members != null || members.Count != 0)
 {
     <MudTable Context="member" Items="@members">
@@ -62,7 +71,7 @@
             }
         <MudTd>
             <MudButton @onclick="() => EditUser(member)"><MudIcon Icon="@Icons.Filled.Edit"></MudIcon></MudButton>
-            <MudButton @onclick="() => DeleteUser(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
+            <MudButton @onclick="() => DeleteMember(member.Id)"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon></MudButton>
         </MudTd>
     </RowTemplate>
     <PagerContent>
@@ -70,8 +79,6 @@
     </PagerContent>
 </MudTable>
 }
-
-<h6 class="validation-message">@message</h6>
 
 @code {
 	private List<User> members = new List<User>();
@@ -89,7 +96,7 @@
 			var result = await UserManager.GetUsersBySearch(searchText);
 			if (result == null || result.Count == 0)
 			{
-				message = "Inga användare funna";
+				message = "Ingen medlem hittades";
 				members = new();
 			}
 			else
@@ -114,14 +121,7 @@
 	{
 		editUser = false;
 		await UserManager.UpdateUserinformation(userToUpdate, userId);
-		members = await UserManager.GetAllUser();
 		message = "Uppdaterad";
-	}
-
-	private async Task DeleteUser(int userId)
-	{
-		await UserManager.DeleteUser(userId);
-		members = await UserManager.GetAllUser();
 	}
 
 	protected async Task KeywordEnterPressed(KeyboardEventArgs eventArgs)
@@ -147,7 +147,8 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            members = await UserManager.GetEmployees();
+			var result2 = await UserManager.GetUsersBySearch(searchText);
+            members = result2.Where(u => u.UserRole.Equals(UserRole.Member)).ToList();
         }
     }
 }

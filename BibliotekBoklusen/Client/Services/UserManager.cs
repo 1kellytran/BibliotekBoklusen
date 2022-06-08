@@ -100,5 +100,10 @@
         {
             return await _http.GetFromJsonAsync<List<User>>("api/authenticate");
         }
+
+        public async Task<List<User>> GetMembers()
+        {
+            return await _http.GetFromJsonAsync<List<User>>("api/authenticate/getmembers");
+        }
     }
 }
