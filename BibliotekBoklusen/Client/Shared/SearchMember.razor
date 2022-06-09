@@ -53,7 +53,7 @@ else if(message == "Uppdaterad")
             <MudTh>Efternamn</MudTh>
             <MudTh>Email</MudTh>
             <MudTh>Medlem sedan</MudTh>
-            <MudTh>Behörig admin</MudTh>
+            <MudTh>Aktiv</MudTh>
             <MudTh></MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -61,7 +61,7 @@ else if(message == "Uppdaterad")
             <MudTd DataLabel="LastName">@member.LastName</MudTd>
             <MudTd DataLabel="Email">@member.Email</MudTd>
             <MudTd>@member.Created.ToString("d")</MudTd>
-            @if (member.UserRole.Equals(UserRole.Admin))
+            @if (member.IsActive)
             {
             <MudTd>Ja</MudTd>
             }
