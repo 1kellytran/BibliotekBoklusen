@@ -53,7 +53,7 @@ else if (message == "Gick inte")
         </MudCardContent>
         <AuthorizeView Roles="Librarian, Admin">
             <MudCardActions>
-                <MudButton Variant="Variant.Filled" Color="Color.Error" @onclick="DeleteProduct">Radera</MudButton>
+                <MudButton @onclick="() => DeleteProduct()"><MudIcon Icon="@Icons.Filled.Delete"></MudIcon> Ta bort produkt</MudButton>
             </MudCardActions>
         </AuthorizeView>
         <AuthorizeView Roles="Member">
